@@ -6,6 +6,7 @@ use App\Http\Requests\ProfileUpdateRequest;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\View\View;
 
@@ -14,6 +15,7 @@ class ProfileController extends Controller
     /**
      * Display the user's profile form.
      */
+    
     public function edit(Request $request): View
     {
         return view('profile.edit', [
@@ -57,4 +59,22 @@ class ProfileController extends Controller
 
         return Redirect::to('/');
     }
+public function updateProfile(Request $request, $id)
+{
+    DB::table('student')
+        ->where('studentId', $id)
+        ->update([
+            'studentName' => $request->input('EName'),
+            'address' => $request->input('Address'),
+            'phone' => $request->input('Phone'),
+            'mobile' => $request->input('Mobile'),
+            'email' => $request->input('Email'), 
+            'first_language' => $request->input('First Language'),
+            'second_language' => $request->input('Second Language'),
+            'birthdate' => $request->input('birthday')
+        ]);
+    
+    return response()->json(['success' => true]);
+}
+
 }

@@ -16,6 +16,7 @@ use App\Http\Controllers\PrerequisiteCousreController;
 use App\Http\Controllers\CourseReigesterController;
 use App\Http\Controllers\ChatController;
 use App\Http\Controllers\ProgramPerferenceController;
+use App\Http\Controllers\ProfileController;
 
 /*
 |--------------------------------------------------------------------------
@@ -85,6 +86,7 @@ Route::post('/register', 'AuthController@register');
 
 Route::get('/getAllDepartments',[ProgramPerferenceController::class,'getAllDepartments']);
 Route::post('/registerPerefernces',[ProgramPerferenceController::class,'registerPerefernces']);
+Route::put('/updateProfile/{id}',[ProfileController::class,'updateProfile']);
 ///////////////////////////////////////
 //new for chat
 
