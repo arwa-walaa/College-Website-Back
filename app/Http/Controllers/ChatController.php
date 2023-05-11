@@ -7,7 +7,10 @@ use App\Models\student;
 use App\Models\professor;
 use App\Models\Message;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
+use App\Attachment;
 
+Storage::disk('local')->makeDirectory('gp');
 class ChatController extends Controller
 {
     public function listStudents()
@@ -26,7 +29,7 @@ class ChatController extends Controller
     public function listProfessorsAndTAs()
     {
         $professors = DB::table('professor')->get();
-        $TAs = DB::table('_t_a')->get();
+        $TAs = DB::table('ta')->get();
 
         return response()->json(['Professors' => $professors, 'TAs' => $TAs]);
 
@@ -86,19 +89,47 @@ class ChatController extends Controller
     //         'status' => 'Message sent successfully',
     //     ], 200);
     // }
+   
 
+   
     public function sendMessage(Request $request)
 {
+    
     $this->validate($request, [
         'from' => 'required',
         'to' => 'required',
         'message' => 'required',
+        // 'attachement' => 'required',
     ]);
 
     $message = new Message;
     $message->from = $request->input('from');
     $message->to = $request->input('to');
     $message->message = $request->input('message');
+    // $message->attachement = $request->file('attachement')
+    //$message->path = $message->attachement->store('attachments');
+    // $file = $request->file('attachement');
+    // $path = Storage::disk('local')->putFile('gp', $file);
+    // $message->attachement = new Attachment;
+    // $message->attachement->filename = $file->getClientOriginalName();
+    // $message->attachement->path = $path;
+
+    //////////////
+    // public function upload(Request $request) {
+    //     $file = $request->file('file');
+    //     $path = Storage::disk('local')->putFile('uploads', $file);
+      
+    //     $attachment = new Attachment;
+    //     $attachment->filename = $file->getClientOriginalName();
+    //     $attachment->path = $path;
+    //     $attachment->save();
+      
+    //     return response()->json([
+    //       'success' => true,
+    //       'attachment' => $attachment,
+    //     ]);
+    //   }
+    //////////
     $message->save();
 
     return response()->json($message);
@@ -133,7 +164,7 @@ Public function getProfessorDetails(Request $request){
    Public function getTADetails(Request $request){
 
   
-    $TADtails = DB::table('_t_a')->where('TAName', '=', $request->TAName)->get();
+    $TADtails = DB::table('ta')->where('TAName', '=', $request->TAName)->get();
    
     return [
        

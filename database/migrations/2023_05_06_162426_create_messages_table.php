@@ -15,10 +15,12 @@ class CreateMessagesTable extends Migration
             $table->unsignedBigInteger('from');
             $table->unsignedBigInteger('to');
             $table->text('message');
+            $table->text('attachement');
             $table->timestamps();
 
             $table->foreign('from')->references('id')->on('users')->onDelete('cascade');
             $table->foreign('to')->references('id')->on('users')->onDelete('cascade');
+
         });
     }
 
