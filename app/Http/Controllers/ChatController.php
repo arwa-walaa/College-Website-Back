@@ -163,7 +163,7 @@ public function sendMessage(Request $request)
         $message->attachment_path = $path;
         // $message->attachment_url = url('app/'.$path); // add this line
        
-        $message->attachment_url = url(" https://preview.redd.it/in87exq7tpw41.jpg?width=1055&format=pjpg&auto=webp&v=enabled&s=5feae5ba352e350e47958d88261d062ae4a616a6"); // add this line
+       // $message->attachment_url = url(" https://preview.redd.it/in87exq7tpw41.jpg?width=1055&format=pjpg&auto=webp&v=enabled&s=5feae5ba352e350e47958d88261d062ae4a616a6"); // add this line
         //$message->attachment_url = url('http://127.0.0.1:8000/storage/app/'.$path); // add this line
     }
 
