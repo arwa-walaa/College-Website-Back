@@ -9,7 +9,7 @@ use Illuminate\Database\Eloquent\Model;
 class Message extends Model
 {
     protected $fillable = [
-        'from', 'to', 'message','attachement'
+        'from', 'to', 'message','attachment_path'
     ];
 
     public function fromUser()

@@ -1,0 +1,1 @@
+<img src="{{storage('app/attachments/3Mz1HQO7BKI5h31x8b7XWNEC76bkEQklcFAb39Mo.png')}}">
