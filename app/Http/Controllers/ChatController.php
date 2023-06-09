@@ -209,6 +209,7 @@ Public function getProfessorDetails(Request $request){
         
         'TADtails'=>$TADtails
     ];
+    
    }
 
 }
