@@ -48,6 +48,7 @@ $results = DB::table('course')
         ->select('slotday2', 'startTime2', 'endTime2', 'slotPlace2','courseName')
         ->where('slotPlace2', $place)
     )
+    
     ->get();
    return $results; 
 
