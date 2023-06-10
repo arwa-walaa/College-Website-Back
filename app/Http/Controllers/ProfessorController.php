@@ -51,5 +51,8 @@ $results = DB::table('course')
     )
     ->get();
    return $results; 
+
+
+   
 }
 }
