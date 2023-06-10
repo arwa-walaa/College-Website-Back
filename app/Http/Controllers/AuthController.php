@@ -29,7 +29,27 @@ class AuthController extends Controller
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function login(Request $request){
+
+    //  public function returnType(Request $request){
+    //     $validator = Validator::make($request->all(), [
+    //         // 'email' => 'required|email',
+    //         // 'password' => 'required|string|min:6',
+    //         'name' => 'required',
+    //         'password' => 'required',
+    //     ]);
+    //     if ($validator->fails()) {
+    //         return response()->json($validator->errors(), 422);
+    //     }
+    //     if (! $token = auth()->attempt($validator->validated())) {
+    //         return response()->json(['error' => 'Email or Password doesn\'t exist'], 401);
+    //     }
+     
+    //     $userType=DB::table('users')->where('name', '=',$request['name'])->select('Type');
+
+   
+    //     return $this->$userType;
+    //  }
+     public function login(Request $request){
     	$validator = Validator::make($request->all(), [
             // 'email' => 'required|email',
             // 'password' => 'required|string|min:6',
@@ -42,10 +62,18 @@ class AuthController extends Controller
         if (! $token = auth()->attempt($validator->validated())) {
             return response()->json(['error' => 'Email or Password doesn\'t exist'], 401);
         }
-       
-     DB::table('student')->where('studentId', '=',$request['name'])->update(array('loginToken'=>$token));
+        // if($this->returnType($request)=="Student"){
+            DB::table('student')->where('studentId', '=',$request['name'])->update(array('loginToken'=>$token));
    
-        return $this->createNewToken($token);
+            return $this->createNewToken($token);
+        // }
+        // else if($this->returnType($request)=="Professor"){
+        //     DB::table('users')->where('name', '=',$request['name'])->update(array('remember_token'=>$token));
+   
+        //     return $this->createNewToken($token);
+        // }
+     
+    
     }
     
     /**

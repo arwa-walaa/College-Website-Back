@@ -17,7 +17,8 @@ use App\Http\Controllers\CourseReigesterController;
 use App\Http\Controllers\ChatController;
 use App\Http\Controllers\ProgramPerferenceController;
 use App\Http\Controllers\ProfileController;
-
+use App\Http\Controllers\ProfessorController;
+use App\Http\Controllers\TAController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -41,6 +42,7 @@ Route::group([
     'prefix' => 'auth'
 ], function ($router) {
     Route::post('/login', [AuthController::class, 'login']);
+    // Route::post('/returnType', [AuthController::class, 'returnType']);
     Route::post('/register', [AuthController::class, 'register']);
     Route::post('/logout', [AuthController::class, 'logout']);
     Route::post('/refresh', [AuthController::class, 'refresh']);
@@ -122,7 +124,16 @@ Route::get('/TADetails', [ChatController::class,'getTADetails']);
 // });
 // Endpoint for authenticating a user
 Route::post('/login', 'AuthController@login');
+Route::post('/returnType', 'AuthController@returnType');
 
 // Endpoint for registering a new user
 Route::post('/register', 'AuthController@register');
+
+///////Professor part////////////////
+Route::get('/returnProfScheudule/{professorID}', [ProfessorController::class,'returnProfScheudule']);
+Route::get('/returnAllPlaces', [ProfessorController::class,'returnAllPlaces']);
+Route::get('/returnPlaceScheduale/{place}', [ProfessorController::class,'returnPlaceScheduale']);
+////////////TA part
+Route::get('/returnTAScheudule/{TAID}', [TAController::class,'returnTAScheudule']);
+
 
