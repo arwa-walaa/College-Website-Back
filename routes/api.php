@@ -18,6 +18,8 @@ use App\Http\Controllers\ChatController;
 use App\Http\Controllers\ProgramPerferenceController;
 use App\Http\Controllers\ProfileController;
 
+use App\Http\Controllers\professorAndTa;
+
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -127,3 +129,12 @@ Route::post('/returnType', 'AuthController@returnType');
 
 // Endpoint for registering a new user
 Route::post('/register', 'AuthController@register');
+
+/////////////professor and ta section////////////////
+Route::get('/myCourses/{professorId}', [professorAndTa::class,'getMyCourses']);
+Route::get('/getMyStudents/{professorId}', [professorAndTa::class,'getMyStudents']);
+Route::get('/getGrades/{professorId}', [professorAndTa::class,'getGrades']);
+Route::get('/selectCourse/{courseName}', [professorAndTa::class,'selectCourse']);
+Route::get('/selectGrade/{courseGrade}', [professorAndTa::class,'selectGrade']);
+
+Route::get('/professor_info/{token}', [AuthController::class,'getProfessorInfo']);

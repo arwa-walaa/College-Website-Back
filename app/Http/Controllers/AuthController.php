@@ -64,7 +64,7 @@ class AuthController extends Controller
         }
        
      DB::table('student')->where('studentId', '=',$request['name'])->update(array('loginToken'=>$token));
-   
+     DB::table('professor')->where('professorId', '=',$request['name'])->update(array('loginToken'=>$token));
             return $this->createNewToken($token);
         // }
         // else if($this->returnType($request)=="Professor"){
