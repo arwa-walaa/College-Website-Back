@@ -17,7 +17,7 @@ use App\Http\Controllers\CourseReigesterController;
 use App\Http\Controllers\ChatController;
 use App\Http\Controllers\ProgramPerferenceController;
 use App\Http\Controllers\ProfileController;
-
+use App\Http\Controllers\myCourses;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -111,3 +111,10 @@ Route::post('/login', 'AuthController@login');
 
 // Endpoint for registering a new user
 Route::post('/register', 'AuthController@register');
+
+////////////////////Professor and Ta Section////////////////////////
+Route::get('/myCourses/{professorId}', [myCourses::class,'getMyCourses']);
+Route::get('/professor_info/{token}',[AuthController::class,'getProfessorInfo']);
+Route::get('/ta_info/{token}',[AuthController::class,'getTaInfo']);
+
+////////////////////Professor and Ta Section////////////////////////

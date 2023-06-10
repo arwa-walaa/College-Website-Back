@@ -44,6 +44,8 @@ class AuthController extends Controller
         }
        
      DB::table('student')->where('studentId', '=',$request['name'])->update(array('loginToken'=>$token));
+     DB::table('professor')->where('professorId', '=',$request['name'])->update(array('loginToken'=>$token));
+     DB::table('ta')->where('taId', '=',$request['name'])->update(array('loginToken'=>$token));
    
         return $this->createNewToken($token);
     }
@@ -121,7 +123,21 @@ class AuthController extends Controller
     {
         $StudentInfo = DB::table('student')->where('loginToken', '=', $token)->get();
         return $StudentInfo;
-        //return 'test';
+      
+    }
+
+    public function getProfessorInfo($token)
+    {
+        $ProfessorInfo = DB::table('professor')->where('loginToken', '=', $token)->get();
+        return $ProfessorInfo;
+      
+    }
+
+    public function getTaInfo($token)
+    {
+        $TaInfo = DB::table('ta')->where('loginToken', '=', $token)->get();
+        return $TaInfo;
+        
     }
     
     
