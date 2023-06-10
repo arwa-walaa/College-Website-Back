@@ -40,7 +40,6 @@ public function returnAllPlaces(){
 
 }
 public function returnPlaceScheduale($place){
-    
 
 $results = DB::table('course')
     ->select('slotday1', 'startTime1', 'endTime1', 'slotPlace1','courseName')
@@ -53,6 +52,6 @@ $results = DB::table('course')
    return $results; 
 
 
-   
+
 }
 }
