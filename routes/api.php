@@ -17,7 +17,7 @@ use App\Http\Controllers\CourseReigesterController;
 use App\Http\Controllers\ChatController;
 use App\Http\Controllers\ProgramPerferenceController;
 use App\Http\Controllers\ProfileController;
-use App\Http\Controllers\myCourses;
+use App\Http\Controllers\professorAndTa;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -113,8 +113,11 @@ Route::post('/login', 'AuthController@login');
 Route::post('/register', 'AuthController@register');
 
 ////////////////////Professor and Ta Section////////////////////////
-Route::get('/myCourses/{professorId}', [myCourses::class,'getMyCourses']);
+Route::get('/myCourses/{professorId}', [professorAndTa::class,'getMyCourses']);
 Route::get('/professor_info/{token}',[AuthController::class,'getProfessorInfo']);
 Route::get('/ta_info/{token}',[AuthController::class,'getTaInfo']);
-
+Route::get('/getMyStudents/{professorId}',[professorAndTa::class,'getMyStudents']);
+Route::get('/getGrades/{professorId}',[professorAndTa::class,'getGrades']);
+Route::get('/selectCourse/{courseId}',[professorAndTa::class,'selectCourse']);
+Route::get('/selectGrade/{grade}',[professorAndTa::class,'selectGrade']);
 ////////////////////Professor and Ta Section////////////////////////
