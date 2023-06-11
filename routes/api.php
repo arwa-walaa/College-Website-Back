@@ -133,6 +133,8 @@ Route::post('/register', 'AuthController@register');
 Route::get('/returnProfScheudule/{professorID}', [ProfessorController::class,'returnProfScheudule']);
 Route::get('/returnAllPlaces', [ProfessorController::class,'returnAllPlaces']);
 Route::get('/returnPlaceScheduale/{place}', [ProfessorController::class,'returnPlaceScheduale']);
+
+Route::post('/insertOfficeHour/{id}', [ProfessorController::class,'insertOfficeHour']);
 ////////////TA part
 Route::get('/returnTAScheudule/{TAID}', [TAController::class,'returnTAScheudule']);
 
