@@ -29,7 +29,27 @@ class AuthController extends Controller
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function login(Request $request){
+
+    //  public function returnType(Request $request){
+    //     $validator = Validator::make($request->all(), [
+    //         // 'email' => 'required|email',
+    //         // 'password' => 'required|string|min:6',
+    //         'name' => 'required',
+    //         'password' => 'required',
+    //     ]);
+    //     if ($validator->fails()) {
+    //         return response()->json($validator->errors(), 422);
+    //     }
+    //     if (! $token = auth()->attempt($validator->validated())) {
+    //         return response()->json(['error' => 'Email or Password doesn\'t exist'], 401);
+    //     }
+     
+    //     $userType=DB::table('users')->where('name', '=',$request['name'])->select('Type');
+
+   
+    //     return $this->$userType;
+    //  }
+     public function login(Request $request){
     	$validator = Validator::make($request->all(), [
             // 'email' => 'required|email',
             // 'password' => 'required|string|min:6',
@@ -44,8 +64,16 @@ class AuthController extends Controller
         }
        
      DB::table('student')->where('studentId', '=',$request['name'])->update(array('loginToken'=>$token));
+     DB::table('professor')->where('professorId', '=',$request['name'])->update(array('loginToken'=>$token));
+            return $this->createNewToken($token);
+        // }
+        // else if($this->returnType($request)=="Professor"){
+        //     DB::table('users')->where('name', '=',$request['name'])->update(array('remember_token'=>$token));
    
-        return $this->createNewToken($token);
+        //     return $this->createNewToken($token);
+        // }
+     
+    
     }
     
     /**
@@ -121,7 +149,21 @@ class AuthController extends Controller
     {
         $StudentInfo = DB::table('student')->where('loginToken', '=', $token)->get();
         return $StudentInfo;
-        //return 'test';
+      
+    }
+
+    public function getProfessorInfo($token)
+    {
+        $ProfessorInfo = DB::table('professor')->where('loginToken', '=', $token)->get();
+        return $ProfessorInfo;
+      
+    }
+
+    public function getTaInfo($token)
+    {
+        $TaInfo = DB::table('ta')->where('loginToken', '=', $token)->get();
+        return $TaInfo;
+        
     }
     
     

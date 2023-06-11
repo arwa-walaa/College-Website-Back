@@ -18,6 +18,8 @@ use App\Http\Controllers\ChatController;
 use App\Http\Controllers\ProgramPerferenceController;
 use App\Http\Controllers\ProfileController;
 
+use App\Http\Controllers\professorAndTa;
+
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -41,6 +43,7 @@ Route::group([
     'prefix' => 'auth'
 ], function ($router) {
     Route::post('/login', [AuthController::class, 'login']);
+    // Route::post('/returnType', [AuthController::class, 'returnType']);
     Route::post('/register', [AuthController::class, 'register']);
     Route::post('/logout', [AuthController::class, 'logout']);
     Route::post('/refresh', [AuthController::class, 'refresh']);
@@ -105,9 +108,41 @@ Route::get('/professorsDetails', [ChatController::class,'getProfessorDetails']);
 Route::get('/TADetails', [ChatController::class,'getTADetails']);
 
 // });
+// Route::middleware('auth:api')->group(function () {
+//     // Endpoint for retrieving the list of chat users
+Route::get('/students', [ChatController::class,'listStudents']);
+Route::get('/professorsAndTas', [ChatController::class,'listProfessorsAndTAs']);
+// Endpoint for retrieving the chat history between two users
+Route::get('/history/{user1}/{user2}', [ChatController::class,'getHistory']);
 
+// Endpoint for sending a message from one user to another
+Route::post('/message', [ChatController::class,'sendMessage']);
+
+Route::get('/receive', [ChatController::class,'receive']);
+Route::get('/professorsDetails', [ChatController::class,'getProfessorDetails']);
+Route::get('/TADetails', [ChatController::class,'getTADetails']);
+
+// });
 // Endpoint for authenticating a user
 Route::post('/login', 'AuthController@login');
+Route::post('/returnType', 'AuthController@returnType');
 
 // Endpoint for registering a new user
 Route::post('/register', 'AuthController@register');
+
+/////////////professor and ta section////////////////
+Route::get('/myCourses/{professorId}', [professorAndTa::class,'getMyCourses']);
+Route::get('/getMyStudents/{professorId}', [professorAndTa::class,'getMyStudents']);
+Route::get('/getGrades/{professorId}', [professorAndTa::class,'getGrades']);
+Route::get('/selectCourse/{courseName}', [professorAndTa::class,'selectCourse']);
+Route::get('/selectGrade/{courseGrade}', [professorAndTa::class,'selectGrade']);
+
+Route::get('/professor_info/{token}', [AuthController::class,'getProfessorInfo']);
+
+
+
+
+
+
+
+Route::post('/store', [ChatController::class,'store']);
