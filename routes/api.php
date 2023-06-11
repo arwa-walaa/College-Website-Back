@@ -138,3 +138,11 @@ Route::get('/selectCourse/{courseName}', [professorAndTa::class,'selectCourse'])
 Route::get('/selectGrade/{courseGrade}', [professorAndTa::class,'selectGrade']);
 
 Route::get('/professor_info/{token}', [AuthController::class,'getProfessorInfo']);
+
+
+
+
+
+
+
+Route::post('/store', [ChatController::class,'store']);

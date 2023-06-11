@@ -15,12 +15,6 @@ class ChatController extends Controller
 {
     public function listStudents()
     {
-        
-        // $message = new Message;
-        // $message->from = $request->input('id');
-
-        // $students = DB::table('student')->where('studentId', '!=', $request->input('studentId'))->get();
-
         $students = DB::table('student')->get();
 
         return response()->json($students);
@@ -33,25 +27,6 @@ class ChatController extends Controller
 
         return response()->json(['Professors' => $professors, 'TAs' => $TAs]);
 
-
-        // $professorsAndTas = DB::table('professor')->unionAll(DB::table('_t_a'))->get();
-          
-        
-
-        /*
-        $users = DB::table('users')
-            ->select('name', 'email')
-            ->where('active', true)
-            ->unionAll(
-                DB::table('admins')
-                    ->select('name', 'email')
-                    ->where('active', true)
-            )
-            ->get();
-        */
-        // $professors = professor::where('professorId', '!=', $request->input('professorId'))->get();
-
-        // return response()->json($professors, $TAs);
     }
 
     public function getHistory(Request $request, $user1, $user2)
@@ -65,84 +40,36 @@ class ChatController extends Controller
         return response()->json($messages);
     }
 
-    // public function sendMessage(Request $request)
-    // {
-    //     $this->validate($request, [
-    //         'from' => 'required',
-    //         'to' => 'required',
-    //         'message' => 'required',
-           
-    //     ]);
 
-    //     $message = new Message;
-    //     $message->from = $request->user()->id;
-    //     $message->to = $request->to;
-    //     $message->message = $request->message;
-    //     $message->save();
-
-    //     // dd();
-
-    //     // return response()->json($message);
-
-    //     return response()->json([
-    //         'message' => $message,
-    //         'status' => 'Message sent successfully',
-    //     ], 200);
-    // }
-   
-
-   
-//     public function sendMessage(Request $request)
+// public function sendMessage(Request $request)
 // {
-    
 //     $this->validate($request, [
 //         'from' => 'required',
 //         'to' => 'required',
 //         'message' => 'required',
-//         // 'attachement' => 'required',
 //     ]);
 
 //     $message = new Message;
 //     $message->from = $request->input('from');
 //     $message->to = $request->input('to');
 //     $message->message = $request->input('message');
-//     // $message->attachement = $request->file('attachement')
-//     //$message->path = $message->attachement->store('attachments');
-//     // $file = $request->file('attachement');
-//     // $path = Storage::disk('local')->putFile('gp', $file);
-//     // $message->attachement = new Attachment;
-//     // $message->attachement->filename = $file->getClientOriginalName();
-//     // $message->attachement->path = $path;
-
-//     //////////////
-//     // public function upload(Request $request) {
-//     //     $file = $request->file('file');
-//     //     $path = Storage::disk('local')->putFile('uploads', $file);
-      
-//     //     $attachment = new Attachment;
-//     //     $attachment->filename = $file->getClientOriginalName();
-//     //     $attachment->path = $path;
-//     //     $attachment->save();
-      
-//     //     return response()->json([
-//     //       'success' => true,
-//     //       'attachment' => $attachment,
-//     //     ]);
-//     //   }
-//     //////////
 
 //     if ($request->hasFile('attachment')) {
 //         $attachment = $request->file('attachment');
 //         $path = $attachment->store('attachments');
+        
 //         $message->attachment_path = $path;
+//         // $message->attachment_url = url('app/'.$path); // add this line
+       
+//        // $message->attachment_url = url(" https://preview.redd.it/in87exq7tpw41.jpg?width=1055&format=pjpg&auto=webp&v=enabled&s=5feae5ba352e350e47958d88261d062ae4a616a6"); // add this line
+//         //$message->attachment_url = url('http://127.0.0.1:8000/storage/app/'.$path); // add this line
 //     }
 
-
 //     $message->save();
-
 //     return response()->json($message);
 // }
-//////////////////////
+
+///////////////////
 public function sendMessage(Request $request)
 {
     $this->validate($request, [
@@ -156,22 +83,40 @@ public function sendMessage(Request $request)
     $message->to = $request->input('to');
     $message->message = $request->input('message');
 
-    if ($request->hasFile('attachment')) {
-        $attachment = $request->file('attachment');
-        $path = $attachment->store('attachments');
+    // if ($request->hasFile('attachment')) {
+    //     $attachment = $request->file('attachment');
+    //     $attachmentData = base64_encode(file_get_contents($attachment));
         
+    //     $message->attachment_data = $attachmentData;
+    //     $message->attachment_url = url('storage/' . $attachment->store('public/attachments'));
+    // }
+
+    if ($request->hasFile('attachment')) {
+        $attachment = $request->file('attachment')->getClientOriginalName();
+        $path = $request->file('attachment')->storeAs('attachments',$attachment,'fcai');
+        //return $path;
         $message->attachment_path = $path;
-        // $message->attachment_url = url('app/'.$path); // add this line
-       
-       // $message->attachment_url = url(" https://preview.redd.it/in87exq7tpw41.jpg?width=1055&format=pjpg&auto=webp&v=enabled&s=5feae5ba352e350e47958d88261d062ae4a616a6"); // add this line
-        //$message->attachment_url = url('http://127.0.0.1:8000/storage/app/'.$path); // add this line
+
+    } else {
+        return "No file uploaded";
     }
 
     $message->save();
-  
-
     return response()->json($message);
 }
+
+public function store(Request $request)
+{
+    if ($request->hasFile('attachment')) {
+        $image = $request->file('attachment')->getClientOriginalName();
+        $path = $request->file('attachment')->storeAs('attachments',$image,'fcai');
+        return $path;
+    } else {
+        return "No file uploaded";
+    }
+}
+
+
 //////////////////////////
 public function receive(Request $request)
 {
