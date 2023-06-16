@@ -10,7 +10,7 @@ class ProfessorController extends Controller
     public function returnProfScheudule($professorID)
 {
     $schedule =DB::table('course')
-    ->join('course_professor', 'course.courseID', '=', 'course_professor.courseID')
+    ->join('course_reigesters', 'course.courseID', '=', 'course_reigesters.courseid')
     ->select(
         'course.courseName',
         'course.startTime1',
@@ -23,7 +23,8 @@ class ProfessorController extends Controller
         'course.slotPlace2',
         
     )
-    ->where('course_professor.professorID', '=', $professorID)
+    ->where('course_reigesters.professorId1', '=', $professorID)
+    ->orWhere('course_reigesters.professorId2', '=', $professorID)
     ->get();
     
     return $schedule;
@@ -74,26 +75,26 @@ public function insertOfficeHour(Request $request, $professorOrTAId)
                 DB::table('_office_hour_')->insert([
                     [
                         'TAid' => $professorOrTAId,
-                        'professorOrTAName' => 'esraa',
-                        'Email' => 'esraa@gmail.com',
+                        'professorOrTAName' => $hour['name'],
+                        'Email' => $hour['email'],
                         'Location' => $hour['location'],
                         'StartTime' => $hour['startTime'],
                         'EndTime' => $hour['endTime'],
                         'Day' => $hour['Day'],
-                        'Department' => 'is'
+                        'Department' => $hour['department']
                     ]
                 ]);
             } elseif ($hour['type']=='Professor') {
                 DB::table('_office_hour_')->insert([
                     [
                         'ProfessorId' => $professorOrTAId,
-                        'professorOrTAName' => 'Ali',
-                        'Email' => 'a@gmail.com',
+                        'professorOrTAName' => $hour['name'],
+                        'Email' => $hour['email'],
                         'Location' => $hour['location'],
                         'StartTime' => $hour['startTime'],
                         'EndTime' => $hour['endTime'],
                         'Day' => $hour['Day'],
-                        'Department' => 'is'
+                        'Department' => $hour['department']
                     ]
                 ]);
             }

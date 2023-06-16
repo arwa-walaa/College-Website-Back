@@ -17,8 +17,9 @@ use App\Http\Controllers\CourseReigesterController;
 use App\Http\Controllers\ChatController;
 use App\Http\Controllers\ProgramPerferenceController;
 use App\Http\Controllers\ProfileController;
-
+use App\Http\Controllers\ProfessorController;
 use App\Http\Controllers\professorAndTa;
+use App\Http\Controllers\TAController;
 
 /*
 |--------------------------------------------------------------------------
@@ -136,6 +137,7 @@ Route::post('/register', 'AuthController@register');
 Route::get('/returnProfScheudule/{professorID}', [ProfessorController::class,'returnProfScheudule']);
 Route::get('/returnAllPlaces', [ProfessorController::class,'returnAllPlaces']);
 Route::get('/returnPlaceScheduale/{place}', [ProfessorController::class,'returnPlaceScheduale']);
+Route::post('/insertOfficeHour/{id}', [ProfessorController::class,'insertOfficeHour']);
 ////////////TA part
 Route::get('/returnTAScheudule/{TAID}', [TAController::class,'returnTAScheudule']);
 
@@ -148,9 +150,7 @@ Route::get('/selectCourse/{courseName}', [professorAndTa::class,'selectCourse'])
 Route::get('/selectGrade/{courseGrade}', [professorAndTa::class,'selectGrade']);
 
 Route::get('/professor_info/{token}', [AuthController::class,'getProfessorInfo']);
-
-
-
-
+Route::get('/ta_info/{token}', [AuthController::class,'getTaInfo']);
+Route::get('/getUserType/{token}', [AuthController::class,'getUserType']);
 
 Route::post('/store', [ChatController::class,'store']);

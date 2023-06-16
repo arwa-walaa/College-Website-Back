@@ -65,6 +65,8 @@ class AuthController extends Controller
        
      DB::table('student')->where('studentId', '=',$request['name'])->update(array('loginToken'=>$token));
      DB::table('professor')->where('professorId', '=',$request['name'])->update(array('loginToken'=>$token));
+     DB::table('users')->where('name', '=',$request['name'])->update(array('loginToken'=>$token));
+     DB::table('ta')->where('TAId', '=',$request['name'])->update(array('loginToken'=>$token));
             return $this->createNewToken($token);
         // }
         // else if($this->returnType($request)=="Professor"){
@@ -156,13 +158,20 @@ class AuthController extends Controller
     {
         $ProfessorInfo = DB::table('professor')->where('loginToken', '=', $token)->get();
         return $ProfessorInfo;
-      
+     
     }
 
     public function getTaInfo($token)
     {
         $TaInfo = DB::table('ta')->where('loginToken', '=', $token)->get();
         return $TaInfo;
+        
+    }
+
+    public function getUserType($token)
+    {
+        $userType = DB::table('users')->where('loginToken', '=', $token)->get('Type');
+        return $userType;
         
     }
     
