@@ -46,7 +46,7 @@ return [
 
         'fcai' => [
             'driver' => 'local',
-            'root' => storage_path('attachments'),
+            'root' => public_path('attchments'),
             'url' => env('APP_URL').'/storage',
             'visibility' => 'public',
             'throw' => false,

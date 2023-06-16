@@ -41,41 +41,12 @@ class ChatController extends Controller
     }
 
 
-// public function sendMessage(Request $request)
-// {
-//     $this->validate($request, [
-//         'from' => 'required',
-//         'to' => 'required',
-//         'message' => 'required',
-//     ]);
-
-//     $message = new Message;
-//     $message->from = $request->input('from');
-//     $message->to = $request->input('to');
-//     $message->message = $request->input('message');
-
-//     if ($request->hasFile('attachment')) {
-//         $attachment = $request->file('attachment');
-//         $path = $attachment->store('attachments');
-        
-//         $message->attachment_path = $path;
-//         // $message->attachment_url = url('app/'.$path); // add this line
-       
-//        // $message->attachment_url = url(" https://preview.redd.it/in87exq7tpw41.jpg?width=1055&format=pjpg&auto=webp&v=enabled&s=5feae5ba352e350e47958d88261d062ae4a616a6"); // add this line
-//         //$message->attachment_url = url('http://127.0.0.1:8000/storage/app/'.$path); // add this line
-//     }
-
-//     $message->save();
-//     return response()->json($message);
-// }
-
-///////////////////
 public function sendMessage(Request $request)
 {
     $this->validate($request, [
         'from' => 'required',
         'to' => 'required',
-        'message' => 'required',
+        // 'message' => 'required',
     ]);
 
     $message = new Message;
@@ -83,13 +54,7 @@ public function sendMessage(Request $request)
     $message->to = $request->input('to');
     $message->message = $request->input('message');
 
-    // if ($request->hasFile('attachment')) {
-    //     $attachment = $request->file('attachment');
-    //     $attachmentData = base64_encode(file_get_contents($attachment));
-        
-    //     $message->attachment_data = $attachmentData;
-    //     $message->attachment_url = url('storage/' . $attachment->store('public/attachments'));
-    // }
+   
 
     if ($request->hasFile('attachment')) {
         $attachment = $request->file('attachment')->getClientOriginalName();
@@ -97,10 +62,8 @@ public function sendMessage(Request $request)
         //return $path;
         $message->attachment_path = $path;
 
-     } 
-     //else {
-    //     return "No file uploaded";
-    // }
+     }
+    
 
     $message->save();
     return response()->json($message);

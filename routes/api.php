@@ -130,6 +130,16 @@ Route::post('/returnType', 'AuthController@returnType');
 // Endpoint for registering a new user
 Route::post('/register', 'AuthController@register');
 
+
+
+//////Professor part////////////////
+Route::get('/returnProfScheudule/{professorID}', [ProfessorController::class,'returnProfScheudule']);
+Route::get('/returnAllPlaces', [ProfessorController::class,'returnAllPlaces']);
+Route::get('/returnPlaceScheduale/{place}', [ProfessorController::class,'returnPlaceScheduale']);
+////////////TA part
+Route::get('/returnTAScheudule/{TAID}', [TAController::class,'returnTAScheudule']);
+
+
 /////////////professor and ta section////////////////
 Route::get('/myCourses/{professorId}', [professorAndTa::class,'getMyCourses']);
 Route::get('/getMyStudents/{professorId}', [professorAndTa::class,'getMyStudents']);
@@ -138,8 +148,6 @@ Route::get('/selectCourse/{courseName}', [professorAndTa::class,'selectCourse'])
 Route::get('/selectGrade/{courseGrade}', [professorAndTa::class,'selectGrade']);
 
 Route::get('/professor_info/{token}', [AuthController::class,'getProfessorInfo']);
-
-
 
 
 

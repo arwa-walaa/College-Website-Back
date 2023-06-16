@@ -51,8 +51,54 @@ $results = DB::table('course')
     
     ->get();
    return $results; 
-
-
-
 }
+public function insertOfficeHour(Request $request, $professorOrTAId)
+{
+    $officeHours = $request->all();
+    // Loop through each office hour and insert it into the database
+    foreach ($officeHours as $hour) {
+        $officeHourCount = DB::table('_office_hour_')
+            ->where('StartTime', '=', $hour['startTime'])
+            ->where('EndTime', '=', $hour['endTime'])
+            ->where('Day', '=', $hour['Day'])
+            ->where('Location', '=', $hour['location'])
+            ->where('Department', '=', 'is')
+            ->where(function ($query) use ($professorOrTAId) {
+                $query->where('ProfessorId', '=', $professorOrTAId)
+                      ->orWhere('TAid', '=', $professorOrTAId);
+            })
+            ->count();
+
+        if ($officeHourCount == 0) {
+            if ($hour['type']=='TA') {
+                DB::table('_office_hour_')->insert([
+                    [
+                        'TAid' => $professorOrTAId,
+                        'professorOrTAName' => 'esraa',
+                        'Email' => 'esraa@gmail.com',
+                        'Location' => $hour['location'],
+                        'StartTime' => $hour['startTime'],
+                        'EndTime' => $hour['endTime'],
+                        'Day' => $hour['Day'],
+                        'Department' => 'is'
+                    ]
+                ]);
+            } elseif ($hour['type']=='Professor') {
+                DB::table('_office_hour_')->insert([
+                    [
+                        'ProfessorId' => $professorOrTAId,
+                        'professorOrTAName' => 'Ali',
+                        'Email' => 'a@gmail.com',
+                        'Location' => $hour['location'],
+                        'StartTime' => $hour['startTime'],
+                        'EndTime' => $hour['endTime'],
+                        'Day' => $hour['Day'],
+                        'Department' => 'is'
+                    ]
+                ]);
+            }
+        }
+    }
+}
+
 }
