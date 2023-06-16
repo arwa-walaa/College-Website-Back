@@ -97,9 +97,10 @@ public function sendMessage(Request $request)
         //return $path;
         $message->attachment_path = $path;
 
-    } else {
-        return "No file uploaded";
-    }
+     } 
+     //else {
+    //     return "No file uploaded";
+    // }
 
     $message->save();
     return response()->json($message);
