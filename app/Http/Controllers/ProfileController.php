@@ -76,6 +76,7 @@ public function updateProfile(Request $request, $id)
         ]);
     
     return response()->json(['success' => true]);
+    
 }
 
 }

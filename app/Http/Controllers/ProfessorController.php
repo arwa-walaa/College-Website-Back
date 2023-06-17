@@ -9,6 +9,7 @@ class ProfessorController extends Controller
 {
     public function returnProfScheudule($professorID)
 {
+    
     $schedule =DB::table('course')
     ->join('course_reigesters', 'course.courseID', '=', 'course_reigesters.courseid')
     ->select(
@@ -104,7 +105,44 @@ public function insertOfficeHour(Request $request, $professorOrTAId)
 
 public function returnProfOfficeHours($professorID)
 {
+    $results = DB::table('professor')
+            ->join('_office_hour_', 'professor.professorId', '=', '_office_hour_.professorId')
+            ->select('_office_hour_.id','_office_hour_.Day', '_office_hour_.Location', '_office_hour_.StartTime', '_office_hour_.EndTime')
+            ->where('professor.professorId', '=', 'ihelal')
+            ->get();
+    return $results;
+}
+public function deleteOfficeHours($officeHourID)
+{
+    DB::table('_office_hour_')->where('id', '=', $officeHourID)->delete();
+
+}
+public function updateProfProfile(Request $request, $id)
+{
+    DB::table('professor')
+        ->where('professorId', $id)
+        ->update([
+            'professorName' => $request->input('EName'),
+            'address' => $request->input('Address'),
+            'phoneNumber' => $request->input('Phone'),
+            'email' => $request->input('Email'),  
+        ]);
     
+    return response()->json(['success' => true]);
+}
+public function updateProfOfficeHour(Request $request, $id)
+{
+    
+    DB::table('_office_hour_')
+        ->where('id', $id)
+        ->update([
+            'Day' => $request->input('Day'),
+            'Location' => $request->input('Location'),
+            'StartTime' => $request->input('StartTime'),
+            'EndTime' => $request->input('EndTime'),  
+        ]);
+    
+    return response()->json(['success' => true]);
 }
 
 }
