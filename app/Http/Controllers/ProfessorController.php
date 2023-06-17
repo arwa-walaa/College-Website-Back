@@ -101,4 +101,9 @@ public function insertOfficeHour(Request $request, $professorOrTAId)
     }
 }
 
+public function returnProfOfficeHours($professorID)
+{
+    
+}
+
 }
