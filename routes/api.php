@@ -138,6 +138,10 @@ Route::get('/returnProfScheudule/{professorID}', [ProfessorController::class,'re
 Route::get('/returnAllPlaces', [ProfessorController::class,'returnAllPlaces']);
 Route::get('/returnPlaceScheduale/{place}', [ProfessorController::class,'returnPlaceScheduale']);
 Route::post('/insertOfficeHour/{id}', [ProfessorController::class,'insertOfficeHour']);
+Route::get('/returnProfOfficeHours/{id}', [ProfessorController::class,'returnProfOfficeHours']);
+Route::delete('/deleteOfficeHours/{id}', [ProfessorController::class,'deleteOfficeHours']);
+Route::put('/updateProfProfile/{id}',[ProfessorController::class,'updateProfProfile']);
+Route::put('/updateProfOfficeHour/{id}',[ProfessorController::class,'updateProfOfficeHour']);
 ////////////TA part
 Route::get('/returnTAScheudule/{TAID}', [TAController::class,'returnTAScheudule']);
 
