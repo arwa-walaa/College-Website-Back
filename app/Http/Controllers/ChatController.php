@@ -29,6 +29,24 @@ class ChatController extends Controller
 
     }
 
+    public function listProfessorsStudents()
+    {
+        $professors = DB::table('professor')->get();
+        $students = DB::table('student')->get();
+
+        return response()->json(['Professors' => $professors, 'Students' => $students]);
+
+    }
+
+    public function listTAsStudents()
+    {
+        $TAs = DB::table('ta')->get();
+        $students = DB::table('student')->get();
+
+        return response()->json(['TAs' => $TAs, 'Students' => $students]);
+
+    }
+
     public function getHistory(Request $request, $user1, $user2)
     {
         $messages = Message::where(function ($query) use ($user1, $user2) {
@@ -100,27 +118,26 @@ public function receive(Request $request)
 }
 Public function getProfessorDetails(Request $request){
 
-    $professorDtails = DB::table('professor')->where('professorName', '=', $request->professorName)->get();
-   
+    $professorDtails = DB::table('professor')->where('professorName', '=', $request->professorName)->get();  
     return [
-        'professorDtails' => $professorDtails,
-        
-       
+        'professorDtails' => $professorDtails,      
     ];
    }
-   Public function getTADetails(Request $request){
 
-  
-    $TADtails = DB::table('ta')->where('TAName', '=', $request->TAName)->get();
-   
-    return [
-       
-        
+Public function getTADetails(Request $request){
+    $TADtails = DB::table('ta')->where('TAName', '=', $request->TAName)->get();  
+    return [       
         'TADtails'=>$TADtails
-    ];
-    
+    ];   
    }
 
+
+Public function getStudentsDetails(Request $request){
+    $StudentDtails = DB::table('student')->where('studentName', '=', $request->studentName)->get();  
+    return [       
+        'StudentDtails'=>$StudentDtails
+    ];   
+   }
 }
 
 
