@@ -10,11 +10,15 @@ class professorAndTa extends Controller
 {
     public function getMyCourses($professorId)
 {
-    $courses = DB::table('course_reigesters')->select('course.Course_Code','course.courseName','course.Level'
+    $courses = DB::table('course_reigesters')
+    ->select('course.Course_Code',
+    'course.courseName','course.Level'
     ,'course.Semester')
     ->join('professor', 'professor.professorId', '=', 'course_reigesters.professorId1')
-    ->join('course', 'course.courseID', '=', 'course_reigesters.courseid')
-    ->where('professor.professorId', '=', $professorId)->orderBy(DB::raw("
+    ->join('course', 'course.courseID', '=',
+     'course_reigesters.courseid')
+    ->where('professor.professorId', '=', 
+    $professorId)->orderBy(DB::raw("
     CASE course.Level
         WHEN 'First Level' THEN 1
         WHEN 'Second Level' THEN 2
@@ -31,6 +35,20 @@ class professorAndTa extends Controller
     END
     "))->get();
         return $courses;
+}
+
+public function getTACourses($TAId)
+{
+    $courses = DB::table('course_reigesters')
+    ->select('course.Course_Code',
+    'course.courseName','course.Level'
+    ,'course.Semester')
+    ->join('course', 'course.courseID', '=', 'course_reigesters.courseid')
+    ->join('ta', 'course_reigesters.TAId', '=', 'ta.TAId')
+    ->where('ta.TAId', '=', $TAId)
+    ->get();
+
+    return $courses;
 }
 
 public function getMyStudents($professorId)

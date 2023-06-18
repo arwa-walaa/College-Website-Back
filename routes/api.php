@@ -151,6 +151,7 @@ Route::get('/returnTAScheudule/{TAID}', [TAController::class,'returnTAScheudule'
 
 /////////////professor and ta section////////////////
 Route::get('/myCourses/{professorId}', [professorAndTa::class,'getMyCourses']);
+Route::get('/getTACourses/{TAId}', [professorAndTa::class,'getTACourses']);
 Route::get('/getMyStudents/{professorId}', [professorAndTa::class,'getMyStudents']);
 Route::get('/getGrades/{professorId}', [professorAndTa::class,'getGrades']);
 Route::get('/selectCourse/{courseName}', [professorAndTa::class,'selectCourse']);
@@ -162,3 +163,6 @@ Route::get('/ta_info/{token}', [AuthController::class,'getTaInfo']);
 Route::get('/getUserType/{token}', [AuthController::class,'getUserType']);
 
 Route::post('/store', [ChatController::class,'store']);
+
+////////Get feebacks//////////
+Route::get('/getFeedbacks/{courseName}/{professorId}', [courseEvaluation::class,'getFeedbacks']);

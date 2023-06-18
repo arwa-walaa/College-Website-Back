@@ -76,6 +76,23 @@ class courseEvaluation extends Controller
     ];
    }
 
+   public function getFeedbacks($courseName , $teacherId) {
+    $courseID = DB::table('course')->where('courseName', '=', $courseName)->pluck('courseID');
+    $feedbacks = DB::table('evaluation')->select('contentRate', 'isRepeated', 'isClear',  'relevantToObjectives', 'preparetionForFutureCourses',
+    'engagedStudents', 'conveiedMaterial', 'isClearAgenda', 'teacherEffectiveness', 'communicationSkills', 
+    'TAengagedStudents', 'TAconveiedMaterial', 'TAisClearAgenda', 'TAteacherEffectiveness', 'TAcommunicationSkills')
+    ->where('professorId','=',$teacherId)
+    ->orWhere('TAId','=',$teacherId)
+    ->where('courseID', '=',  $courseID)
+    ->get();
+
+    
+
+    return response()->json($feedbacks);
+}
+
+
+
 //    Public function insertProfessorEvaluation(Request $request)
 //    {
 //         DB::table('prof_evaluation')->insert ([
