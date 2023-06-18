@@ -98,6 +98,8 @@ Route::put('/updateProfile/{id}',[ProfileController::class,'updateProfile']);
 //     // Endpoint for retrieving the list of chat users
 Route::get('/students', [ChatController::class,'listStudents']);
 Route::get('/professorsAndTas', [ChatController::class,'listProfessorsAndTAs']);
+Route::get('/listProfessorsStudents', [ChatController::class,'listProfessorsStudents']);
+Route::get('/listTAsStudents', [ChatController::class,'listTAsStudents']);
 // Endpoint for retrieving the chat history between two users
 Route::get('/history/{user1}/{user2}', [ChatController::class,'getHistory']);
 
@@ -122,6 +124,7 @@ Route::post('/message', [ChatController::class,'sendMessage']);
 Route::get('/receive', [ChatController::class,'receive']);
 Route::get('/professorsDetails', [ChatController::class,'getProfessorDetails']);
 Route::get('/TADetails', [ChatController::class,'getTADetails']);
+Route::get('/getStudentsDetails', [ChatController::class,'getStudentsDetails']);
 
 // });
 // Endpoint for authenticating a user
@@ -148,6 +151,7 @@ Route::get('/returnTAScheudule/{TAID}', [TAController::class,'returnTAScheudule'
 
 /////////////professor and ta section////////////////
 Route::get('/myCourses/{professorId}', [professorAndTa::class,'getMyCourses']);
+Route::get('/getTACourses/{TAId}', [professorAndTa::class,'getTACourses']);
 Route::get('/getMyStudents/{professorId}', [professorAndTa::class,'getMyStudents']);
 Route::get('/getGrades/{professorId}', [professorAndTa::class,'getGrades']);
 Route::get('/selectCourse/{courseName}', [professorAndTa::class,'selectCourse']);
@@ -161,3 +165,6 @@ Route::get('/ta_info/{token}', [AuthController::class,'getTaInfo']);
 Route::get('/getUserType/{token}', [AuthController::class,'getUserType']);
 
 Route::post('/store', [ChatController::class,'store']);
+
+////////Get feebacks//////////
+Route::get('/getFeedbacks/{courseName}/{professorId}', [courseEvaluation::class,'getFeedbacks']);
