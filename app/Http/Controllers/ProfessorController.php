@@ -144,5 +144,33 @@ public function updateProfOfficeHour(Request $request, $id)
     
     return response()->json(['success' => true]);
 }
+public function returnCourseTAS($courseID)
+{
+    $results = DB::table('course')
+            ->join('ta', 'ta.courseID', '=','course.courseID' )
+            ->select('ta.TAName')
+            ->where('course.courseID', '=', $courseID)
+            ->get();
+    return $results;
+}
+public function returnCourseStat($courseID)
+{
+    $results = DB::table('course_reigesters')
+    ->select(DB::raw('COUNT(DISTINCT studentId) AS num_students_registered'),
+             DB::raw('SUM(CASE WHEN grade != "F" THEN 1 ELSE 0 END) AS num_students_passed'),
+             DB::raw('SUM(CASE WHEN grade = "F" THEN 1 ELSE 0 END) AS num_students_failed'))
+    ->where('courseid', '=', $courseID)
+    ->get();
+    return $results;
+}
+public function returnCourseStudent($courseID)
+{
+    $results = DB::table('course_reigesters')
+            
+            ->select('course_reigesters.studentId','course_reigesters.Result')
+            ->where('course_reigesters.courseid', '=', $courseID)
+            ->get();
+    return $results;
+}
 
 }

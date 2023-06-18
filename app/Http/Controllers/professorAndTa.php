@@ -11,14 +11,12 @@ class professorAndTa extends Controller
     public function getMyCourses($professorId)
 {
     $courses = DB::table('course_reigesters')
-    ->select('course.Course_Code',
-    'course.courseName','course.Level'
-    ,'course.Semester')
+    ->select('course.Course_Code','course.courseName','course.Level','course.Semester');
+    $courses = DB::table('course_reigesters')->select('course.courseID','course.Course_Code','course.courseName','course.Level'
+    ,'course.Semester','course_reigesters.Year')
     ->join('professor', 'professor.professorId', '=', 'course_reigesters.professorId1')
-    ->join('course', 'course.courseID', '=',
-     'course_reigesters.courseid')
-    ->where('professor.professorId', '=', 
-    $professorId)->orderBy(DB::raw("
+    ->join('course', 'course.courseID', '=', 'course_reigesters.courseid')
+    ->where('professor.professorId', '=', $professorId)->orderBy(DB::raw("
     CASE course.Level
         WHEN 'First Level' THEN 1
         WHEN 'Second Level' THEN 2
