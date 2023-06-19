@@ -172,5 +172,68 @@ public function returnCourseStudent($courseID)
             ->get();
     return $results;
 }
-
+public function returnGradeAvg($courseID)
+{
+   
+    $avg_grade = DB::table('course_reigesters')
+                    ->select(DB::raw('AVG(Result) as avg_grade'))
+                    ->where('courseid', $courseID)
+                    ->get();
+    return $avg_grade;
 }
+public function searchByStudent(Request $request) {
+        $query = $request->get('q');
+        
+        $users = DB::table('student')
+                     ->where('studentName', 'like', '%'.$query.'%')
+                     ->orWhere('studentId', $query)
+                     ->get();
+        
+        return response()->json($users);
+      }
+
+    public function returnRequestsGP($Type, $professorOrTAId)
+{
+
+            if ($Type=='TA') {
+                $result = DB::table('gp')
+               
+                ->where('TA', $professorOrTAId)
+                ->where('status','Pending')
+                ->get();
+
+               
+            } elseif ($Type=='Professor') {
+                $result = DB::table('gp')
+               
+                ->where('professor', $professorOrTAId)->where('status','Pending')
+                ->get();
+                
+            }
+            return $result;
+        
+    }
+  public function acceptGP($GPID){
+    DB::table('gp')
+    ->where('id', $GPID)
+    ->update(['status' => 'Accepted']);
+     //notification : notify this student that the request accepted
+  }
+  public function rejectGP($GPID){
+    DB::table('gp')
+    ->where('id',$GPID)
+    ->update(['status' => 'Rejected']);
+    //notification : notify this student that the request rejected
+  
+  }
+  public function getStudentData($StudentID){
+   $student= DB::table('student')
+    ->where('studentId',$StudentID)
+    ->get();
+    return $student;
+  }
+}
+
+      
+
+
