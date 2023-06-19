@@ -191,6 +191,49 @@ public function searchByStudent(Request $request) {
         
         return response()->json($users);
       }
+
+    public function returnRequestsGP($Type, $professorOrTAId)
+{
+
+            if ($Type=='TA') {
+                $result = DB::table('gp')
+               
+                ->where('TA', $professorOrTAId)
+                ->where('status','Pending')
+                ->get();
+
+               
+            } elseif ($Type=='Professor') {
+                $result = DB::table('gp')
+               
+                ->where('professor', $professorOrTAId)->where('status','Pending')
+                ->get();
+                
+            }
+            return $result;
+        
+    }
+  public function acceptGP($GPID){
+    DB::table('gp')
+    ->where('id', $GPID)
+    ->update(['status' => 'Accepted']);
+     //notification : notify this student that the request accepted
+  }
+  public function rejectGP($GPID){
+    DB::table('gp')
+    ->where('id',$GPID)
+    ->update(['status' => 'Rejected']);
+    //notification : notify this student that the request rejected
+  
+  }
+  public function getStudentData($StudentID){
+   $student= DB::table('student')
+    ->where('studentId',$StudentID)
+    ->get();
+    return $student;
+  }
+}
+
       
 
-}
+
