@@ -159,6 +159,7 @@ Route::get('/selectGrade/{courseGrade}', [professorAndTa::class,'selectGrade']);
 Route::get('/returnCourseTAS/{courseid}', [ProfessorController::class,'returnCourseTAS']);
 Route::get('/returnCourseStat/{courseid}', [ProfessorController::class,'returnCourseStat']);
 Route::get('/returnCourseStudent/{courseid}', [ProfessorController::class,'returnCourseStudent']);
+Route::get('/returnGradeAvg/{courseid}', [ProfessorController::class,'returnGradeAvg']);
 
 Route::get('/professor_info/{token}', [AuthController::class,'getProfessorInfo']);
 Route::get('/ta_info/{token}', [AuthController::class,'getTaInfo']);

@@ -172,5 +172,13 @@ public function returnCourseStudent($courseID)
             ->get();
     return $results;
 }
-
+public function returnGradeAvg($courseID)
+{
+   
+    $avg_grade = DB::table('course_reigesters')
+                    ->select(DB::raw('AVG(Result) as avg_grade'))
+                    ->where('courseid', $courseID)
+                    ->get();
+    return $avg_grade;
+}
 }
