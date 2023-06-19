@@ -160,6 +160,7 @@ Route::get('/returnCourseTAS/{courseid}', [ProfessorController::class,'returnCou
 Route::get('/returnCourseStat/{courseid}', [ProfessorController::class,'returnCourseStat']);
 Route::get('/returnCourseStudent/{courseid}', [ProfessorController::class,'returnCourseStudent']);
 Route::get('/returnGradeAvg/{courseid}', [ProfessorController::class,'returnGradeAvg']);
+Route::get('/searchByStudent/', [ProfessorController::class,'searchByStudent']);
 
 Route::get('/professor_info/{token}', [AuthController::class,'getProfessorInfo']);
 Route::get('/ta_info/{token}', [AuthController::class,'getTaInfo']);

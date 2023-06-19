@@ -181,4 +181,16 @@ public function returnGradeAvg($courseID)
                     ->get();
     return $avg_grade;
 }
+public function searchByStudent(Request $request) {
+        $query = $request->get('q');
+        
+        $users = DB::table('student')
+                     ->where('studentName', 'like', '%'.$query.'%')
+                     ->orWhere('studentId', $query)
+                     ->get();
+        
+        return response()->json($users);
+      }
+      
+
 }
