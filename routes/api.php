@@ -125,6 +125,12 @@ Route::get('/receive', [ChatController::class,'receive']);
 Route::get('/professorsDetails', [ChatController::class,'getProfessorDetails']);
 Route::get('/TADetails', [ChatController::class,'getTADetails']);
 Route::get('/getStudentsDetails', [ChatController::class,'getStudentsDetails']);
+/////////////
+// block student
+Route::post('/updateStudentStatus/{studentId}/{status}', [ChatController::class,'updateStudentStatus']);
+Route::get('/getStudentStatus/{studentId}', [ChatController::class,'getStudentStatus']);
+////////////
+
 
 // });
 // Endpoint for authenticating a user

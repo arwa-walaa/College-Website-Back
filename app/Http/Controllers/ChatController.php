@@ -138,6 +138,21 @@ Public function getStudentsDetails(Request $request){
         'StudentDtails'=>$StudentDtails
     ];   
    }
+
+   public function updateStudentStatus($studentId , $status)
+   { 
+    DB::table('student')->where('userID', '=',$studentId)->update(array('isBlocked'=>$status));  
+    return response('The student status has been updated successfully');
+   }
+
+   public function getStudentStatus($studentId)
+   { 
+    $studentStatus = DB::table('student')->select('isBlocked')->where('userID', '=',$studentId)->get();   
+    return $studentStatus;
+   }
+
+
 }
+
 
 
