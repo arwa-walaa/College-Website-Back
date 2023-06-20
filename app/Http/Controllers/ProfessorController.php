@@ -199,30 +199,43 @@ public function searchByStudent(Request $request) {
                 $result = DB::table('gp')
                
                 ->where('TA', $professorOrTAId)
-                ->where('status','Pending')
+                ->where('Ta_status','Pending')
                 ->get();
 
                
             } elseif ($Type=='Professor') {
                 $result = DB::table('gp')
                
-                ->where('professor', $professorOrTAId)->where('status','Pending')
+                ->where('professor', $professorOrTAId)->where('Prof_status','Pending')
                 ->get();
                 
             }
             return $result;
         
     }
-  public function acceptGP($GPID){
+  public function acceptGP_prof($GPID){
     DB::table('gp')
     ->where('id', $GPID)
-    ->update(['status' => 'Accepted']);
+    ->update(['Prof_status' => 'Accepted']);
      //notification : notify this student that the request accepted
   }
-  public function rejectGP($GPID){
+  public function rejectGP_prof($GPID){
     DB::table('gp')
     ->where('id',$GPID)
-    ->update(['status' => 'Rejected']);
+    ->update(['Prof_status' => 'Rejected']);
+    //notification : notify this student that the request rejected
+  
+  }
+   public function acceptGP_TA($GPID){
+    DB::table('gp')
+    ->where('id', $GPID)
+    ->update(['Ta_status' => 'Accepted']);
+     //notification : notify this student that the request accepted
+  }
+  public function rejectGP_TA($GPID){
+    DB::table('gp')
+    ->where('id',$GPID)
+    ->update(['Ta_status' => 'Rejected']);
     //notification : notify this student that the request rejected
   
   }

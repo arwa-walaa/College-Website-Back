@@ -163,8 +163,10 @@ Route::get('/returnCourseStudent/{courseid}', [ProfessorController::class,'retur
 Route::get('/returnGradeAvg/{courseid}', [ProfessorController::class,'returnGradeAvg']);
 Route::get('/searchByStudent/', [ProfessorController::class,'searchByStudent']);
 Route::get('/returnRequestsGP/{Type}/{id}', [ProfessorController::class,'returnRequestsGP']);
-Route::put('/acceptGP/{id}', [ProfessorController::class,'acceptGP']);
-Route::put('/rejectGP/{id}', [ProfessorController::class,'rejectGP']);
+Route::put('/acceptGP_prof/{id}', [ProfessorController::class,'acceptGP_prof']);
+Route::put('/rejectGP_prof/{id}', [ProfessorController::class,'rejectGP_prof']);
+Route::put('/acceptGP_TA/{id}', [ProfessorController::class,'acceptGP_TA']);
+Route::put('/rejectGP_TA/{id}', [ProfessorController::class,'rejectGP_TA']);
 
 Route::get('/professor_info/{token}', [AuthController::class,'getProfessorInfo']);
 Route::get('/ta_info/{token}', [AuthController::class,'getTaInfo']);
