@@ -84,6 +84,7 @@ Route::get('/CourseeForSemester/{level}/{semester}/{department}/{id}',[Prerequis
 Route::get('/getCourseID/{courseName}',[courseEvaluation::class,'getCourseID']);
 Route::get('/getProfessorID/{courseID}',[courseEvaluation::class,'getProfessorID']);
 Route::get('/getTAID/{courseID}',[courseEvaluation::class,'getTAID']);
+Route::get('/getStudentCourses/{studId}',[courseEvaluation::class,'getStudentCourses']);
 
 // Endpoint for registering a new user
 Route::post('/register', 'AuthController@register');
