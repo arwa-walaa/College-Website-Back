@@ -64,4 +64,21 @@ class OfficeHours extends Controller
     {
         //
     }
+    public function returnAllLocations(){
+        $results = DB::table('_office_hour_')
+                ->select('Location')
+                ->distinct()
+                ->get();
+                return $results;
+    
+    }
+    public function returnAllDepartments(){
+        $results = DB::table('department')
+                ->select('departmentCode')
+                ->where('departmentCode', '!=','general')
+                ->get();
+                return $results;
+    
+    }
+
 }

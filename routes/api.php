@@ -79,6 +79,8 @@ Route::post('/courseEvaluation',[courseEvaluation::class,'insertCourseEvaluation
 
 // Route::post('/professorEvaluation',[courseEvaluation::class,'insertProfessorEvaluation']);
 // Route::post('/TAEvaluation',[courseEvaluation::class,'insertTAEvaluation']);
+Route::get('/returnAllLocations',[OfficeHours::class,'returnAllLocations']);
+Route::get('/returnAllDepartments',[OfficeHours::class,'returnAllDepartments']);
 Route::get('/courseEvaluationDetails/{courseID}',[courseEvaluation::class,'getCourseDetails']);
 Route::get('/CourseeForSemester/{level}/{semester}/{department}/{id}',[PrerequisiteCousreController::class,'getCourses_Student']);
 Route::get('/getCourseID/{courseName}',[courseEvaluation::class,'getCourseID']);
@@ -126,6 +128,12 @@ Route::get('/receive', [ChatController::class,'receive']);
 Route::get('/professorsDetails', [ChatController::class,'getProfessorDetails']);
 Route::get('/TADetails', [ChatController::class,'getTADetails']);
 Route::get('/getStudentsDetails', [ChatController::class,'getStudentsDetails']);
+/////////////
+// block student
+Route::post('/updateStudentStatus/{studentId}/{status}', [ChatController::class,'updateStudentStatus']);
+Route::get('/getStudentStatus/{studentId}', [ChatController::class,'getStudentStatus']);
+////////////
+
 
 // });
 // Endpoint for authenticating a user
@@ -146,6 +154,7 @@ Route::get('/returnProfOfficeHours/{id}', [ProfessorController::class,'returnPro
 Route::delete('/deleteOfficeHours/{id}', [ProfessorController::class,'deleteOfficeHours']);
 Route::put('/updateProfProfile/{id}',[ProfessorController::class,'updateProfProfile']);
 Route::put('/updateProfOfficeHour/{id}',[ProfessorController::class,'updateProfOfficeHour']);
+Route::get('/getStudentData/{id}',[ProfessorController::class,'getStudentData']);
 ////////////TA part
 Route::get('/returnTAScheudule/{TAID}', [TAController::class,'returnTAScheudule']);
 
@@ -160,6 +169,13 @@ Route::get('/selectGrade/{courseGrade}', [professorAndTa::class,'selectGrade']);
 Route::get('/returnCourseTAS/{courseid}', [ProfessorController::class,'returnCourseTAS']);
 Route::get('/returnCourseStat/{courseid}', [ProfessorController::class,'returnCourseStat']);
 Route::get('/returnCourseStudent/{courseid}', [ProfessorController::class,'returnCourseStudent']);
+Route::get('/returnGradeAvg/{courseid}', [ProfessorController::class,'returnGradeAvg']);
+Route::get('/searchByStudent/', [ProfessorController::class,'searchByStudent']);
+Route::get('/returnRequestsGP/{Type}/{id}', [ProfessorController::class,'returnRequestsGP']);
+Route::put('/acceptGP_prof/{id}', [ProfessorController::class,'acceptGP_prof']);
+Route::put('/rejectGP_prof/{id}', [ProfessorController::class,'rejectGP_prof']);
+Route::put('/acceptGP_TA/{id}', [ProfessorController::class,'acceptGP_TA']);
+Route::put('/rejectGP_TA/{id}', [ProfessorController::class,'rejectGP_TA']);
 
 Route::get('/professor_info/{token}', [AuthController::class,'getProfessorInfo']);
 Route::get('/ta_info/{token}', [AuthController::class,'getTaInfo']);

@@ -172,5 +172,85 @@ public function returnCourseStudent($courseID)
             ->get();
     return $results;
 }
-
+public function returnGradeAvg($courseID)
+{
+   
+    $avg_grade = DB::table('course_reigesters')
+                    ->select(DB::raw('AVG(Result) as avg_grade'))
+                    ->where('courseid', $courseID)
+                    ->get();
+    return $avg_grade;
 }
+public function searchByStudent(Request $request) {
+        $query = $request->get('q');
+        
+        $users = DB::table('student')
+                     ->where('studentName', 'like', '%'.$query.'%')
+                     ->orWhere('studentId', $query)
+                     ->get();
+        
+        return response()->json($users);
+      }
+
+    public function returnRequestsGP($Type, $professorOrTAId)
+{
+
+            if ($Type=='TA') {
+                $result = DB::table('gp')
+                ->join('ta', 'ta.TAId', '=','gp.TA' )
+                ->join('professor', 'professor.professorId', '=','gp.professor' )
+                ->where('TA', $professorOrTAId)
+                ->where('Ta_status','Pending')
+                ->get();
+
+                
+
+               
+            } elseif ($Type=='Professor') {
+                $result = DB::table('gp')
+                ->join('professor', 'professor.professorId', '=','gp.professor' )
+                ->join('ta', 'ta.TAId', '=','gp.TA' )
+                ->where('professor', $professorOrTAId)->where('Prof_status','Pending')
+                ->get();
+                
+            }
+            return $result;
+        
+    }
+  public function acceptGP_prof($GPID){
+    DB::table('gp')
+    ->where('id', $GPID)
+    ->update(['Prof_status' => 'Accepted']);
+     //notification : notify this student that the request accepted
+  }
+  public function rejectGP_prof($GPID){
+    DB::table('gp')
+    ->where('id',$GPID)
+    ->update(['Prof_status' => 'Rejected']);
+    //notification : notify this student that the request rejected
+  
+  }
+   public function acceptGP_TA($GPID){
+    DB::table('gp')
+    ->where('id', $GPID)
+    ->update(['Ta_status' => 'Accepted']);
+     //notification : notify this student that the request accepted
+  }
+  public function rejectGP_TA($GPID){
+    DB::table('gp')
+    ->where('id',$GPID)
+    ->update(['Ta_status' => 'Rejected']);
+    //notification : notify this student that the request rejected
+  
+  }
+  public function getStudentData($StudentID){
+   $student= DB::table('student')
+    ->where('studentId',$StudentID)
+    ->get();
+    return $student;
+  }
+}
+
+      
+
+
