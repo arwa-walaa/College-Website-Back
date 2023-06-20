@@ -197,15 +197,19 @@ public function searchByStudent(Request $request) {
 
             if ($Type=='TA') {
                 $result = DB::table('gp')
-               
+                ->join('ta', 'ta.TAId', '=','gp.TA' )
+                ->join('professor', 'professor.professorId', '=','gp.professor' )
                 ->where('TA', $professorOrTAId)
                 ->where('Ta_status','Pending')
                 ->get();
 
+                
+
                
             } elseif ($Type=='Professor') {
                 $result = DB::table('gp')
-               
+                ->join('professor', 'professor.professorId', '=','gp.professor' )
+                ->join('ta', 'ta.TAId', '=','gp.TA' )
                 ->where('professor', $professorOrTAId)->where('Prof_status','Pending')
                 ->get();
                 
