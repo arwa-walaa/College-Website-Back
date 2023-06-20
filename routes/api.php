@@ -79,6 +79,8 @@ Route::post('/courseEvaluation',[courseEvaluation::class,'insertCourseEvaluation
 
 // Route::post('/professorEvaluation',[courseEvaluation::class,'insertProfessorEvaluation']);
 // Route::post('/TAEvaluation',[courseEvaluation::class,'insertTAEvaluation']);
+Route::get('/returnAllLocations',[OfficeHours::class,'returnAllLocations']);
+Route::get('/returnAllDepartments',[OfficeHours::class,'returnAllDepartments']);
 Route::get('/courseEvaluationDetails/{courseID}',[courseEvaluation::class,'getCourseDetails']);
 Route::get('/CourseeForSemester/{level}/{semester}/{department}/{id}',[PrerequisiteCousreController::class,'getCourses_Student']);
 Route::get('/getCourseID/{courseName}',[courseEvaluation::class,'getCourseID']);
