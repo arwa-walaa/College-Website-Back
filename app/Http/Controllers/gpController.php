@@ -22,4 +22,22 @@ class gpController extends Controller
 
        return response('Data has been inserted successfully');
    }
-}
+   public function returnAllProfessor(){
+    
+        $results = DB::table('professor')
+               
+                ->get();
+                return $results;
+    
+    }
+    public function returnAllTAs(){
+    
+        $results = DB::table('ta')
+               
+                ->get();
+                return $results;
+    
+    }
+   
+   }
+

@@ -78,6 +78,8 @@ Route::get('/returnScheudule/{studentid}',[CourseReigesterController::class,'ret
 Route::post('/registerCourses',[CourseReigesterController::class,'registerCourses']);
 
 Route::post('/registerGP',[gpController::class,'insert']);
+Route::get('/returnAllProfessor',[gpController::class,'returnAllProfessor']);
+Route::get('/returnAllTAs',[gpController::class,'returnAllTAs']);
 Route::post('/courseEvaluation',[courseEvaluation::class,'insertCourseEvaluation']);
 
 // Route::post('/professorEvaluation',[courseEvaluation::class,'insertProfessorEvaluation']);
