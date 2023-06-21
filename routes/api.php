@@ -21,6 +21,9 @@ use App\Http\Controllers\ProfessorController;
 use App\Http\Controllers\professorAndTa;
 use App\Http\Controllers\TAController;
 
+
+use App\Http\Controllers\adminController;
+
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -86,6 +89,7 @@ Route::get('/CourseeForSemester/{level}/{semester}/{department}/{id}',[Prerequis
 Route::get('/getCourseID/{courseName}',[courseEvaluation::class,'getCourseID']);
 Route::get('/getProfessorID/{courseID}',[courseEvaluation::class,'getProfessorID']);
 Route::get('/getTAID/{courseID}',[courseEvaluation::class,'getTAID']);
+Route::get('/getStudentCourses/{studId}',[courseEvaluation::class,'getStudentCourses']);
 
 // Endpoint for registering a new user
 Route::post('/register', 'AuthController@register');
@@ -184,3 +188,7 @@ Route::post('/store', [ChatController::class,'store']);
 Route::post('/addAnnouncments', [AnnouncemetsController::class,'addAnnouncment']);
 ////////Get feebacks//////////
 Route::get('/getFeedbacks/{courseName}/{professorId}', [courseEvaluation::class,'getFeedbacks']);
+
+
+/////////////admin section///////////////
+Route::get('/returnAcceptedRequestsGP', [adminController::class,'returnAcceptedRequestsGP']);

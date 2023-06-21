@@ -203,8 +203,6 @@ public function searchByStudent(Request $request) {
                 ->where('Ta_status','Pending')
                 ->get();
 
-                
-
                
             } elseif ($Type=='Professor') {
                 $result = DB::table('gp')
