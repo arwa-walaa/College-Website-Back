@@ -21,6 +21,9 @@ use App\Http\Controllers\ProfessorController;
 use App\Http\Controllers\professorAndTa;
 use App\Http\Controllers\TAController;
 
+
+use App\Http\Controllers\adminController;
+
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -185,3 +188,7 @@ Route::post('/store', [ChatController::class,'store']);
 
 ////////Get feebacks//////////
 Route::get('/getFeedbacks/{courseName}/{professorId}', [courseEvaluation::class,'getFeedbacks']);
+
+
+/////////////admin section///////////////
+Route::get('/returnAcceptedRequestsGP', [adminController::class,'returnAcceptedRequestsGP']);
