@@ -6,9 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 class courseEvaluation extends Controller
 {
-    // public $courseID;
-    // public $professorID;
-    // public $TAID;
+    
 
     Public function insertCourseEvaluation(Request $request)
    {
@@ -91,32 +89,16 @@ class courseEvaluation extends Controller
     return response()->json($feedbacks);
 }
 
+public function getStudentCourses($studID){
+    $courses = DB::table('course_reigesters')
+    ->select('course.courseName')
+   
+    ->join('student', 'student.studentId', '=', 'course_reigesters.studentId')
+    ->join('course', 'course.courseID', '=', 'course_reigesters.courseid')
+    ->where('student.studentId', '=', $studID)->get();
+        return $courses;
+
+}
 
 
-//    Public function insertProfessorEvaluation(Request $request)
-//    {
-//         DB::table('prof_evaluation')->insert ([
-//         'engagedStudents' => $request-> engagedStudents,
-//         'conveiedMaterial'=> $request-> conveiedMaterial,
-//         'isClearAgenda'=> $request-> isClearAgenda,
-//         'teacherEffectiveness'=> $request-> teacherEffectiveness,
-//         'communicationSkills'=> $request-> communicationSkills,
-        
-//        ]);
-
-//        return response('Data has been inserted successfully');
-//    }
-//    Public function insertTAEvaluation(Request $request)
-//    {
-//         DB::table('_t_a_evaluation')->insert ([
-//             'engagedStudents' => $request-> engagedStudents,
-//             'conveiedMaterial'=> $request-> conveiedMaterial,
-//             'isClearAgenda'=> $request-> isClearAgenda,
-//             'teacherEffectiveness'=> $request-> teacherEffectiveness,
-//             'communicationSkills'=> $request-> communicationSkills,
-            
-//        ]);
-
-//        return response('Data has been inserted successfully');
-//    }
 }

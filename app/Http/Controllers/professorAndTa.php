@@ -13,10 +13,10 @@ class professorAndTa extends Controller
     $courses = DB::table('course_reigesters')
     ->select('course.Course_Code',
     'course.courseName','course.Level',
-    'course.Semester')
+    'course.Semester','course.courseID')
     ->join('professor', 'professor.professorId', '=', 'course_reigesters.professorId1')
     ->join('course', 'course.courseID', '=', 'course_reigesters.courseid')
-    ->where('professor.professorId', '=', $professorId)
+    ->where('professor.professorId', '=', $professorId)->distinct()
     ->get();
     return $courses;
 }
@@ -29,7 +29,7 @@ public function getTACourses($TAId)
     ,'course.Semester')
     ->join('course', 'course.courseID', '=', 'course_reigesters.courseid')
     ->join('ta', 'course_reigesters.TAId', '=', 'ta.TAId')
-    ->where('ta.TAId', '=', $TAId)
+    ->where('ta.TAId', '=', $TAId)->distinct()
     ->get();
 
     return $courses;

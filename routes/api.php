@@ -79,11 +79,14 @@ Route::post('/courseEvaluation',[courseEvaluation::class,'insertCourseEvaluation
 
 // Route::post('/professorEvaluation',[courseEvaluation::class,'insertProfessorEvaluation']);
 // Route::post('/TAEvaluation',[courseEvaluation::class,'insertTAEvaluation']);
+Route::get('/returnAllLocations',[OfficeHours::class,'returnAllLocations']);
+Route::get('/returnAllDepartments',[OfficeHours::class,'returnAllDepartments']);
 Route::get('/courseEvaluationDetails/{courseID}',[courseEvaluation::class,'getCourseDetails']);
 Route::get('/CourseeForSemester/{level}/{semester}/{department}/{id}',[PrerequisiteCousreController::class,'getCourses_Student']);
 Route::get('/getCourseID/{courseName}',[courseEvaluation::class,'getCourseID']);
 Route::get('/getProfessorID/{courseID}',[courseEvaluation::class,'getProfessorID']);
 Route::get('/getTAID/{courseID}',[courseEvaluation::class,'getTAID']);
+Route::get('/getStudentCourses/{studId}',[courseEvaluation::class,'getStudentCourses']);
 
 // Endpoint for registering a new user
 Route::post('/register', 'AuthController@register');
@@ -169,8 +172,10 @@ Route::get('/returnCourseStudent/{courseid}', [ProfessorController::class,'retur
 Route::get('/returnGradeAvg/{courseid}', [ProfessorController::class,'returnGradeAvg']);
 Route::get('/searchByStudent/', [ProfessorController::class,'searchByStudent']);
 Route::get('/returnRequestsGP/{Type}/{id}', [ProfessorController::class,'returnRequestsGP']);
-Route::put('/acceptGP/{id}', [ProfessorController::class,'acceptGP']);
-Route::put('/rejectGP/{id}', [ProfessorController::class,'rejectGP']);
+Route::put('/acceptGP_prof/{id}', [ProfessorController::class,'acceptGP_prof']);
+Route::put('/rejectGP_prof/{id}', [ProfessorController::class,'rejectGP_prof']);
+Route::put('/acceptGP_TA/{id}', [ProfessorController::class,'acceptGP_TA']);
+Route::put('/rejectGP_TA/{id}', [ProfessorController::class,'rejectGP_TA']);
 
 Route::get('/professor_info/{token}', [AuthController::class,'getProfessorInfo']);
 Route::get('/ta_info/{token}', [AuthController::class,'getTaInfo']);
