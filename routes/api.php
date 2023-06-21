@@ -181,6 +181,6 @@ Route::get('/ta_info/{token}', [AuthController::class,'getTaInfo']);
 Route::get('/getUserType/{token}', [AuthController::class,'getUserType']);
 
 Route::post('/store', [ChatController::class,'store']);
-
+Route::post('/addAnnouncments', [AnnouncemetsController::class,'addAnnouncment']);
 ////////Get feebacks//////////
 Route::get('/getFeedbacks/{courseName}/{professorId}', [courseEvaluation::class,'getFeedbacks']);
