@@ -75,6 +75,7 @@ Route::get('/getCourseInfo/{courseID}',[CourseReigesterController::class,'getCou
 Route::post('/registerCourse',[CourseReigesterController::class,'registerCourse']);
 Route::get('/returnCourseResult/{studentid}',[CourseReigesterController::class,'returnCourseResult']);
 Route::get('/returnScheudule/{studentid}',[CourseReigesterController::class,'returnScheudule']);
+Route::get('/getTAId/{groupNumber}/{courseId}',[CourseReigesterController::class,'getTAId']);
 Route::post('/registerCourses',[CourseReigesterController::class,'registerCourses']);
 
 Route::post('/registerGP',[gpController::class,'insert']);
@@ -166,21 +167,25 @@ Route::get('/returnTAScheudule/{TAID}', [TAController::class,'returnTAScheudule'
 
 /////////////professor and ta section////////////////
 Route::get('/myCourses/{professorId}', [professorAndTa::class,'getMyCourses']);
+Route::get('/getCourseYears/{professorId}/{courseID}', [professorAndTa::class,'getCourseYears']);
 Route::get('/getTACourses/{TAId}', [professorAndTa::class,'getTACourses']);
 Route::get('/getMyStudents/{professorId}', [professorAndTa::class,'getMyStudents']);
 Route::get('/getGrades/{professorId}', [professorAndTa::class,'getGrades']);
 Route::get('/selectCourse/{courseName}', [professorAndTa::class,'selectCourse']);
 Route::get('/selectGrade/{courseGrade}', [professorAndTa::class,'selectGrade']);
 Route::get('/returnCourseTAS/{courseid}', [ProfessorController::class,'returnCourseTAS']);
-Route::get('/returnCourseStat/{courseid}', [ProfessorController::class,'returnCourseStat']);
-Route::get('/returnCourseStudent/{courseid}', [ProfessorController::class,'returnCourseStudent']);
-Route::get('/returnGradeAvg/{courseid}', [ProfessorController::class,'returnGradeAvg']);
+Route::get('/returnCourseStat/{courseid}/{Year}', [ProfessorController::class,'returnCourseStat']);
+Route::get('/returnCourseStudent/{courseid}/{Year}', [ProfessorController::class,'returnCourseStudent']);
+Route::get('/returnGradeAvg/{courseid}/{Year}', [ProfessorController::class,'returnGradeAvg']);
 Route::get('/searchByStudent/', [ProfessorController::class,'searchByStudent']);
 Route::get('/returnRequestsGP/{Type}/{id}', [ProfessorController::class,'returnRequestsGP']);
 Route::put('/acceptGP_prof/{id}', [ProfessorController::class,'acceptGP_prof']);
 Route::put('/rejectGP_prof/{id}', [ProfessorController::class,'rejectGP_prof']);
 Route::put('/acceptGP_TA/{id}', [ProfessorController::class,'acceptGP_TA']);
 Route::put('/rejectGP_TA/{id}', [ProfessorController::class,'rejectGP_TA']);
+Route::get('/returnAllProfessor', [ProfessorController::class,'returnAllProfessor']);
+Route::get('/returnAllTAs', [ProfessorController::class,'returnAllTAs']);
+
 
 Route::get('/professor_info/{token}', [AuthController::class,'getProfessorInfo']);
 Route::get('/ta_info/{token}', [AuthController::class,'getTaInfo']);

@@ -116,6 +116,10 @@ if(!$confilect1 && !$confilect2 && !$confilect3){
     'studentId'=>$courseData['studentId'],
     'creditHours'=>$courseData['creditHours'],
     'grade'=> $courseData['grade'], 
+    'professorId1'=> $courseData['professor1'], 
+    'professorId2'=> $courseData['professor2'], 
+    'TAId'=> $courseData['TAId'], 
+    'Year'=> $courseData['Year'],
 
 
 ]);
@@ -140,7 +144,7 @@ public function returnCourseResult($studentId)
     $students = DB::table('course_reigesters')->select('course.Course_Code','course.courseName','course.Level'
     ,'course.Semester',
     'course_reigesters.creditHours','course_reigesters.grade','course_reigesters.TermWork','course_reigesters.ExamWork',
-    'course_reigesters.Result','course_reigesters.groupId')
+    'course_reigesters.Result','course_reigesters.groupId','course_reigesters.Year')
     ->join('student', 'student.studentId', '=', 'course_reigesters.studentId')
     ->join('course', 'course.courseID', '=', 'course_reigesters.courseid')
     ->where('student.studentId', '=', $studentId)->orderBy(DB::raw("
@@ -190,5 +194,10 @@ public function returnScheudule($studentId)
     ->get();
     
     return $schedule;
+}
+public function getTAId($groupNumber,$corseId){
+    $TAId =DB::table('group')->where('groupNumber', '=', $groupNumber)
+    ->where('courseId', '=', $corseId)->get();
+    return $TAId;
 }
 }
