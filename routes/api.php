@@ -199,3 +199,4 @@ Route::get('/getFeedbacks/{courseName}/{professorId}', [courseEvaluation::class,
 
 /////////////admin section///////////////
 Route::get('/returnAcceptedRequestsGP', [adminController::class,'returnAcceptedRequestsGP']);
+Route::post('/updateAnnouncmentStatus/{annID}', [AnnouncemetsController::class,'updateAnnouncmentStatus']);
