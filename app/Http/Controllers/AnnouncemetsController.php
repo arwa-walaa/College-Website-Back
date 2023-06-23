@@ -40,6 +40,4 @@ class AnnouncemetsController extends Controller
         return response()->json(['message' => 'Updated successfully.'], 200);
 
     }
-    
-
 }
