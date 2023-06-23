@@ -153,31 +153,34 @@ public function returnCourseTAS($courseID)
             ->get();
     return $results;
 }
-public function returnCourseStat($courseID)
+public function returnCourseStat($courseID,$Year)
 {
     $results = DB::table('course_reigesters')
-    ->select(DB::raw('COUNT(DISTINCT studentId) AS num_students_registered'),
+    ->select(DB::raw('COUNT(studentId) AS num_students_registered'),
              DB::raw('SUM(CASE WHEN grade != "F" THEN 1 ELSE 0 END) AS num_students_passed'),
              DB::raw('SUM(CASE WHEN grade = "F" THEN 1 ELSE 0 END) AS num_students_failed'))
     ->where('courseid', '=', $courseID)
+    ->where('Year', '=', $Year)
     ->get();
     return $results;
 }
-public function returnCourseStudent($courseID)
+public function returnCourseStudent($courseID,$Year)
 {
     $results = DB::table('course_reigesters')
             
             ->select('course_reigesters.studentId','course_reigesters.Result')
             ->where('course_reigesters.courseid', '=', $courseID)
+            ->where('Year', '=', $Year)
             ->get();
     return $results;
 }
-public function returnGradeAvg($courseID)
+public function returnGradeAvg($courseID,$Year)
 {
    
     $avg_grade = DB::table('course_reigesters')
                     ->select(DB::raw('AVG(Result) as avg_grade'))
                     ->where('courseid', $courseID)
+                    ->where('Year', '=', $Year)
                     ->get();
     return $avg_grade;
 }
@@ -247,6 +250,22 @@ public function searchByStudent(Request $request) {
     ->get();
     return $student;
   }
+  public function returnAllProfessor()
+{
+   
+    $prf = DB::table('professor')
+                    ->select('professorName')
+                    ->get();
+    return $prf;
+}
+public function returnAllTAs()
+{
+   
+    $prf = DB::table('ta')
+                    ->select('TAName')
+                    ->get();
+    return $prf;
+}
 }
 
       
