@@ -16,10 +16,11 @@ use Illuminate\Support\Str;
 class AnnouncemetsController extends Controller
 {
     public function getAllAnnouncment(){
-        $ann=Announcemets::all();
-        return $ann;
+        $ann = Announcemets::orderBy('created_at', 'desc')->get();
+    return $ann;
     }
     public function addAnnouncment(Request $request){
+        $annTitle=$request->input('announcmentTitle');
         $ann=DB::table('announcemets')->insert([
             [
                 'created_at'=> $request->input('time'),
@@ -30,7 +31,7 @@ class AnnouncemetsController extends Controller
         ]);
         $user = User::find(3);
 
-        Mail::to($user->email)->send(new NewAnnouncementNotification($ann));
+        Mail::to($user->email)->send(new NewAnnouncementNotification($annTitle));
         return response()->json(['message' => 'Email sent successfully.'], 200);
    
     }
