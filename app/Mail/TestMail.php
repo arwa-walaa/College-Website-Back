@@ -8,6 +8,7 @@ use Illuminate\Mail\Mailable;
 use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
+use App\Models\Announcemets;
 
 class TestMail extends Mailable
 {
@@ -15,13 +16,15 @@ class TestMail extends Mailable
     public $token;
     public $email;
 
+    public $announcement;
     /**
      * Create a new message instance.
      */
-    public function __construct($token, $email)
+    public function __construct($token, $email, Announcemets $announcement)
     {
         $this->token = $token;
         $this->email = $email;
+        $this->announcement = $announcement;
     }
     // public function __construct(){}
 
@@ -42,6 +45,11 @@ class TestMail extends Mailable
             'token' => $this->token,
             'email' => $this->email
         ]);
+    }
+
+    public function buildNewAnnouncement()
+    {
+        return $this->subject('New Announcement')->view('emails.new-announcement');
     }
 
     /**
