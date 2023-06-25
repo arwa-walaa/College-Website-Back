@@ -153,34 +153,39 @@ public function returnCourseTAS($courseID)
             ->get();
     return $results;
 }
-public function returnCourseStat($courseID,$Year)
+public function returnCourseStat($courseID,$Year,$Deparment)
 {
     $results = DB::table('course_reigesters')
+    ->join('course', 'course.courseID', '=','course_reigesters.courseid' )
     ->select(DB::raw('COUNT(studentId) AS num_students_registered'),
              DB::raw('SUM(CASE WHEN grade != "F" THEN 1 ELSE 0 END) AS num_students_passed'),
              DB::raw('SUM(CASE WHEN grade = "F" THEN 1 ELSE 0 END) AS num_students_failed'))
-    ->where('courseid', '=', $courseID)
-    ->where('Year', '=', $Year)
+    ->where('course_reigesters.courseid', '=', $courseID)
+    ->where('course_reigesters.Year', '=', $Year)
+    ->where('course.departmentCode', '=', $Deparment)
     ->get();
     return $results;
 }
-public function returnCourseStudent($courseID,$Year)
+public function returnCourseStudent($courseID,$Year,$Deparment)
 {
     $results = DB::table('course_reigesters')
-            
+    ->join('course', 'course.courseID', '=','course_reigesters.courseid' )
             ->select('course_reigesters.studentId','course_reigesters.Result')
             ->where('course_reigesters.courseid', '=', $courseID)
-            ->where('Year', '=', $Year)
+            ->where('course_reigesters.Year', '=', $Year)
+            ->where('course.departmentCode', '=', $Deparment)
             ->get();
     return $results;
 }
-public function returnGradeAvg($courseID,$Year)
+public function returnGradeAvg($courseID,$Year,$Deparment)
 {
    
     $avg_grade = DB::table('course_reigesters')
+    ->join('course', 'course.courseID', '=','course_reigesters.courseid' )
                     ->select(DB::raw('AVG(Result) as avg_grade'))
-                    ->where('courseid', $courseID)
-                    ->where('Year', '=', $Year)
+                    ->where('course_reigesters.courseid', '=', $courseID)
+    ->where('course_reigesters.Year', '=', $Year)
+    ->where('course.departmentCode', '=', $Deparment)
                     ->get();
     return $avg_grade;
 }
