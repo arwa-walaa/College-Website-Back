@@ -167,6 +167,8 @@ Route::get('/returnTAScheudule/{TAID}', [TAController::class,'returnTAScheudule'
 
 /////////////professor and ta section////////////////
 Route::get('/myCourses/{professorId}', [professorAndTa::class,'getMyCourses']);
+
+
 Route::get('/getCourseProfYears/{professorId}/{courseID}', [professorAndTa::class,'getCourseProfYears']);
 Route::get('/getCourseYears', [professorAndTa::class,'getCourseYears']);
 Route::get('/getTACourses/{TAId}', [professorAndTa::class,'getTACourses']);
@@ -205,3 +207,4 @@ Route::post('/updateAnnouncmentStatus/{annID}', [AnnouncemetsController::class,'
 Route::get('/get_Number_Of_Students_In_Department', [adminController::class,'get_Number_Of_Students_In_Department']);
 Route::get('/get_GPA_distribution_In_Department', [adminController::class,'get_GPA_distribution_In_Department']);
 Route::post('/calculateGPA', [adminController::class,'calculateGPA']);
+Route::put('/setDepatmentToStudent', [ProgramPerferenceController::class,'setDepatmentToStudent']);
