@@ -200,3 +200,7 @@ Route::get('/getFeedbacks/{courseName}/{professorId}', [courseEvaluation::class,
 /////////////admin section///////////////
 Route::get('/returnAcceptedRequestsGP', [adminController::class,'returnAcceptedRequestsGP']);
 Route::post('/updateAnnouncmentStatus/{annID}', [AnnouncemetsController::class,'updateAnnouncmentStatus']);
+
+Route::get('/get_Number_Of_Students_In_Department', [adminController::class,'get_Number_Of_Students_In_Department']);
+Route::get('/get_GPA_distribution_In_Department', [adminController::class,'get_GPA_distribution_In_Department']);
+Route::post('/calculateGPA', [adminController::class,'calculateGPA']);
