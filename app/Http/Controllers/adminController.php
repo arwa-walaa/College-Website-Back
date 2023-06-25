@@ -93,7 +93,6 @@ class adminController extends Controller
             // Display the GPA to the user
             echo "Student ID: " . $studentID->studentId . ", GPA: " . number_format($gpa, 2) . "\n";
         }
-    
     }
   
 }
