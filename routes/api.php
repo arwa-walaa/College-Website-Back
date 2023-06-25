@@ -204,3 +204,5 @@ Route::post('/updateAnnouncmentStatus/{annID}', [AnnouncemetsController::class,'
 Route::get('/get_Number_Of_Students_In_Department', [adminController::class,'get_Number_Of_Students_In_Department']);
 Route::get('/get_GPA_distribution_In_Department', [adminController::class,'get_GPA_distribution_In_Department']);
 Route::post('/calculateGPA', [adminController::class,'calculateGPA']);
+
+
