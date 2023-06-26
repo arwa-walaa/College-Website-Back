@@ -198,7 +198,7 @@ Route::post('/store', [ChatController::class,'store']);
 Route::post('/addAnnouncments', [AnnouncemetsController::class,'addAnnouncment']);
 ////////Get feebacks//////////
 Route::get('/getFeedbacks/{courseName}/{professorId}', [courseEvaluation::class,'getFeedbacks']);
-
+Route::get('/getTAs_Feedbacks_for_specific_course/{courseName}/{professorId}', [courseEvaluation::class,'getTAs_Feedbacks_for_specific_course']);
 
 /////////////admin section///////////////
 Route::get('/returnAcceptedRequestsGP', [adminController::class,'returnAcceptedRequestsGP']);
