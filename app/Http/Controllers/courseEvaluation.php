@@ -100,16 +100,48 @@ public function getTADetails( $studID,$courseID){
 
    public function getFeedbacks($courseName , $teacherId) {
     $courseID = DB::table('course')->where('courseName', '=', $courseName)->pluck('courseID');
-    $feedbacks = DB::table('evaluation')->select('contentRate', 'isRepeated', 'isClear',  'relevantToObjectives', 'preparetionForFutureCourses',
-    'engagedStudents', 'conveiedMaterial', 'isClearAgenda', 'teacherEffectiveness', 'communicationSkills', 
-    'TAengagedStudents', 'TAconveiedMaterial', 'TAisClearAgenda', 'TAteacherEffectiveness', 'TAcommunicationSkills')
-    ->where('professorId','=',$teacherId)
-    ->orWhere('TAId','=',$teacherId)
-    ->where('courseID', '=',  $courseID)
+    $feedbacks = DB::table('evaluation')
+    ->join('ta', 'evaluation.TAId', '=', 'ta.TAId')
+    ->select('ta.TAName', 'evaluation.TAId', 'evaluation.contentRate', 
+    'evaluation.isRepeated', 'evaluation.isClear',
+     'evaluation.relevantToObjectives', 'evaluation.preparetionForFutureCourses',
+      'evaluation.engagedStudents', 'evaluation.conveiedMaterial', 'evaluation.isClearAgenda', 
+      'evaluation.teacherEffectiveness', 'evaluation.communicationSkills', 'evaluation.TAengagedStudents', 'evaluation.TAconveiedMaterial', 'evaluation.TAisClearAgenda', 'evaluation.TAteacherEffectiveness', 'evaluation.TAcommunicationSkills')
+
+    ->where('professorId1','=',$teacherId)
+    ->orWhere('professorId2','=',$teacherId)
+    ->orWhere('evaluation.TAId','=',$teacherId)
+    ->where('evaluation.courseID', '=',  $courseID)
+    ->get();
+    return response()->json($feedbacks);
+}
+public function getTAs_Feedbacks_for_specific_course($courseName , $teacherId)
+{
+    $courseID = DB::table('course')->where('courseName', '=', $courseName)->pluck('courseID');
+    $TAs = DB::table('evaluation')->distinct()->select('TAId')
+    ->where('courseID', '=', $courseID)
+    ->where('professorId1','=',$teacherId)
+    ->orWhere('professorId2','=',$teacherId)
+    ->get('TAId');
+
+    foreach ($TAs as $TA) {
+        
+        $feedbacksData = DB::table('evaluation')
+        ->join('ta', 'evaluation.TAId', '=', 'ta.TAId')
+        ->select('ta.TAName', 'evaluation.TAId', 'evaluation.contentRate', 
+        'evaluation.isRepeated', 'evaluation.isClear',
+         'evaluation.relevantToObjectives', 'evaluation.preparetionForFutureCourses',
+          'evaluation.engagedStudents', 'evaluation.conveiedMaterial', 'evaluation.isClearAgenda', 
+          'evaluation.teacherEffectiveness', 'evaluation.communicationSkills', 'evaluation.TAengagedStudents', 'evaluation.TAconveiedMaterial', 'evaluation.TAisClearAgenda', 'evaluation.TAteacherEffectiveness', 'evaluation.TAcommunicationSkills')
+    
+    ->Where('evaluation.TAId','=',$TA->TAId)
+    ->where('evaluation.courseID', '=',  $courseID)
     ->get();
 
-    
+    $feedbacks[$TA->TAId] = $feedbacksData;
+    }
 
+   
     return response()->json($feedbacks);
 }
 
