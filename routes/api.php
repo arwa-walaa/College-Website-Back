@@ -90,8 +90,8 @@ Route::get('/returnAllDepartments',[OfficeHours::class,'returnAllDepartments']);
 Route::get('/courseEvaluationDetails/{courseID}',[courseEvaluation::class,'getCourseDetails']);
 Route::get('/CourseeForSemester/{level}/{semester}/{department}/{id}',[PrerequisiteCousreController::class,'getCourses_Student']);
 Route::get('/getCourseID/{courseName}',[courseEvaluation::class,'getCourseID']);
-Route::get('/getProfessorID/{courseID}',[courseEvaluation::class,'getProfessorID']);
-Route::get('/getTAID/{courseID}',[courseEvaluation::class,'getTAID']);
+Route::get('/getProfessorID/{studId}/{courseID}',[courseEvaluation::class,'getProfessorDetails']);
+Route::get('/getTAID/{studId}/{courseID}',[courseEvaluation::class,'getTADetails']);
 Route::get('/getStudentCourses/{studId}',[courseEvaluation::class,'getStudentCourses']);
 
 // Endpoint for registering a new user

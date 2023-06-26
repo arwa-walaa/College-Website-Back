@@ -47,17 +47,41 @@ class courseEvaluation extends Controller
     return $courseID;
    }
 
-   public function getProfessorID(Request $request)
-   {
-    $professorID=DB::table('professor')->where('courseID', '=', $request->courseID)->get('professorId');
-    return $professorID;
-   }
+//    public function getProfessorID(Request $request)
+//    {
+//     $professorID=DB::table('professor')->where('courseID', '=', $request->courseID)->get('professorId');
+//     return $professorID;
+//    }
+public function getProfessorDetails( $studID,$courseID){
+    $result = DB::table('course_reigesters')
+    ->leftJoin('professor AS p1', 'course_reigesters.professorId1', '=', 'p1.professorId')
+    ->leftJoin('professor AS p2', 'course_reigesters.professorId2', '=', 'p2.professorId')
+    ->select('p1.professorId AS professorID1','p1.professorName AS professorName1', 'p2.professorId AS professorID2','p2.professorName AS professorName2')
+    ->where('course_reigesters.studentId', '=', '20190022')
+    ->where('course_reigesters.courseID', '=', '7')
+    ->get();
+       return    $result;
 
-   public function getTAID(Request $request)
-   {
-    $TAID=DB::table('ta')->where('courseID', '=', $request->courseID)->get('TAId');
-    return $TAID;
-   }
+}
+
+
+public function getTADetails( $studID,$courseID){
+    $ta = DB::table('ta')
+    ->join('course_reigesters', 'course_reigesters.TAId', '=', 'ta.TAId')
+    ->join('student', 'course_reigesters.studentId', '=', 'student.studentId')
+    ->join('group', function($join) {
+        $join->on('course_reigesters.courseid', '=', 'group.courseId')
+             ->on('course_reigesters.groupId', '=', 'group.groupNumber');
+    })
+    ->select('ta.TAId', 'ta.TAName')
+    ->where('student.studentId', '=', $studID)
+    ->where('course_reigesters.courseid', '=', $courseID)
+    
+    ->get();
+    return $ta;
+
+}
+
 
    Public function getCourseDetails(Request $request){
 
@@ -91,7 +115,7 @@ class courseEvaluation extends Controller
 
 public function getStudentCourses($studID){
     $courses = DB::table('course_reigesters')
-    ->select('course.courseName')
+    ->select('course.courseName','course.courseID')
    
     ->join('student', 'student.studentId', '=', 'course_reigesters.studentId')
     ->join('course', 'course.courseID', '=', 'course_reigesters.courseid')
