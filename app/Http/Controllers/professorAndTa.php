@@ -13,7 +13,7 @@ class professorAndTa extends Controller
     $courses = DB::table('course_reigesters')
     ->select('course.Course_Code',
     'course.courseName','course.Level',
-    'course.Semester','course.courseID')
+    'course.Semester','course.courseID','course.departmentCode')
     ->join('professor', 'professor.professorId', '=', 'course_reigesters.professorId1')
     ->join('course', 'course.courseID', '=', 'course_reigesters.courseid')
     ->where('professor.professorId', '=', $professorId)->distinct()
@@ -34,7 +34,7 @@ public function getTACourses($TAId)
 
     return $courses;
 }
-public function getCourseYears($professorId,$CourseId)
+public function getCourseProfYears($professorId,$CourseId)
 {
     $years = DB::table('course_reigesters')
     ->select('course_reigesters.Year')
@@ -42,6 +42,17 @@ public function getCourseYears($professorId,$CourseId)
     ->join('course', 'course.courseID', '=', 'course_reigesters.courseid')
     ->where('professor.professorId', '=', $professorId) 
     ->where('course.courseID', '=', $CourseId)->distinct()
+    ->get();
+    return $years;
+}
+public function getCourseYears()
+{
+    $years = DB::table('course_reigesters')
+    ->select('course_reigesters.Year')
+    ->join('professor', 'professor.professorId', '=', 'course_reigesters.professorId1')
+    ->join('course', 'course.courseID', '=', 'course_reigesters.courseid')
+     
+   ->distinct()
     ->get();
     return $years;
 }

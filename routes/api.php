@@ -167,16 +167,19 @@ Route::get('/returnTAScheudule/{TAID}', [TAController::class,'returnTAScheudule'
 
 /////////////professor and ta section////////////////
 Route::get('/myCourses/{professorId}', [professorAndTa::class,'getMyCourses']);
-Route::get('/getCourseYears/{professorId}/{courseID}', [professorAndTa::class,'getCourseYears']);
+
+
+Route::get('/getCourseProfYears/{professorId}/{courseID}', [professorAndTa::class,'getCourseProfYears']);
+Route::get('/getCourseYears', [professorAndTa::class,'getCourseYears']);
 Route::get('/getTACourses/{TAId}', [professorAndTa::class,'getTACourses']);
 Route::get('/getMyStudents/{professorId}', [professorAndTa::class,'getMyStudents']);
 Route::get('/getGrades/{professorId}', [professorAndTa::class,'getGrades']);
 Route::get('/selectCourse/{courseName}', [professorAndTa::class,'selectCourse']);
 Route::get('/selectGrade/{courseGrade}', [professorAndTa::class,'selectGrade']);
 Route::get('/returnCourseTAS/{courseid}', [ProfessorController::class,'returnCourseTAS']);
-Route::get('/returnCourseStat/{courseid}/{Year}', [ProfessorController::class,'returnCourseStat']);
-Route::get('/returnCourseStudent/{courseid}/{Year}', [ProfessorController::class,'returnCourseStudent']);
-Route::get('/returnGradeAvg/{courseid}/{Year}', [ProfessorController::class,'returnGradeAvg']);
+Route::get('/returnCourseStat/{courseid}/{Year}/{Deparment}', [ProfessorController::class,'returnCourseStat']);
+Route::get('/returnCourseStudent/{courseid}/{Year}/{Deparment}', [ProfessorController::class,'returnCourseStudent']);
+Route::get('/returnGradeAvg/{courseid}/{Year}/{Deparment}', [ProfessorController::class,'returnGradeAvg']);
 Route::get('/searchByStudent/', [ProfessorController::class,'searchByStudent']);
 Route::get('/returnRequestsGP/{Type}/{id}', [ProfessorController::class,'returnRequestsGP']);
 Route::put('/acceptGP_prof/{id}', [ProfessorController::class,'acceptGP_prof']);
@@ -200,3 +203,8 @@ Route::get('/getFeedbacks/{courseName}/{professorId}', [courseEvaluation::class,
 /////////////admin section///////////////
 Route::get('/returnAcceptedRequestsGP', [adminController::class,'returnAcceptedRequestsGP']);
 Route::post('/updateAnnouncmentStatus/{annID}', [AnnouncemetsController::class,'updateAnnouncmentStatus']);
+
+Route::get('/get_Number_Of_Students_In_Department', [adminController::class,'get_Number_Of_Students_In_Department']);
+Route::get('/get_GPA_distribution_In_Department', [adminController::class,'get_GPA_distribution_In_Department']);
+Route::post('/calculateGPA', [adminController::class,'calculateGPA']);
+Route::put('/setDepatmentToStudent', [ProgramPerferenceController::class,'setDepatmentToStudent']);

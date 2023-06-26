@@ -16,8 +16,8 @@ use Illuminate\Support\Str;
 class AnnouncemetsController extends Controller
 {
     public function getAllAnnouncment(){
-        $ann=Announcemets::all();
-        return $ann;
+        $ann = Announcemets::orderBy('created_at', 'desc')->get();
+    return $ann;
     }
     public function addAnnouncment(Request $request){
         $annTitle=$request->input('announcmentTitle');
@@ -40,6 +40,4 @@ class AnnouncemetsController extends Controller
         return response()->json(['message' => 'Updated successfully.'], 200);
 
     }
-    
-
 }

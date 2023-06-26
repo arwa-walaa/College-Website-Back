@@ -200,4 +200,7 @@ public function getTAId($groupNumber,$corseId){
     ->where('courseId', '=', $corseId)->get();
     return $TAId;
 }
+
+
+
 }

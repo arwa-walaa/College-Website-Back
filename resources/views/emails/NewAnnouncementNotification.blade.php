@@ -14,6 +14,7 @@ Thanks,<br>
 
 @component('mail::message')
 
+
 {{$announcment}}
 
 @component('mail::button', ['url' => 'http://localhost:4200/Announcements'])

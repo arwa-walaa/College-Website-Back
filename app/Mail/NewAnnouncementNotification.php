@@ -16,10 +16,10 @@ class NewAnnouncementNotification extends Mailable
     /**
      * Create a new message instance.
      */
-    public function __construct($announcment)
+    public function __construct($announcmentTitle)
     {
         //
-        $this->announcment=$announcment;
+        $this->announcment=$announcmentTitle;
     }
 
     /**
