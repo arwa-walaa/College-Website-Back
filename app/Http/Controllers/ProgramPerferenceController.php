@@ -36,51 +36,62 @@ class ProgramPerferenceController extends Controller
 
     public function setDepatmentToStudent()
     {
-     
+        $currentYear = date('Y');
 
-// Sort students in descending order based on GPA
-$students = DB::table('student')
-    ->orderByDesc('GPA')
-    ->get();
+        $count = DB::table('program_preferences')
+                    
+                     ->where('Year', $currentYear)
+                     ->count();
+        
+        $dividedCount = $count / 5; // Divide the count by 5
+        $limit = ceil($dividedCount); // Scale up to the nearest integer
+        
+       
 
-// Initialize department counts
-$department_counts = [
-    'IS' => 0,
-    'IT' => 0,
-    'AI' => 0,
-    'CS' => 0,
-    'DS' => 0,
-];
+    // Sort students in descending order based on GPA
+    $students = DB::table('student')
+        ->orderByDesc('GPA')
+        ->get();
 
-// Assign departments to students based on preferences and availability
-foreach ($students as $student) {
-    $preferences = DB::table('program_perferences')
-        ->where('studentId', $student->studentId)
-        ->where('Year', 2023)
-        ->first();
+    // Initialize department counts
+    $department_counts = [
+        'IS' => 0,
+        'IT' => 0,
+        'AI' => 0,
+        'CS' => 0,
+        'DS' => 0,
+    ];
 
-    for ($i = 1; $i <= 5; $i++) {
-        $department = $preferences->{'preference'.$i};
+    // Assign departments to students based on preferences and availability
+    foreach ($students as $student) 
+    {
+        $preferences = DB::table('program_perferences')
+            ->where('studentId', $student->studentId)
+            ->where('Year', 2023)
+            ->first();
 
-        if ($department_counts[$department] < 2) {
+        for ($i = 1; $i <= 5; $i++) {
+            $department = $preferences->{'preference'.$i};
+
+            if ($department_counts[$department] < $limit) {
+                DB::table('student')
+                    ->where('studentId', $student->studentId)
+                    ->update(['departmentCode' => $department]);
+
+                $department_counts[$department]++;
+                break;
+            }
+        }
+
+        // Mark unassigned students (no department found with less than 2 students assigned)
+        if (!isset($student->departmentCode)) {
             DB::table('student')
                 ->where('studentId', $student->studentId)
-                ->update(['departmentCode' => $department]);
-
-            $department_counts[$department]++;
-            break;
+                ->update(['departmentCode' => null]);
         }
     }
 
-    // Mark unassigned students (no department found with less than 2 students assigned)
-    if (!isset($student->departmentCode)) {
-        DB::table('student')
-            ->where('studentId', $student->studentId)
-            ->update(['departmentCode' => null]);
-    }
-}
-
-return 1;
+        return 1;
     }
 
 }
