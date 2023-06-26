@@ -88,7 +88,7 @@ Route::post('/courseEvaluation',[courseEvaluation::class,'insertCourseEvaluation
 Route::get('/returnAllLocations',[OfficeHours::class,'returnAllLocations']);
 Route::get('/returnAllDepartments',[OfficeHours::class,'returnAllDepartments']);
 Route::get('/courseEvaluationDetails/{courseID}',[courseEvaluation::class,'getCourseDetails']);
-Route::get('/CourseeForSemester/{level}/{semester}/{department}/{id}',[PrerequisiteCousreController::class,'getCourses_Student']);
+Route::get('/CourseeForSemester/{level}/{semester}/{id}',[PrerequisiteCousreController::class,'getCourses_Student']);
 Route::get('/getCourseID/{courseName}',[courseEvaluation::class,'getCourseID']);
 Route::get('/getProfessorID/{studId}/{courseID}',[courseEvaluation::class,'getProfessorDetails']);
 Route::get('/getTAID/{studId}/{courseID}',[courseEvaluation::class,'getTADetails']);
@@ -152,9 +152,9 @@ Route::post('/register', 'AuthController@register');
 
 
 //////Professor part////////////////
-Route::get('/returnProfScheudule/{professorID}', [ProfessorController::class,'returnProfScheudule']);
+Route::get('/returnProfScheudule/{professorID}/{Semester}', [ProfessorController::class,'returnProfScheudule']);
 Route::get('/returnAllPlaces', [ProfessorController::class,'returnAllPlaces']);
-Route::get('/returnPlaceScheduale/{place}', [ProfessorController::class,'returnPlaceScheduale']);
+Route::get('/returnPlaceScheduale/{place}/{Semester}', [ProfessorController::class,'returnPlaceScheduale']);
 Route::post('/insertOfficeHour/{id}', [ProfessorController::class,'insertOfficeHour']);
 Route::get('/returnProfOfficeHours/{id}', [ProfessorController::class,'returnProfOfficeHours']);
 Route::delete('/deleteOfficeHours/{id}', [ProfessorController::class,'deleteOfficeHours']);
@@ -162,7 +162,7 @@ Route::put('/updateProfProfile/{id}',[ProfessorController::class,'updateProfProf
 Route::put('/updateProfOfficeHour/{id}',[ProfessorController::class,'updateProfOfficeHour']);
 Route::get('/getStudentData/{id}',[ProfessorController::class,'getStudentData']);
 ////////////TA part
-Route::get('/returnTAScheudule/{TAID}', [TAController::class,'returnTAScheudule']);
+Route::get('/returnTAScheudule/{TAID}/{Semester}', [TAController::class,'returnTAScheudule']);
 
 
 /////////////professor and ta section////////////////

@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\DB;
 
 class PrerequisiteCousreController extends Controller
 {
-    public function getCourses_Student($level,$semester,$department,$id)
+    public function getCourses_Student($level,$semester,$id)
     {
     //    $courses= DB::table('course as c')
     //     ->select('c.courseName', 'c.courseId','c.type')

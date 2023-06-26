@@ -30,7 +30,8 @@ public function registerCourses(Request $request)
     foreach ($courseDataArray as $courseData) {
       
    
-        $groupsData[]= DB::table('group')->where('courseId', '=', $courseData['courseID'] )->where('groupNumber','=',$courseData['selectedGroup'])->get();
+        $groupsData[]= DB::table('group')->where('courseId', '=', $courseData['courseID'] )
+        ->where('groupNumber','=',$courseData['selectedGroup'])->get();
 
   
     }
@@ -126,6 +127,22 @@ if(!$confilect1 && !$confilect2 && !$confilect3){
     DB::table('group')
    ->where('courseId', $courseData['courseID'])->where('groupNumber',$courseData['selectedGroup'])
    ->decrement('groupCount', 1);
+    if($courseData['type']=="mandatory"){
+        DB::table('student')
+        ->where('student.studentId',$courseData['studentId'])
+        ->update([
+            'Compulsory_Hours' => DB::raw('Compulsory_Hours + '.$courseData['creditHours']),
+        ]);
+       
+    }else{
+        DB::table('student')
+        ->where('student.studentId',$courseData['studentId'])
+        ->update([
+            'electrive_hours' => DB::raw('electrive_hours + '.$courseData['creditHours']),
+        ]);
+
+    }
+
 }
 
 return response()->json(['message' =>  true ]);

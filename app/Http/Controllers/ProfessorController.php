@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\DB;
 
 class ProfessorController extends Controller
 {
-    public function returnProfScheudule($professorID)
+    public function returnProfScheudule($professorID,$Semeter)
 {
     
     $schedule =DB::table('course')
@@ -24,30 +24,42 @@ class ProfessorController extends Controller
         'course.slotPlace2',
         
     )
-    ->where('course_reigesters.professorId1', '=', $professorID)
-    ->orWhere('course_reigesters.professorId2', '=', $professorID)
+    ->where('course.Semester', '=', $Semeter)
+    ->where('course_reigesters.Year', '=', date('Y'))
+    ->where('course.professor1', '=', $professorID)
+    ->orWhere('course.professor2', '=', $professorID)->distinct()
     ->get();
     
     return $schedule;
 }
 public function returnAllPlaces(){
     $results = DB::table('course')
+   
             ->select('slotPlace1')
+            
             ->distinct()
             ->union(DB::table('course')
+            
                     ->select('slotPlace2')
+                    
                     ->distinct())
             ->get();
             return $results;
 
 }
-public function returnPlaceScheduale($place){
+public function returnPlaceScheduale($place, $Semeter){
 
 $results = DB::table('course')
     ->select('slotday1', 'startTime1', 'endTime1', 'slotPlace1','courseName')
+    ->join('course_reigesters', 'course.courseID', '=', 'course_reigesters.courseid')
+                    ->where('course.Semester', '=', $Semeter)
+                    ->where('course_reigesters.Year', '=', date('Y'))
     ->where('slotPlace1', $place)
     ->union(DB::table('course')
         ->select('slotday2', 'startTime2', 'endTime2', 'slotPlace2','courseName')
+        ->join('course_reigesters', 'course.courseID', '=', 'course_reigesters.courseid')
+                    ->where('course.Semester', '=', $Semeter)
+                    ->where('course_reigesters.Year', '=', date('Y'))
         ->where('slotPlace2', $place)
     )
     
