@@ -83,15 +83,13 @@ Route::get('/returnAllProfessor',[gpController::class,'returnAllProfessor']);
 Route::get('/returnAllTAs',[gpController::class,'returnAllTAs']);
 Route::post('/courseEvaluation',[courseEvaluation::class,'insertCourseEvaluation']);
 
-// Route::post('/professorEvaluation',[courseEvaluation::class,'insertProfessorEvaluation']);
-// Route::post('/TAEvaluation',[courseEvaluation::class,'insertTAEvaluation']);
 Route::get('/returnAllLocations',[OfficeHours::class,'returnAllLocations']);
 Route::get('/returnAllDepartments',[OfficeHours::class,'returnAllDepartments']);
-Route::get('/courseEvaluationDetails/{courseID}',[courseEvaluation::class,'getCourseDetails']);
+// Route::get('/courseEvaluationDetails/{courseID}',[courseEvaluation::class,'getCourseDetails']);
 Route::get('/CourseeForSemester/{level}/{semester}/{id}',[PrerequisiteCousreController::class,'getCourses_Student']);
-Route::get('/getCourseID/{courseName}',[courseEvaluation::class,'getCourseID']);
-Route::get('/getProfessorID/{studId}/{courseID}',[courseEvaluation::class,'getProfessorDetails']);
-Route::get('/getTAID/{studId}/{courseID}',[courseEvaluation::class,'getTADetails']);
+// Route::get('/getCourseID/{courseName}',[courseEvaluation::class,'getCourseID']);
+Route::get('/getProfessorDetails/{studId}/{courseID}',[courseEvaluation::class,'getProfessorDetails']);
+Route::get('/getTADetails/{studId}/{courseID}',[courseEvaluation::class,'getTADetails']);
 Route::get('/getStudentCourses/{studId}',[courseEvaluation::class,'getStudentCourses']);
 
 // Endpoint for registering a new user
@@ -209,3 +207,8 @@ Route::get('/get_Number_Of_Students_In_Department', [adminController::class,'get
 Route::get('/get_GPA_distribution_In_Department', [adminController::class,'get_GPA_distribution_In_Department']);
 Route::post('/calculateGPA', [adminController::class,'calculateGPA']);
 Route::put('/setDepatmentToStudent', [ProgramPerferenceController::class,'setDepatmentToStudent']);
+
+Route::get('/getAllCourses', [adminController::class,'getAllCourses']);
+Route::get('/getStudentInCourse/{courseId}', [adminController::class,'getStudentInCourse']);
+
+Route::post('/addGrade/{courseId}/{studentId}', [adminController::class,'addGrade']);

@@ -6,64 +6,57 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 class courseEvaluation extends Controller
 {
-    
 
-    Public function insertCourseEvaluation(Request $request)
-   {
-       
-//   $courseID=DB::table('_course')->where('courseName', '=', $request->courseName)->get('courseID');
-//     $professorID=DB::table('professor')->where('professorName', '=', $request->professorName)->get('professorID');
-    // $TAID=DB::table('_t_a')->where('TAName', '=', $request->TAName)->get('TAId ');
-        DB::table('evaluation')->insert ([
-            'contentRate' => $request-> contentRate,
-            'isRepeated'=> $request-> isRepeated,
-            'isClear'=> $request-> isClear,
-            'relevantToObjectives'=> $request-> relevantToObjectives,
-            'preparetionForFutureCourses'=> $request-> preparetionForFutureCourses,
-            'courseID'=> $request->courseID,
+public function insertCourseEvaluation(Request $request)
+{
+    $requestBody = json_decode($request->getContent(), true);
 
-            'engagedStudents' => $request-> engagedStudents,
-            'conveiedMaterial'=> $request-> conveiedMaterial,
-            'isClearAgenda'=> $request-> isClearAgenda,
-            'teacherEffectiveness'=> $request-> teacherEffectiveness,
-            'communicationSkills'=> $request-> communicationSkills,
-            'professorId'=> $request-> professorId,
-       
-            'TAengagedStudents' => $request-> engagedStudents,
-            'TAconveiedMaterial'=> $request-> conveiedMaterial,
-            'TAisClearAgenda'=> $request-> isClearAgenda,
-            'TAteacherEffectiveness'=> $request-> teacherEffectiveness,
-            'TAcommunicationSkills'=> $request-> communicationSkills,
-            'TAId'=> $request-> TAId,
-           // 'TAId'=>$TAID,
-   ]);
-       
-       return response('Data has been inserted successfully');
-   }
+    $courseEvaluation = $requestBody['course evaluation'] ?? [];
+    $professorEvaluation = $requestBody['professor evaluation'] ?? [];
+    $taEvaluation = $requestBody['ta evaluation'] ?? [];
 
-   public function getCourseID(Request $request)
-   {
-    $courseID=DB::table('course')->where('courseName', '=', $request->courseName)->get('courseID');
-    return $courseID;
-   }
+    $courseId = $requestBody['course id'];
+    $professorId = $requestBody['professor id'];
+    $taId = $requestBody['ta id'];
 
-//    public function getProfessorID(Request $request)
-//    {
-//     $professorID=DB::table('professor')->where('courseID', '=', $request->courseID)->get('professorId');
-//     return $professorID;
-//    }
+    // Insert evaluation data
+    DB::table('evaluation')->insert([
+        'courseID' => $courseId,
+        'professorId' => $professorId,
+        'taId' => $taId,
+        'isClear' => $courseEvaluation[0]['value'] ?? null,
+        'isRepeated' => $courseEvaluation[1]['value'] ?? null,
+        'preparetionForFutureCourses' => $courseEvaluation[2]['value'] ?? null,
+        'relevantToObjectives' => $courseEvaluation[3]['value'] ?? null,
+        'contentRate' => $courseEvaluation[4]['value'] ?? null,
+        'engagedStudents' => $professorEvaluation[0]['value'] ?? null,
+        'teacherEffectiveness' => $professorEvaluation[1]['value'] ?? null,
+        'communicationSkills' => $professorEvaluation[2]['value'] ?? null,
+        'isClearAgenda' => $professorEvaluation[3]['value'] ?? null,
+        'conveiedMaterial' => $professorEvaluation[4]['value'] ?? null,
+        'TAengagedStudents' => $taEvaluation[0]['value'] ?? null,
+        'TAteacherEffectiveness' => $taEvaluation[1]['value'] ?? null,
+        'TAcommunicationSkills' => $taEvaluation[2]['value'] ?? null,
+        'TAisClearAgenda' => $taEvaluation[3]['value'] ?? null,
+        'TAconveiedMaterial' => $taEvaluation[4]['value'] ?? null,
+    ]);
+    DB::table('course_reigesters')->where('studentId', '=',$requestBody['student id'])
+    ->where('courseID', '=',$courseId)->update(array('isEvaluaed'=>'1'));
+
+    return response()->json(['message' => 'Feedback inserted successfully']);
+}
+
 public function getProfessorDetails( $studID,$courseID){
     $result = DB::table('course_reigesters')
     ->leftJoin('professor AS p1', 'course_reigesters.professorId1', '=', 'p1.professorId')
     ->leftJoin('professor AS p2', 'course_reigesters.professorId2', '=', 'p2.professorId')
     ->select('p1.professorId AS professorID1','p1.professorName AS professorName1', 'p2.professorId AS professorID2','p2.professorName AS professorName2')
-    ->where('course_reigesters.studentId', '=', '20190022')
-    ->where('course_reigesters.courseID', '=', '7')
+    ->where('course_reigesters.studentId', '=', $studID)
+    ->where('course_reigesters.courseID', '=', $courseID)
     ->get();
-       return    $result;
+    return $result;
 
 }
-
 
 public function getTADetails( $studID,$courseID){
     $ta = DB::table('ta')
@@ -82,22 +75,6 @@ public function getTADetails( $studID,$courseID){
 
 }
 
-
-   Public function getCourseDetails(Request $request){
-
-    $professorName = DB::table('professor')->where('courseID', '=', $request->courseID)->get('professorName');
-    $TAName = DB::table('ta')->where('courseID', '=', $request->courseID)->get('TAName');
-    $courseName=DB::table('course')->where('courseID', '=', $request->courseID)->get('courseName');
-
-    
-
-    return [
-        'professorName' => $professorName,
-        'TAName' => $TAName,
-        'courseName'=>$courseName
-    ];
-   }
-
    public function getFeedbacks($courseName , $teacherId) {
     $courseID = DB::table('course')->where('courseName', '=', $courseName)->pluck('courseID');
     $feedbacks = DB::table('evaluation')
@@ -108,8 +85,7 @@ public function getTADetails( $studID,$courseID){
       'evaluation.engagedStudents', 'evaluation.conveiedMaterial', 'evaluation.isClearAgenda', 
       'evaluation.teacherEffectiveness', 'evaluation.communicationSkills', 'evaluation.TAengagedStudents', 'evaluation.TAconveiedMaterial', 'evaluation.TAisClearAgenda', 'evaluation.TAteacherEffectiveness', 'evaluation.TAcommunicationSkills')
 
-    ->where('professorId1','=',$teacherId)
-    ->orWhere('professorId2','=',$teacherId)
+    ->where('professorId','=',$teacherId)
     ->orWhere('evaluation.TAId','=',$teacherId)
     ->where('evaluation.courseID', '=',  $courseID)
     ->get();
@@ -120,8 +96,8 @@ public function getTAs_Feedbacks_for_specific_course($courseName , $teacherId)
     $courseID = DB::table('course')->where('courseName', '=', $courseName)->pluck('courseID');
     $TAs = DB::table('evaluation')->distinct()->select('TAId')
     ->where('courseID', '=', $courseID)
-    ->where('professorId1','=',$teacherId)
-    ->orWhere('professorId2','=',$teacherId)
+    ->where('professorId','=',$teacherId)
+    
     ->get('TAId');
 
     foreach ($TAs as $TA) {
@@ -151,7 +127,8 @@ public function getStudentCourses($studID){
    
     ->join('student', 'student.studentId', '=', 'course_reigesters.studentId')
     ->join('course', 'course.courseID', '=', 'course_reigesters.courseid')
-    ->where('student.studentId', '=', $studID)->get();
+    ->where('student.studentId', '=', $studID)
+    ->where('course_reigesters.isEvaluaed', '!=', '1')->get();
         return $courses;
 
 }
