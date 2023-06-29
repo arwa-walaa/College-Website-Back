@@ -30,25 +30,7 @@ class AuthController extends Controller
      * @return \Illuminate\Http\JsonResponse
      */
 
-    //  public function returnType(Request $request){
-    //     $validator = Validator::make($request->all(), [
-    //         // 'email' => 'required|email',
-    //         // 'password' => 'required|string|min:6',
-    //         'name' => 'required',
-    //         'password' => 'required',
-    //     ]);
-    //     if ($validator->fails()) {
-    //         return response()->json($validator->errors(), 422);
-    //     }
-    //     if (! $token = auth()->attempt($validator->validated())) {
-    //         return response()->json(['error' => 'Email or Password doesn\'t exist'], 401);
-    //     }
-     
-    //     $userType=DB::table('users')->where('name', '=',$request['name'])->select('Type');
-
    
-    //     return $this->$userType;
-    //  }
      public function login(Request $request){
     	$validator = Validator::make($request->all(), [
             // 'email' => 'required|email',
@@ -68,12 +50,7 @@ class AuthController extends Controller
      DB::table('users')->where('name', '=',$request['name'])->update(array('loginToken'=>$token));
      DB::table('ta')->where('TAId', '=',$request['name'])->update(array('loginToken'=>$token));
             return $this->createNewToken($token);
-        // }
-        // else if($this->returnType($request)=="Professor"){
-        //     DB::table('users')->where('name', '=',$request['name'])->update(array('remember_token'=>$token));
-   
-        //     return $this->createNewToken($token);
-        // }
+      
      
     
     }
@@ -174,6 +151,11 @@ class AuthController extends Controller
         return $userType;
         
     }
-    
+    public function getUserInfo($token)
+    {
+        $userInformation = DB::table('users')->where('loginToken', '=', $token) ->select('Type','id')->get();
+        return $userInformation;
+        
+    }
     
 }

@@ -13,40 +13,6 @@ use App\Attachment;
 Storage::disk('local')->makeDirectory('gp');
 class ChatController extends Controller
 {
-    public function listStudents()
-    {
-        $students = DB::table('student')->get();
-
-        return response()->json($students);
-    }
-
-    public function listProfessorsAndTAs()
-    {
-        $professors = DB::table('professor')->get();
-        $TAs = DB::table('ta')->get();
-
-        return response()->json(['Professors' => $professors, 'TAs' => $TAs]);
-
-    }
-
-    public function listProfessorsStudents()
-    {
-        $professors = DB::table('professor')->get();
-        $students = DB::table('student')->get();
-
-        return response()->json(['Professors' => $professors, 'Students' => $students]);
-
-    }
-
-    public function listTAsStudents()
-    {
-        $TAs = DB::table('ta')->get();
-        $students = DB::table('student')->get();
-
-        return response()->json(['TAs' => $TAs, 'Students' => $students]);
-
-    }
-
     public function getHistory(Request $request, $user1, $user2)
     {
         $messages = Message::where(function ($query) use ($user1, $user2) {
@@ -87,58 +53,6 @@ public function sendMessage(Request $request)
     return response()->json($message);
 }
 
-public function store(Request $request)
-{
-    if ($request->hasFile('attachment')) {
-        $image = $request->file('attachment')->getClientOriginalName();
-        $path = $request->file('attachment')->storeAs('attachments',$image,'fcai');
-        return $path;
-    } else {
-        return "No file uploaded";
-    }
-}
-
-
-//////////////////////////
-public function receive(Request $request)
-{
-    // Validate the incoming request
-    $validatedData = $request->validate([
-        'to' => 'required',
-    ]);
-
-    // Retrieve messages for the specified recipient
-    $messages = DB::table('messages')
-        ->where('to', '=', $request->input('to'))
-        ->orderBy('created_at', 'desc')
-        ->get();
-
-    // Return the response
-    return response()->json(['messages' => $messages]);
-}
-Public function getProfessorDetails(Request $request){
-
-    $professorDtails = DB::table('professor')->where('professorName', '=', $request->professorName)->get();  
-    return [
-        'professorDtails' => $professorDtails,      
-    ];
-   }
-
-Public function getTADetails(Request $request){
-    $TADtails = DB::table('ta')->where('TAName', '=', $request->TAName)->get();  
-    return [       
-        'TADtails'=>$TADtails
-    ];   
-   }
-
-
-Public function getStudentsDetails(Request $request){
-    $StudentDtails = DB::table('student')->where('studentName', '=', $request->studentName)->get();  
-    return [       
-        'StudentDtails'=>$StudentDtails
-    ];   
-   }
-
    public function updateStudentStatus($studentId , $status)
    { 
     DB::table('student')->where('userID', '=',$studentId)->update(array('isBlocked'=>$status));  
@@ -151,7 +65,63 @@ Public function getStudentsDetails(Request $request){
     return $studentStatus;
    }
 
+//    updatessssssssssssssssssssssssssssssss
+public function getAllContacts($senderID,$sendertype){
+    $TAs = DB::table('ta')->join('users','ta.userID','=','users.id')
+    ->select('ta.userID','ta.TAName AS name','users.Type')
+    ->where('userID', '!=',$senderID)
+    ->where('Type', '!=',$sendertype)
+    ->where('Type', '!=','Admin')->get();
+   
+    $students = DB::table('student')->join('users','student.userID','=','users.id')
+    ->select('student.userID','student.studentName AS name','users.Type')
+    ->where('userID', '!=',$senderID)
+    ->where('Type', '!=',$sendertype)
+    ->where('Type', '!=','Admin')->get();
 
+    $professors = DB::table('professor')->join('users','professor.userID','=','users.id')
+    ->select('professor.userID','professor.professorName AS name','users.Type')
+    ->where('userID', '!=',$senderID)
+    ->where('Type', '!=',$sendertype)
+    ->where('Type', '!=','Admin')->get();
+
+    $allContacts = $TAs->concat($students)
+    ->concat($professors)
+    ->sortBy('name')
+    ->values();
+
+    return $allContacts;
+}
+public function getRecentContacts($senderID){
+    $recentTAContacts = DB::table('ta')
+        ->join('messages', 'ta.userID', '=', 'messages.to')
+        ->join('users', 'ta.userID', '=', 'users.id')
+        ->select('ta.TAName AS name', 'users.Type', 'messages.to AS userID', DB::raw('DATE_FORMAT(MAX(messages.created_at), "%m/%d/%Y %h:%i %p") AS last_contact_time'))
+        ->where('messages.from', $senderID)
+        ->groupBy('messages.to', 'ta.TAName', 'users.Type');
+        
+
+    $recentstudentContacts = DB::table('student')
+        ->join('messages', 'student.userID', '=', 'messages.to')
+        ->join('users', 'student.userID', '=', 'users.id')
+        ->select('student.studentName AS name', 'users.Type', 'messages.to AS userID', DB::raw('DATE_FORMAT(MAX(messages.created_at), "%m/%d/%Y %h:%i %p") AS last_contact_time'))
+        ->where('messages.from', $senderID)
+        ->groupBy('messages.to', 'student.studentName', 'users.Type');
+
+    $recentprofessorContacts = DB::table('professor')
+        ->join('messages', 'professor.userID', '=', 'messages.to')
+        ->join('users', 'professor.userID', '=', 'users.id')
+        ->select('professor.professorName AS name', 'users.Type', 'messages.to AS userID', DB::raw('DATE_FORMAT(MAX(messages.created_at), "%m/%d/%Y %h:%i %p") AS last_contact_time'))
+        ->where('messages.from', $senderID)
+        ->groupBy('messages.to', 'professor.professorName', 'users.Type');
+
+    $recentContacts = $recentTAContacts->union($recentstudentContacts)
+                                     ->union($recentprofessorContacts)
+                                     ->orderByDesc('last_contact_time')
+                                     ->get();
+
+    return $recentContacts;
+}
 }
 
 

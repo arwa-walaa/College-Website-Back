@@ -104,11 +104,9 @@ Route::put('/updateProfile/{id}',[ProfileController::class,'updateProfile']);
 // Route::middleware('auth:api')->group(function () {
 //     // Endpoint for retrieving the list of chat users
 Route::get('/students', [ChatController::class,'listStudents']);
-Route::get('/professorsAndTas', [ChatController::class,'listProfessorsAndTAs']);
-Route::get('/listProfessorsStudents', [ChatController::class,'listProfessorsStudents']);
-Route::get('/listTAsStudents', [ChatController::class,'listTAsStudents']);
+
 // Endpoint for retrieving the chat history between two users
-Route::get('/history/{user1}/{user2}', [ChatController::class,'getHistory']);
+Route::get('/getHistory/{user1}/{user2}', [ChatController::class,'getHistory']);
 
 // Endpoint for sending a message from one user to another
 Route::post('/message', [ChatController::class,'sendMessage']);
@@ -211,3 +209,9 @@ Route::get('/getAllCourses', [adminController::class,'getAllCourses']);
 Route::get('/getStudentInCourse/{courseId}', [adminController::class,'getStudentInCourse']);
 
 Route::post('/addGrade/{courseId}/{studentId}', [adminController::class,'addGrade']);
+
+
+/////////////////////////chat updates
+Route::get('/getAllContacts/{senderID}/{sendertype}', [ChatController::class,'getAllContacts']);
+Route::get('/getUserInfo/{token}', [AuthController::class,'getUserInfo']);
+Route::get('/getRecentContacts/{senderID}', [ChatController::class,'getRecentContacts']);
