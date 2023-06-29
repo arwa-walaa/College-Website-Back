@@ -187,6 +187,7 @@ Route::put('/rejectGP_prof/{id}', [ProfessorController::class,'rejectGP_prof']);
 Route::put('/acceptGP_TA/{id}', [ProfessorController::class,'acceptGP_TA']);
 Route::put('/rejectGP_TA/{id}', [ProfessorController::class,'rejectGP_TA']);
 Route::get('/returnAllProfessor', [ProfessorController::class,'returnAllProfessor']);
+Route::post('/AddCourse', [ProfessorController::class,'AddCourse']);
 Route::get('/returnAllTAs', [ProfessorController::class,'returnAllTAs']);
 
 
