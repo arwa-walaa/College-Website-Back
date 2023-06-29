@@ -271,7 +271,7 @@ public function searchByStudent(Request $request) {
 {
    
     $prf = DB::table('professor')
-                    ->select('professorName')
+                   
                     ->get();
     return $prf;
 }
@@ -279,9 +279,39 @@ public function returnAllTAs()
 {
    
     $prf = DB::table('ta')
-                    ->select('TAName')
+                    
                     ->get();
     return $prf;
+}
+public function AddCourse(Request $request){
+    DB::table('course')
+   
+    ->insert([
+        
+        'courseID' => $request->input('courseID'),
+        'professor2' => $request->input('professor2'),
+        'professor1' => $request->input('professor1'),
+        'slotPlace2' => $request->input('slotPlace2'),  
+        'slotPlace1' => $request->input('slotPlace1'),
+        'endTime2' => $request->input('endTime2'),
+        'startTime2' => $request->input('startTime2'),
+        'slotday2' => $request->input('slotday2'),
+        'creditHours' => $request->input('creditHours'),
+        'endTime1' => $request->input('endTime1'),
+        'startTime1' => $request->input('startTime1'),
+        'slotday1' => $request->input('slotday1'),
+        'type' => $request->input('type'),
+        'Semester' => $request->input('Semester'),
+        'Level' => $request->input('Level'),
+        'Course_Code' => $request->input('Course_Code'),
+        'departmentCode' => $request->input('departmentCode'),
+        'courseName' => $request->input('courseName'),
+        'Num_of_groups' => $request->input('Num_of_groups'),
+        
+    ]);
+
+return response()->json(['success' => true]);
+
 }
 }
 
