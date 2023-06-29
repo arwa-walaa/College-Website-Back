@@ -206,3 +206,8 @@ Route::get('/get_Number_Of_Students_In_Department', [adminController::class,'get
 Route::get('/get_GPA_distribution_In_Department', [adminController::class,'get_GPA_distribution_In_Department']);
 Route::post('/calculateGPA', [adminController::class,'calculateGPA']);
 Route::put('/setDepatmentToStudent', [ProgramPerferenceController::class,'setDepatmentToStudent']);
+
+Route::get('/getAllCourses', [adminController::class,'getAllCourses']);
+Route::get('/getStudentInCourse/{courseId}', [adminController::class,'getStudentInCourse']);
+
+Route::post('/addGrade/{courseId}/{studentId}', [adminController::class,'addGrade']);
