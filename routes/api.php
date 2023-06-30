@@ -210,9 +210,13 @@ Route::get('/getAllCourses', [adminController::class,'getAllCourses']);
 Route::get('/getStudentInCourse/{courseId}', [adminController::class,'getStudentInCourse']);
 
 Route::post('/addGrade/{courseId}/{studentId}', [adminController::class,'addGrade']);
-
-
+Route::post('/updateRegisterationStatus/{status}', [adminController::class,'updateRegisterationStatus']);
+Route::get('/getRegisterationStatus', [adminController::class,'getRegisterationStatus']);
 /////////////////////////chat updates
 Route::get('/getAllContacts/{senderID}/{sendertype}', [ChatController::class,'getAllContacts']);
 Route::get('/getUserInfo/{token}', [AuthController::class,'getUserInfo']);
 Route::get('/getRecentContacts/{senderID}', [ChatController::class,'getRecentContacts']);
+
+Route::post('/blockUser/{userId1}/{userId2}', [ChatController::class,'blockUser']);
+Route::delete('/unBlockUser/{userId1}/{userId2}', [ChatController::class,'unBlockUser']);
+Route::get('/getBlockedUsers/{userId1}/{userId2}', [ChatController::class,'getBlockedUsers']);
