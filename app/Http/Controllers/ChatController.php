@@ -19,7 +19,7 @@ class ChatController extends Controller
             $query->where('from', $user1)->where('to', $user2);
         })->orWhere(function ($query) use ($user1, $user2) {
             $query->where('from', $user2)->where('to', $user1);
-        })->orderBy('created_at', 'asc')->get();
+        })->orderBy('messages.created_at', 'asc')->get();
 
         return response()->json($messages);
     }
@@ -29,8 +29,7 @@ public function sendMessage(Request $request)
 {
     $this->validate($request, [
         'from' => 'required',
-        'to' => 'required',
-        // 'message' => 'required',
+        'to' => 'required'
     ]);
 
     $message = new Message;
@@ -38,34 +37,16 @@ public function sendMessage(Request $request)
     $message->to = $request->input('to');
     $message->message = $request->input('message');
 
-   
-
     if ($request->hasFile('attachment')) {
         $attachment = $request->file('attachment')->getClientOriginalName();
         $path = $request->file('attachment')->storeAs('attachments',$attachment,'fcai');
-        //return $path;
+        $message->message = $attachment;
         $message->attachment_path = $path;
-
      }
-    
-
     $message->save();
     return response()->json($message);
 }
 
-   public function updateStudentStatus($studentId , $status)
-   { 
-    DB::table('student')->where('userID', '=',$studentId)->update(array('isBlocked'=>$status));  
-    return response('The student status has been updated successfully');
-   }
-
-   public function getStudentStatus($studentId)
-   { 
-    $studentStatus = DB::table('student')->select('isBlocked')->where('userID', '=',$studentId)->get();   
-    return $studentStatus;
-   }
-
-//    updatessssssssssssssssssssssssssssssss
 public function getAllContacts($senderID,$sendertype){
     $TAs = DB::table('ta')->join('users','ta.userID','=','users.id')
     ->select('ta.userID','ta.TAName AS name','users.Type')
@@ -92,6 +73,21 @@ public function getAllContacts($senderID,$sendertype){
 
     return $allContacts;
 }
+
+
+
+
+// public function getRecentContacts($senderID) {
+//     $contactList = DB::table('messages')
+//                     ->select(DB::raw('CASE WHEN `from` = "'.$senderID.'" THEN `to` ELSE `from` END AS contact, MAX(created_at) as last_message'))
+//                     ->where('from', $senderID)
+//                     ->orWhere('to', $senderID)
+//                     ->groupBy('contact')
+//                     ->orderBy('last_message', 'desc')
+//                     ->get();
+
+//     return $contactList;
+// }
 public function getRecentContacts($senderID){
     $recentTAContacts = DB::table('ta')
         ->join('messages', 'ta.userID', '=', 'messages.to')
@@ -122,6 +118,45 @@ public function getRecentContacts($senderID){
 
     return $recentContacts;
 }
+
+
+public function blockUser($user1Id , $user2Id)
+{
+    DB::table('blockeduserchat')->insert([
+        [
+        'user1'=>$user1Id, 
+        'user2'=>$user2Id
+        ]
+      ]);  
+   
+    return response('This user has been blocked');
+}
+
+public function unBlockUser($user1Id, $user2Id)
+{
+    DB::table('blockeduserchat')
+        ->where('user1', $user1Id)
+        ->where('user2', $user2Id)
+        ->orWhere('user1', $user2Id)
+        ->orWhere('user2', $user1Id)
+        ->delete();
+
+    return response('This user has been unblocked');
+}
+
+public function getBlockedUsers($user1Id, $user2Id)
+{
+    $result = DB::table('blockeduserchat')
+    ->where('user1', $user1Id)
+    ->where('user2', $user2Id)
+    // ->orWhere('user1', $user2Id)
+    // ->orWhere('user2', $user1Id)
+    ->get();
+
+    return $result;
+}
+
+
 }
 
 

@@ -28,12 +28,6 @@ class adminController extends Controller
         return response()->json($data);
     }
 
-    // public function get_GPA_distribution_In_Department()
-    // {
-    //     $data = DB::table('student')->select('studentId', 'GPA')->where('departmentCode', 'IS')->get();
-    //     return response()->json($data);
-    // }
-
     public function get_GPA_distribution_In_Department()
     {
         $departments = DB::table('department')->select('departmentCode')->get();
@@ -197,10 +191,27 @@ class adminController extends Controller
         return response()->json([
             'message' => 'Grade has been added successfully',
             'result' => $result
-        ], 201);
+        ], 201);      
+    }
 
-        
-        
+    public function updateRegisterationStatus($status)
+    {       
+        $currentStatus = DB::table('adminControl')
+        ->update(array('registerationStatus'=>$status));
+
+         
+        return response()->json([
+            'message' => 'Registeration status has been updated successfully',
+            'current status' => $status
+        ]);  
+    }
+
+    public function getRegisterationStatus()
+    {       
+        $currentStatus = DB::table('adminControl')
+        ->get('registerationStatus');
+
+        return $currentStatus;     
     }
     public function setEvaluationStatus($status)
 {

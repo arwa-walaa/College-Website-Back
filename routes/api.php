@@ -214,11 +214,13 @@ Route::get('/getAllCourses', [adminController::class,'getAllCourses']);
 Route::get('/getStudentInCourse/{courseId}', [adminController::class,'getStudentInCourse']);
 
 Route::post('/addGrade/{courseId}/{studentId}', [adminController::class,'addGrade']);
-Route::put('/setEvaluationStatus/{status}',[adminController::class,'setEvaluationStatus']);
-Route::put('/setGPFormStatus/{status}',[adminController::class,'setGPFormStatus']);
-Route::get('/getAdminControlStatus',[adminController::class,'getAdminControlStatus']);
+
 
 /////////////////////////chat updates
 Route::get('/getAllContacts/{senderID}/{sendertype}', [ChatController::class,'getAllContacts']);
 Route::get('/getUserInfo/{token}', [AuthController::class,'getUserInfo']);
 Route::get('/getRecentContacts/{senderID}', [ChatController::class,'getRecentContacts']);
+
+Route::post('/blockUser/{userId1}/{userId2}', [ChatController::class,'blockUser']);
+Route::delete('/unBlockUser/{userId1}/{userId2}', [ChatController::class,'unBlockUser']);
+Route::get('/getBlockedUsers/{userId1}/{userId2}', [ChatController::class,'getBlockedUsers']);
