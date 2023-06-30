@@ -202,5 +202,31 @@ class adminController extends Controller
         
         
     }
-  
+    public function setEvaluationStatus($status)
+{
+    DB::table('admincontrol')
+        
+        ->update([
+            'evaluationStatus' => $status
+              
+        ]);
+    
+    return response()->json(['success' => true]);
+}
+public function setGPFormStatus($status)
+{
+    DB::table('admincontrol')
+        
+        ->update([
+            'GpFormStatus' => $status
+              
+        ]);
+    
+    return response()->json(['success' => true]);
+}
+public function getAdminControlStatus()
+{
+   $status= DB::table('admincontrol')->get(); 
+    return $status;
+}
 }

@@ -158,6 +158,8 @@ Route::delete('/deleteOfficeHours/{id}', [ProfessorController::class,'deleteOffi
 Route::put('/updateProfProfile/{id}',[ProfessorController::class,'updateProfProfile']);
 Route::put('/updateTAProfile/{id}',[ProfessorController::class,'updateTAProfile']);
 Route::put('/updateProfOfficeHour/{id}',[ProfessorController::class,'updateProfOfficeHour']);
+
+
 Route::get('/getStudentData/{id}',[ProfessorController::class,'getStudentData']);
 ////////////TA part
 Route::get('/returnTAScheudule/{TAID}/{Semester}', [TAController::class,'returnTAScheudule']);
@@ -212,7 +214,9 @@ Route::get('/getAllCourses', [adminController::class,'getAllCourses']);
 Route::get('/getStudentInCourse/{courseId}', [adminController::class,'getStudentInCourse']);
 
 Route::post('/addGrade/{courseId}/{studentId}', [adminController::class,'addGrade']);
-
+Route::put('/setEvaluationStatus/{status}',[adminController::class,'setEvaluationStatus']);
+Route::put('/setGPFormStatus/{status}',[adminController::class,'setGPFormStatus']);
+Route::get('/getAdminControlStatus',[adminController::class,'getAdminControlStatus']);
 
 /////////////////////////chat updates
 Route::get('/getAllContacts/{senderID}/{sendertype}', [ChatController::class,'getAllContacts']);
