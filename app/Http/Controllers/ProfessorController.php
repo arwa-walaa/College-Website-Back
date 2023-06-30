@@ -120,7 +120,16 @@ public function returnProfOfficeHours($professorID)
     $results = DB::table('professor')
             ->join('_office_hour_', 'professor.professorId', '=', '_office_hour_.professorId')
             ->select('_office_hour_.id','_office_hour_.Day', '_office_hour_.Location', '_office_hour_.StartTime', '_office_hour_.EndTime')
-            ->where('professor.professorId', '=', 'ihelal')
+            ->where('professor.professorId', '=', $professorID)
+            ->get();
+    return $results;
+}
+public function returnTAOfficeHours($taID)
+{
+    $results = DB::table('ta')
+            ->join('_office_hour_', 'ta.TAId', '=', '_office_hour_.TAid')
+            ->select('_office_hour_.id','_office_hour_.Day', '_office_hour_.Location', '_office_hour_.StartTime', '_office_hour_.EndTime')
+            ->where('_office_hour_.TAid', '=', $taID)
             ->get();
     return $results;
 }
@@ -137,6 +146,19 @@ public function updateProfProfile(Request $request, $id)
             'professorName' => $request->input('EName'),
             'address' => $request->input('Address'),
             'phoneNumber' => $request->input('Phone'),
+            'email' => $request->input('Email'),  
+        ]);
+    
+    return response()->json(['success' => true]);
+}
+public function updateTAProfile(Request $request, $id)
+{
+    DB::table('ta')
+        ->where('TAId', $id)
+        ->update([
+            'TAName' => $request->input('EName'),
+            'address' => $request->input('Address'),
+            'phone' => $request->input('Phone'),
             'email' => $request->input('Email'),  
         ]);
     

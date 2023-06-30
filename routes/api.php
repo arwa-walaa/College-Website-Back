@@ -155,8 +155,10 @@ Route::get('/returnAllPlaces', [ProfessorController::class,'returnAllPlaces']);
 Route::get('/returnPlaceScheduale/{place}/{Semester}', [ProfessorController::class,'returnPlaceScheduale']);
 Route::post('/insertOfficeHour/{id}', [ProfessorController::class,'insertOfficeHour']);
 Route::get('/returnProfOfficeHours/{id}', [ProfessorController::class,'returnProfOfficeHours']);
+Route::get('/returnTAOfficeHours/{id}', [ProfessorController::class,'returnTAOfficeHours']);
 Route::delete('/deleteOfficeHours/{id}', [ProfessorController::class,'deleteOfficeHours']);
 Route::put('/updateProfProfile/{id}',[ProfessorController::class,'updateProfProfile']);
+Route::put('/updateTAProfile/{id}',[ProfessorController::class,'updateTAProfile']);
 Route::put('/updateProfOfficeHour/{id}',[ProfessorController::class,'updateProfOfficeHour']);
 Route::get('/getStudentData/{id}',[ProfessorController::class,'getStudentData']);
 ////////////TA part
