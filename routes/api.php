@@ -214,8 +214,12 @@ Route::get('/getAllCourses', [adminController::class,'getAllCourses']);
 Route::get('/getStudentInCourse/{courseId}', [adminController::class,'getStudentInCourse']);
 
 Route::post('/addGrade/{courseId}/{studentId}', [adminController::class,'addGrade']);
+Route::put('/setEvaluationStatus/{status}',[adminController::class,'setEvaluationStatus']);
+Route::put('/setGPFormStatus/{status}',[adminController::class,'setGPFormStatus']);
+Route::get('/getAdminControlStatus',[adminController::class,'getAdminControlStatus']);
 
-
+Route::post('/updateRegisterationStatus/{status}', [adminController::class,'updateRegisterationStatus']);
+Route::get('/getRegisterationStatus', [adminController::class,'getRegisterationStatus']);
 /////////////////////////chat updates
 Route::get('/getAllContacts/{senderID}/{sendertype}', [ChatController::class,'getAllContacts']);
 Route::get('/getUserInfo/{token}', [AuthController::class,'getUserInfo']);
