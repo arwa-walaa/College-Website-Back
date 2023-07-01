@@ -90,7 +90,7 @@ Route::get('/CourseeForSemester/{level}/{semester}/{id}',[PrerequisiteCousreCont
 // Route::get('/getCourseID/{courseName}',[courseEvaluation::class,'getCourseID']);
 Route::get('/getProfessorDetails/{studId}/{courseID}',[courseEvaluation::class,'getProfessorDetails']);
 Route::get('/getTADetails/{studId}/{courseID}',[courseEvaluation::class,'getTADetails']);
-Route::get('/getStudentCourses/{studId}',[courseEvaluation::class,'getStudentCourses']);
+Route::get('/getStudentCourses/{studId}/{term}',[courseEvaluation::class,'getStudentCourses']);
 
 // Endpoint for registering a new user
 Route::post('/register', 'AuthController@register');
@@ -218,7 +218,9 @@ Route::put('/setEvaluationStatus/{status}',[adminController::class,'setEvaluatio
 Route::put('/setGPFormStatus/{status}',[adminController::class,'setGPFormStatus']);
 Route::get('/getAdminControlStatus',[adminController::class,'getAdminControlStatus']);
 
-Route::post('/updateRegisterationStatus/{status}', [adminController::class,'updateRegisterationStatus']);
+Route::put('/updateRegisterationStatus/{status}', [adminController::class,'updateRegisterationStatus']);
+
+Route::put('/updateprogramSelectionStatus/{status}', [adminController::class,'updateprogramSelectionStatus']);
 Route::get('/getRegisterationStatus', [adminController::class,'getRegisterationStatus']);
 /////////////////////////chat updates
 Route::get('/getAllContacts/{senderID}/{sendertype}', [ChatController::class,'getAllContacts']);

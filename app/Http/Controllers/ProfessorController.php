@@ -221,6 +221,7 @@ public function returnGradeAvg($courseID,$Year,$Deparment)
     ->where('course_reigesters.Year', '=', $Year)
     ->where('course.departmentCode', '=', $Deparment)
                     ->get();
+    
     return $avg_grade;
 }
 public function searchByStudent(Request $request) {
@@ -310,7 +311,7 @@ public function AddCourse(Request $request){
    
     ->insert([
         
-        'courseID' => $request->input('courseID'),
+        'courseID' => $request->input('Course_Code'),
         'professor2' => $request->input('professor2'),
         'professor1' => $request->input('professor1'),
         'slotPlace2' => $request->input('slotPlace2'),  

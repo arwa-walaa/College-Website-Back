@@ -38,7 +38,7 @@ class ProgramPerferenceController extends Controller
     {
         $currentYear = date('Y');
 
-        $count = DB::table('program_preferences')
+        $count = DB::table('program_perferences')
                     
                      ->where('Year', $currentYear)
                      ->count();

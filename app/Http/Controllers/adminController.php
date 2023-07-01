@@ -206,13 +206,7 @@ class adminController extends Controller
         ]);  
     }
 
-    public function getRegisterationStatus()
-    {       
-        $currentStatus = DB::table('adminControl')
-        ->get('registerationStatus');
-
-        return $currentStatus;     
-    }
+    
     public function setEvaluationStatus($status)
 {
     DB::table('admincontrol')
@@ -239,5 +233,16 @@ public function getAdminControlStatus()
 {
    $status= DB::table('admincontrol')->get(); 
     return $status;
+}
+public function updateprogramSelectionStatus($status)
+{       
+    $currentStatus = DB::table('adminControl')
+    ->update(array('programSelectionStatus'=>$status));
+
+     
+    return response()->json([
+        'message' => 'programSelection status has been updated successfully',
+        'current status' => $status
+    ]);  
 }
 }

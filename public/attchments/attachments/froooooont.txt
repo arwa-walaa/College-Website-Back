@@ -1,0 +1,215 @@
+<html>
+
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+   
+</head>
+
+<body class="container">
+    <div class="firstComponent">
+        <h1 class="childFirst ">Announcements</h1>
+       
+        <button class="childFirst top50 " style=" margin-left: auto;"><i class="bi bi-trophy"></i><a  (click)="navigateToTop50()">View Top 50</a>  </button>
+    </div>
+    <div class="AnnounsmentComponent" >
+
+
+        <div style=" width: 400px; margin-left: 67%; margin-top: -30px;">
+           
+            <div class="input-group date" id="datepicker">
+                <input type="text" class="form-control" id="date" placeholder="Search" style="margin-top: 50px;" [(ngModel)]="searchText" />
+                
+            </div>
+        
+        </div>
+
+        <table id="example" class="table " >
+
+            <tr *ngFor="let ann of Announcemets | SearchService:searchText">
+                <td [innerHTML]="ann.content"></td>
+                <td><p class="dateFont">{{ ann.created_at_formatted }}</p></td>
+              </tr>
+            
+        </table>
+
+    </div>
+</body>
+</html>
+/////////////////////////////////////////////////////////////////
+import { Component } from '@angular/core';
+import { Router } from '@angular/router';
+import { StudentsService } from '../students.service';
+import { AdminService } from '../admin.service';
+
+@Component({
+  selector: 'app-announcements',
+  templateUrl: './announcements.component.html',
+  styleUrls: ['./announcements.component.css']
+})
+export class AnnouncementsComponent {
+  
+Announcemets: any;
+  searchText='';
+ 
+  constructor(private router: Router, private studendService: StudentsService) {
+   
+  }
+  ngOnInit(): void {
+    this.studendService.getAllAnnouncemets().subscribe({
+      next:(response)=> this.Announcemets=response
+      
+    });
+   
+    // throw new Error('Method not implemented.');
+    
+  }
+  navigateToTop50()
+  {
+    this.router.navigate(['Top50']);
+  }
+
+
+
+ 
+}
+
+
+
+
+//////////////////////////////////////////////////////////////////
+.firstComponent {
+    margin-top: 80px;
+    text-align: center;
+    display: flex;
+   
+
+}
+
+.childFirst {
+    display: inline;
+    margin-top: -40px;
+
+
+
+}
+
+
+.top50 {
+
+    width: 250px;
+    height: 52px;
+    left: 1134px;
+    top: 169px;
+    color: white;
+    background: #3E8DE3;
+    border-radius: 10px;
+    font-family: 'Source Sans Pro';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 20px;
+    line-height: 38px;
+    border: none;
+    margin-top: -40px;
+}
+
+.AnnounsmentComponent {
+
+    
+    width: 1300px;
+    height: auto;
+    border: 1px solid rgb(230, 230, 230);
+    border-radius: 10px;
+    margin-top: 20px;
+    padding-left: 20px;
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    margin-bottom: 60px;
+
+
+}
+
+.parent {
+    text-align: center;
+}
+
+.childSecond {
+    display: inline;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+/* Style the search field */
+form.example input[type=text] {
+    padding: 10px;
+    margin-top: 20px;
+    font-size: 17px;
+    border: 1px solid grey;
+    float: left;
+    width: 80%;
+    background: #f1f1f1;
+}
+
+/* Style the submit button */
+form.example button {
+    float: left;
+    width: 20%;
+    padding: 10px;
+
+    color: white;
+    font-size: 17px;
+
+    border-left: none;
+    /* Prevent double borders */
+    cursor: pointer;
+}
+.dateFont{
+   font-size: small;
+   color: #ABABAB;
+   float: right;
+   
+}
+////////////////////////////////////////////
+announcmentTitle
+
+
+
+///////////////////////////////////////
+<td  (click)="selectAnnouncement(ann)">
+                    <h3 *ngIf="ann.isOpened == '0'" [innerHTML]="ann.announcmentTitle" style="background-color: gray;" ></h3>
+                    <h3  [ngClass]="{'announcement-opened': isAnnouncementOpened(ann)}" *ngIf="ann.isOpened == '1'" [innerHTML]="ann.announcmentTitle" style="background-color: rgb(212, 209, 209);" ></h3>
+                    <div *ngIf="selectedAnnouncement === ann"  [innerHTML]="ann.content"></div>
+                    <hr>
+                </td>
+///////////////////////////////////////////
+
+  selectAnnouncement(announcement: any) {
+    this.selectedAnnouncement = announcement;
+    console.log('isOpenedId= ',this.selectedAnnouncement.id);
+    
+    // this.studendService.updateAnnouncmentStatus(this.selectedAnnouncement.id);
+    // this.isOpened=true;
+    this.studendService.updateAnnouncmentStatus(this.selectedAnnouncement.id).subscribe(
+      response => {
+       
+        console.log('Announcement status updated successfully');
+      },
+      error => {
+        console.error('Error updating announcement status:', error);
+        // handle error here
+      }
+    );
+    
+  }
+  isAnnouncementOpened(announcement: any): boolean {
+    return announcement.isOpened === '1';
+  }
+  selectedAnnouncement: any;
+  isOpened:any;
+//////////////////////////////////////////
+  updateAnnouncmentStatus(annID: number) {
+    const url = `http://127.0.0.1:8000/api/updateAnnouncmentStatus/${annID}`;
+    return this.http.post(url, {});}
+

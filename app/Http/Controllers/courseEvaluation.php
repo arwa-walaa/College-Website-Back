@@ -121,13 +121,13 @@ public function getTAs_Feedbacks_for_specific_course($courseName , $teacherId)
     return response()->json($feedbacks);
 }
 
-public function getStudentCourses($studID){
+public function getStudentCourses($studID,$term){
     $courses = DB::table('course_reigesters')
     ->select('course.courseName','course.courseID')
    
     ->join('student', 'student.studentId', '=', 'course_reigesters.studentId')
     ->join('course', 'course.courseID', '=', 'course_reigesters.courseid')
-    ->where('student.studentId', '=', $studID)
+    ->where('student.studentId', '=', $studID)->where('course.Semester', '=', $term)->where('course_reigesters.Year', '=', date('Y'))
     ->where('course_reigesters.isEvaluaed', '!=', '1')->get();
         return $courses;
 
