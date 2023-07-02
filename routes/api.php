@@ -221,6 +221,7 @@ Route::get('/getAdminControlStatus',[adminController::class,'getAdminControlStat
 Route::put('/updateRegisterationStatus/{status}', [adminController::class,'updateRegisterationStatus']);
 
 Route::put('/updateprogramSelectionStatus/{status}', [adminController::class,'updateprogramSelectionStatus']);
+Route::post('/AddGroup', [adminController::class,'AddGroup']);
 Route::get('/getRegisterationStatus', [adminController::class,'getRegisterationStatus']);
 /////////////////////////chat updates
 Route::get('/getAllContacts/{senderID}/{sendertype}', [ChatController::class,'getAllContacts']);

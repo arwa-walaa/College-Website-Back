@@ -245,4 +245,19 @@ public function updateprogramSelectionStatus($status)
         'current status' => $status
     ]);  
 }
+public function AddGroup(Request $request){
+    DB::table('group')
+   
+    ->insert([
+        
+        'groupNumber' => $request->input('group_name'),
+        'TAId' => $request->input('ta_name'),
+        'courseId' => $request->input('CourseId'),
+        'slotDay' => $request->input('slot_day'),  
+        'startTime' => $request->input('start_time'),
+        'slotPlace' => $request->input('slot_place'),
+        'groupCount' => 25,
+         'endTime' => $request->input('end_time')
+    ]);
+    }
 }
