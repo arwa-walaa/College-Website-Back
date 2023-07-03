@@ -170,6 +170,8 @@ Route::get('/myCourses/{professorId}', [professorAndTa::class,'getMyCourses']);
 
 
 Route::get('/getCourseProfYears/{professorId}/{courseID}', [professorAndTa::class,'getCourseProfYears']);
+Route::get('/getCourseProfYears2/{professorId}/{courseName}', [professorAndTa::class,'getCourseProfYears2']);
+Route::get('/getCourseTAYears/{TAId}/{courseName}', [professorAndTa::class,'getCourseTAYears']);
 Route::get('/getCourseYears', [professorAndTa::class,'getCourseYears']);
 Route::get('/getTACourses/{TAId}', [professorAndTa::class,'getTACourses']);
 Route::get('/getMyStudents/{professorId}', [professorAndTa::class,'getMyStudents']);
