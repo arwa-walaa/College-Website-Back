@@ -231,3 +231,5 @@ Route::get('/getRecentContacts/{senderID}', [ChatController::class,'getRecentCon
 Route::post('/blockUser/{userId1}/{userId2}', [ChatController::class,'blockUser']);
 Route::delete('/unBlockUser/{userId1}/{userId2}', [ChatController::class,'unBlockUser']);
 Route::get('/getBlockedUsers/{userId1}/{userId2}', [ChatController::class,'getBlockedUsers']);
+Route::put('/updateSeenStatus/{userId1}/{userId2}', [ChatController::class,'updateSeenStatus']);
+Route::post('/sendNotification/{mailMessage}', [ChatController::class,'sendNotification']);
