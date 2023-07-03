@@ -200,15 +200,16 @@ Route::get('/getUserType/{token}', [AuthController::class,'getUserType']);
 Route::post('/store', [ChatController::class,'store']);
 Route::post('/addAnnouncments', [AnnouncemetsController::class,'addAnnouncment']);
 ////////Get feebacks//////////
-Route::get('/getFeedbacks/{courseName}/{professorId}', [courseEvaluation::class,'getFeedbacks']);
-Route::get('/getTAs_Feedbacks_for_specific_course/{courseName}/{professorId}', [courseEvaluation::class,'getTAs_Feedbacks_for_specific_course']);
+Route::get('/getFeedbacks/{courseName}/{professorId}/{year}', [courseEvaluation::class,'getFeedbacks']);
+Route::get('/getTAs_Feedbacks_for_specific_course/{courseName}/{professorId}/{year}', [courseEvaluation::class,'getTAs_Feedbacks_for_specific_course']);
 
 /////////////admin section///////////////
 Route::get('/returnAcceptedRequestsGP', [adminController::class,'returnAcceptedRequestsGP']);
 Route::post('/updateAnnouncmentStatus/{annID}', [AnnouncemetsController::class,'updateAnnouncmentStatus']);
 
-Route::get('/get_Number_Of_Students_In_Department', [adminController::class,'get_Number_Of_Students_In_Department']);
-Route::get('/get_GPA_distribution_In_Department', [adminController::class,'get_GPA_distribution_In_Department']);
+Route::get('/get_Number_Of_Students_In_Department/{year}', [adminController::class,'get_Number_Of_Students_In_Department']);
+Route::get('/get_GPA_distribution_In_Department/{year}', [adminController::class,'get_GPA_distribution_In_Department']);
+Route::get('/getPreferencesYears', [adminController::class,'getPreferencesYears']);
 Route::post('/calculateGPA', [adminController::class,'calculateGPA']);
 Route::put('/setDepatmentToStudent', [ProgramPerferenceController::class,'setDepatmentToStudent']);
 

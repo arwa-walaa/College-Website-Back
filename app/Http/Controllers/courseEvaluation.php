@@ -18,7 +18,7 @@ public function insertCourseEvaluation(Request $request)
     $courseId = $requestBody['course id'];
     $professorId = $requestBody['professor id'];
     $taId = $requestBody['ta id'];
-
+    
     // Insert evaluation data
     DB::table('evaluation')->insert([
         'courseID' => $courseId,
@@ -39,6 +39,7 @@ public function insertCourseEvaluation(Request $request)
         'TAcommunicationSkills' => $taEvaluation[2]['value'] ?? null,
         'TAisClearAgenda' => $taEvaluation[3]['value'] ?? null,
         'TAconveiedMaterial' => $taEvaluation[4]['value'] ?? null,
+        'Year' => date('Y'),
     ]);
     DB::table('course_reigesters')->where('studentId', '=',$requestBody['student id'])
     ->where('courseID', '=',$courseId)->update(array('isEvaluaed'=>'1'));
@@ -53,6 +54,7 @@ public function getProfessorDetails( $studID,$courseID){
     ->select('p1.professorId AS professorID1','p1.professorName AS professorName1', 'p2.professorId AS professorID2','p2.professorName AS professorName2')
     ->where('course_reigesters.studentId', '=', $studID)
     ->where('course_reigesters.courseID', '=', $courseID)
+    
     ->get();
     return $result;
 
@@ -75,7 +77,7 @@ public function getTADetails( $studID,$courseID){
 
 }
 
-   public function getFeedbacks($courseName , $teacherId) {
+   public function getFeedbacks($courseName , $teacherId,$year) {
     $courseID = DB::table('course')->where('courseName', '=', $courseName)->pluck('courseID');
     $feedbacks = DB::table('evaluation')
     ->join('ta', 'evaluation.TAId', '=', 'ta.TAId')
@@ -88,10 +90,11 @@ public function getTADetails( $studID,$courseID){
     ->where('professorId','=',$teacherId)
     ->orWhere('evaluation.TAId','=',$teacherId)
     ->where('evaluation.courseID', '=',  $courseID)
+    ->where('evaluation.Year', '=',$year)
     ->get();
     return response()->json($feedbacks);
 }
-public function getTAs_Feedbacks_for_specific_course($courseName , $teacherId)
+public function getTAs_Feedbacks_for_specific_course($courseName , $teacherId,$year)
 {
     $courseID = DB::table('course')->where('courseName', '=', $courseName)->pluck('courseID');
     $TAs = DB::table('evaluation')->distinct()->select('TAId')
@@ -112,6 +115,7 @@ public function getTAs_Feedbacks_for_specific_course($courseName , $teacherId)
     
     ->Where('evaluation.TAId','=',$TA->TAId)
     ->where('evaluation.courseID', '=',  $courseID)
+    ->where('evaluation.Year', '=',$year)
     ->get();
 
     $feedbacks[$TA->TAId] = $feedbacksData;

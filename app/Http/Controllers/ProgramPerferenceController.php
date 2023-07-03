@@ -65,9 +65,10 @@ class ProgramPerferenceController extends Controller
     // Assign departments to students based on preferences and availability
     foreach ($students as $student) 
     {
+       
         $preferences = DB::table('program_perferences')
             ->where('studentId', $student->studentId)
-            ->where('Year', 2023)
+            ->where('Year', $currentYear)
             ->first();
 
         for ($i = 1; $i <= 5; $i++) {

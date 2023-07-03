@@ -18,27 +18,40 @@ class adminController extends Controller
                     return $result;           
    }
 
-   public function get_Number_Of_Students_In_Department()
+   public function get_Number_Of_Students_In_Department($year)
     {
         $data = DB::table('student')
-            ->select('departmentCode', DB::raw('count(*) as count'))
+        ->join('program_perferences', 'program_perferences.studentId', '=','student.studentId' ) 
+         ->select('departmentCode', DB::raw('count(*) as count'))
+         ->where('program_perferences.Year','=',$year) 
             ->groupBy('departmentCode')
             ->get();
 
         return response()->json($data);
     }
 
-    public function get_GPA_distribution_In_Department()
+    public function get_GPA_distribution_In_Department($year)
     {
         $departments = DB::table('department')->select('departmentCode')->get();
 
         foreach ($departments as $dept) {
-            $deptData = DB::table('student')->select('studentId', 'GPA')->where('departmentCode', $dept->departmentCode)->get();
+            $deptData = DB::table('student')
+            ->join('program_perferences', 'program_perferences.studentId', '=','student.studentId' ) 
+            ->select('student.studentId', 'GPA')
+            ->where('departmentCode', $dept->departmentCode)
+            ->where('program_perferences.Year','=',$year) 
+            ->get();
             $data[$dept->departmentCode] = $deptData;
         }
     
        
         return response()->json($data);
+    }
+    public function getPreferencesYears()
+    {
+        $deptData = DB::table('program_perferences')->select('program_perferences.Year')->distinct()->get();
+        return $deptData;
+        
     }
 
     // public function calculateGPA()
