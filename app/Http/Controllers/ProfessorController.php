@@ -307,6 +307,7 @@ public function returnAllTAs()
     return $prf;
 }
 public function AddCourse(Request $request){
+    $mailMessage = 'You have been assigned to a new course '.$request->input('courseName');
     DB::table('course')
    
     ->insert([
@@ -333,8 +334,10 @@ public function AddCourse(Request $request){
         
     ]);
 
-return response()->json(['success' => true]);
+    $user = User::find(3);
 
+    Mail::to($user->email)->send(new NewAnnouncementNotification($mailMessage));
+    return response()->json(['message' => 'Email sent successfully.'], 200);
 }
 }
 
