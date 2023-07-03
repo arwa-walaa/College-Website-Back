@@ -1,25 +1,15 @@
-{{-- <x-mail::message>
-# Introduction
-
-The body of your message.
-
-<x-mail::button :url="''">
-Button Text
-</x-mail::button>
-
-Thanks,<br>
-{{ config('app.name') }}
-</x-mail::message> --}}
-
-
 @component('mail::message')
-
 
 {{$announcment}}
 
-@component('mail::button', ['url' => 'http://localhost:4200/Announcements'])
-View announcement
-@endcomponent
-
+@if (strpos($announcment, 'new message') === 0)
+    @component('mail::button', ['url' => 'http://localhost:4200/FCAIChat'])
+        View Message
+    @endcomponent
+@else
+    @component('mail::button', ['url' => 'http://localhost:4200/Announcements'])
+        View Announcement
+    @endcomponent
+@endif
 
 @endcomponent

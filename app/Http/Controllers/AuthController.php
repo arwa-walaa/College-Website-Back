@@ -153,7 +153,25 @@ class AuthController extends Controller
     }
     public function getUserInfo($token)
     {
-        $userInformation = DB::table('users')->where('loginToken', '=', $token) ->select('Type','id')->get();
+        $TAs=DB::table('ta')->join('users','ta.userID','=','users.id')
+        ->select('ta.userID as id','ta.TAName AS name','users.Type')
+        ->where('users.loginToken', '=', $token)->
+        get();
+       
+        $students = DB::table('student')->join('users','student.userID','=','users.id')
+    ->select('student.userID as id','student.studentName AS name','users.Type')
+    ->where('users.loginToken', '=', $token)->
+    get();
+
+    $professors = DB::table('professor')->join('users','professor.userID','=','users.id')
+    ->select('professor.userID as id','professor.professorName AS name','users.Type')
+    ->where('users.loginToken', '=', $token)->
+    get();
+
+    $userInformation=$TAs->concat($students)
+    ->concat($professors)
+    ->sortBy('name')
+    ->values();
         return $userInformation;
         
     }

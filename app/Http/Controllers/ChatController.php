@@ -9,6 +9,8 @@ use App\Models\Message;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use App\Attachment;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\NewAnnouncementNotification;
 
 Storage::disk('local')->makeDirectory('gp');
 class ChatController extends Controller
@@ -25,27 +27,34 @@ class ChatController extends Controller
     }
 
 
-public function sendMessage(Request $request)
-{
-    $this->validate($request, [
-        'from' => 'required',
-        'to' => 'required'
-    ]);
+    public function sendMessage(Request $request)
+    {
+        $this->validate($request, [
+            'from' => 'required',
+            'to' => 'required'
+        ]);
+    
+        $message = new Message;
+        $message->from = $request->input('from');
+        $message->to = $request->input('to');
+        $message->message = $request->input('message');
+        $mailMessage = 'new message from ' . $request->input('senderName');
+    
+        if ($request->hasFile('attachment')) {
+            $attachment = $request->file('attachment')->getClientOriginalName();
+            $path = $request->file('attachment')->storeAs('attachments',$attachment,'fcai');
+            $message->message = $attachment;
+            $message->attachment_path = $path;
+        }
+        $message->save();
+    }
 
-    $message = new Message;
-    $message->from = $request->input('from');
-    $message->to = $request->input('to');
-    $message->message = $request->input('message');
-
-    if ($request->hasFile('attachment')) {
-        $attachment = $request->file('attachment')->getClientOriginalName();
-        $path = $request->file('attachment')->storeAs('attachments',$attachment,'fcai');
-        $message->message = $attachment;
-        $message->attachment_path = $path;
-     }
-    $message->save();
-    return response()->json($message);
-}
+    public function sendNotification($mailMessage)
+    {
+        $user = User::find(3);
+        Mail::to($user->email)->queue(new NewAnnouncementNotification($mailMessage));
+        return response()->json(['message'=>$mailMessage, 'Email response'=>'Email queued successfully.'], 200);
+    }
 
 public function getAllContacts($senderID,$sendertype){
     $TAs = DB::table('ta')->join('users','ta.userID','=','users.id')
@@ -55,7 +64,7 @@ public function getAllContacts($senderID,$sendertype){
     ->where('Type', '!=','Admin')->get();
    
     $students = DB::table('student')->join('users','student.userID','=','users.id')
-    ->select('student.userID','student.studentName AS name','users.Type')
+    ->select('student.userID','student.studentName AS name','users.Type','student.studentId')
     ->where('userID', '!=',$senderID)
     ->where('Type', '!=',$sendertype)
     ->where('Type', '!=','Admin')->get();
@@ -74,49 +83,76 @@ public function getAllContacts($senderID,$sendertype){
     return $allContacts;
 }
 
+public function getRecentContacts($senderID) {
+    $contactList = DB::table('messages')
+    ->select(DB::raw("CASE WHEN `to` = '{$senderID}' THEN `from` ELSE `to` END AS `contact`,
+                      MAX(`created_at`) AS `last_contact_time`,
+                      SUM(CASE WHEN `to` = '{$senderID}' AND `seen` = '0' THEN 1
+                               ELSE 0
+                          END) AS `unread_count`"))
+    ->where('to', $senderID)
+    ->orWhere('from', $senderID)
+    ->groupBy('contact')
+    ->orderBy('last_contact_time', 'desc')
+    ->get();
+   
+                    
+    $TAlist = []; 
+    $Studentlist = [];
+    $Professorlist=[];
+    foreach ($contactList as $contact) {
+        $TAs = DB::table('ta')
+            ->join('users', 'ta.userID', '=', 'users.id')
+            ->select('ta.userID', 'ta.TAName AS name', 'users.Type')
+            ->where('ta.userID', '=', $contact->contact)
+            ->addSelect(DB::raw("'".$contact->last_contact_time."' AS last_contact_time"))
+            ->addSelect(DB::raw("'".$contact->unread_count."' AS numOfUnReadMessages"))
+            ->get();
 
+        $students = DB::table('student')
+            ->join('users', 'student.userID', '=', 'users.id')
+            ->select('student.userID', 'student.studentName AS name', 'users.Type','student.studentId')
+            ->where('student.userID', '=', $contact->contact)
+            ->addSelect(DB::raw("'".$contact->last_contact_time."' AS last_contact_time"))
+            ->addSelect(DB::raw("'".$contact->unread_count."' AS numOfUnReadMessages"))
+            ->get();
 
-
-// public function getRecentContacts($senderID) {
-//     $contactList = DB::table('messages')
-//                     ->select(DB::raw('CASE WHEN `from` = "'.$senderID.'" THEN `to` ELSE `from` END AS contact, MAX(created_at) as last_message'))
-//                     ->where('from', $senderID)
-//                     ->orWhere('to', $senderID)
-//                     ->groupBy('contact')
-//                     ->orderBy('last_message', 'desc')
-//                     ->get();
-
-//     return $contactList;
-// }
-public function getRecentContacts($senderID){
-    $recentTAContacts = DB::table('ta')
-        ->join('messages', 'ta.userID', '=', 'messages.to')
-        ->join('users', 'ta.userID', '=', 'users.id')
-        ->select('ta.TAName AS name', 'users.Type', 'messages.to AS userID', DB::raw('DATE_FORMAT(MAX(messages.created_at), "%m/%d/%Y %h:%i %p") AS last_contact_time'))
-        ->where('messages.from', $senderID)
-        ->groupBy('messages.to', 'ta.TAName', 'users.Type');
-        
-
-    $recentstudentContacts = DB::table('student')
-        ->join('messages', 'student.userID', '=', 'messages.to')
-        ->join('users', 'student.userID', '=', 'users.id')
-        ->select('student.studentName AS name', 'users.Type', 'messages.to AS userID', DB::raw('DATE_FORMAT(MAX(messages.created_at), "%m/%d/%Y %h:%i %p") AS last_contact_time'))
-        ->where('messages.from', $senderID)
-        ->groupBy('messages.to', 'student.studentName', 'users.Type');
-
-    $recentprofessorContacts = DB::table('professor')
-        ->join('messages', 'professor.userID', '=', 'messages.to')
-        ->join('users', 'professor.userID', '=', 'users.id')
-        ->select('professor.professorName AS name', 'users.Type', 'messages.to AS userID', DB::raw('DATE_FORMAT(MAX(messages.created_at), "%m/%d/%Y %h:%i %p") AS last_contact_time'))
-        ->where('messages.from', $senderID)
-        ->groupBy('messages.to', 'professor.professorName', 'users.Type');
-
-    $recentContacts = $recentTAContacts->union($recentstudentContacts)
-                                     ->union($recentprofessorContacts)
-                                     ->orderByDesc('last_contact_time')
-                                     ->get();
-
+        $professors = DB::table('professor')
+        ->join('users','professor.userID','=','users.id')
+        ->select('professor.userID','professor.professorName AS name','users.Type')
+        ->where('professor.userID', '=',$contact->contact)
+        ->addSelect(DB::raw("'".$contact->last_contact_time."' AS last_contact_time"))
+        ->addSelect(DB::raw("'".$contact->unread_count."' AS numOfUnReadMessages"))
+        ->get();
+    
+        foreach ($TAs as $TA) {
+            $TAlist[] = $TA;
+        }
+        foreach ($students as $student) {
+            $Studentlist[] = $student;
+        }
+        foreach ($professors as $professor) {
+            $Professorlist[] = $professor;
+        }
+        $recentContacts = collect($TAlist)->concat($Studentlist)->concat($Professorlist)
+        ->sortByDesc('last_contact_time')->values();
+    }
+    
     return $recentContacts;
+}
+
+public function updateSeenStatus($from , $to)
+{       
+    DB::table('messages')
+    ->where('from',$from)
+    ->where('to',$to)
+    ->update(array('seen'=>'1'));
+   
+
+     
+    return response()->json([
+        'message' => 'Seen status has been updated successfully',
+    ]);  
 }
 
 
@@ -149,8 +185,6 @@ public function getBlockedUsers($user1Id, $user2Id)
     $result = DB::table('blockeduserchat')
     ->where('user1', $user1Id)
     ->where('user2', $user2Id)
-    // ->orWhere('user1', $user2Id)
-    // ->orWhere('user2', $user1Id)
     ->get();
 
     return $result;
