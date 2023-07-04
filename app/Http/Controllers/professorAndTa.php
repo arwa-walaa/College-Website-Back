@@ -81,7 +81,7 @@ public function getCourseYears()
 
 public function getMyStudents($professorId)
 {
-    $students = DB::table('course_reigesters')->select('course.courseName','course.Level'
+    $students = DB::table('course_reigesters')->select('course.courseName','student.Level'
     ,'course.Semester',
     'student.studentName','student.GPA','course_reigesters.grade')
     ->join('student', 'student.studentId', '=', 'course_reigesters.studentId')

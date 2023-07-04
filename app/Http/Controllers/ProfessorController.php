@@ -2,8 +2,17 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Announcemets;
 use Illuminate\Http\Request;
+use App\Mail\NewAnnouncementNotification;
+use Symfony\Component\HttpFoundation\Response;
+use App\Models\User;
+use App\Mail\SendMailreset;
+use Illuminate\Support\Facades\Mail;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Str;
+
 
 class ProfessorController extends Controller
 {
@@ -340,30 +349,30 @@ public function returnAllTAs()
     return $prf;
 }
 public function AddCourse(Request $request){
-    $mailMessage = 'You have been assigned to a new course '.$request->input('courseName');
+    $mailMessage = 'You have been assigned to a new course '.$request->input('course_name');
     DB::table('course')
    
     ->insert([
         
-        'courseID' => $request->input('Course_Code'),
+        'courseID' => $request->input('course_code'),
         'professor2' => $request->input('professor2'),
         'professor1' => $request->input('professor1'),
-        'slotPlace2' => $request->input('slotPlace2'),  
-        'slotPlace1' => $request->input('slotPlace1'),
-        'endTime2' => $request->input('endTime2'),
-        'startTime2' => $request->input('startTime2'),
-        'slotday2' => $request->input('slotday2'),
-        'creditHours' => $request->input('creditHours'),
-        'endTime1' => $request->input('endTime1'),
-        'startTime1' => $request->input('startTime1'),
-        'slotday1' => $request->input('slotday1'),
+        'slotPlace2' => $request->input('slot_place2'),  
+        'slotPlace1' => $request->input('slot_place1'),
+        'endTime2' => $request->input('end_time2'),
+        'startTime2' => $request->input('start_time2'),
+        'slotday2' => $request->input('slot_day2'),
+        'creditHours' => $request->input('credit_hours'),
+        'endTime1' => $request->input('end_time1'),
+        'startTime1' => $request->input('start_time1'),
+        'slotday1' => $request->input('slot_day1'),
         'type' => $request->input('type'),
-        'Semester' => $request->input('Semester'),
-        'Level' => $request->input('Level'),
-        'Course_Code' => $request->input('Course_Code'),
-        'departmentCode' => $request->input('departmentCode'),
-        'courseName' => $request->input('courseName'),
-        'Num_of_groups' => $request->input('Num_of_groups'),
+        'Semester' => $request->input('semester'),
+        'Level' => $request->input('level'),
+        'Course_Code' => $request->input('course_code'),
+        'departmentCode' => $request->input('department_code'),
+        'courseName' => $request->input('course_name'),
+        'Num_of_groups' => $request->input('num_of_groups'),
         
     ]);
 
