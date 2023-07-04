@@ -183,9 +183,15 @@ public function unBlockUser($user1Id, $user2Id)
 public function getBlockedUsers($user1Id, $user2Id)
 {
     $result = DB::table('blockeduserchat')
-    ->where('user1', $user1Id)
-    ->where('user2', $user2Id)
-    ->get();
+                ->where(function ($query) use ($user1Id, $user2Id) {
+                    $query->where('user1', '=', $user1Id)
+                          ->where('user2', '=', $user2Id);
+                })
+                ->orWhere(function ($query) use ($user1Id, $user2Id) {
+                    $query->where('user1', '=', $user2Id)
+                          ->where('user2', '=', $user1Id);
+                })
+                ->get();
 
     return $result;
 }
