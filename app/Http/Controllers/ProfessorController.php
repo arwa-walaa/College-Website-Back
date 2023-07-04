@@ -41,6 +41,39 @@ class ProfessorController extends Controller
     
     return $schedule;
 }
+
+public function returnCourseScheudule($courseID,$Semeter)
+{
+    
+    $schedule =DB::table('course')
+    ->join('course_reigesters', 'course.courseID', '=', 'course_reigesters.courseid')
+    ->join('group', 'group.courseId', '=', 'course.courseID')
+    ->select(
+        'course.courseName',
+        'course.startTime1',
+        'course.endTime1',
+        'course.startTime2',
+        'course.endTime2',
+        'course.slotday1',
+        'course.slotday2',
+        'course.slotPlace1',
+        'course.slotPlace2',
+        'group.slotDay',
+        'group.groupNumber',
+        'group.slotPlace',
+        'group.endTime',
+        'group.startTime',
+        
+        
+    )
+    ->where('course.Semester', '=', $Semeter)
+    ->where('course_reigesters.Year', '=', date('Y'))
+    ->where('course.courseID', '=', $courseID)
+    ->distinct()
+    ->get();
+    
+    return $schedule;
+}
 public function returnAllPlaces(){
     $results = DB::table('course')
    
