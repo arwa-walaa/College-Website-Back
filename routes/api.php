@@ -70,6 +70,7 @@ Route::get('/getexamHall/{studentID}',[ExamHallController::class,'ExamHalls']);
 
 
 Route::get('/student_info/{token}',[AuthController::class,'getStudentInfo']);
+Route::get('/getAdminInfo/{token}',[AuthController::class,'getAdminInfo']);
 Route::get('/getCourseGroup/{courseID}',[CourseReigesterController::class,'getCourseGroup']);
 Route::get('/getCourseInfo/{courseID}',[CourseReigesterController::class,'getCourseInfo']);
 Route::post('/registerCourse',[CourseReigesterController::class,'registerCourse']);
@@ -151,6 +152,7 @@ Route::post('/register', 'AuthController@register');
 Route::get('/returnProfScheudule/{professorID}/{Semester}', [ProfessorController::class,'returnProfScheudule']);
 Route::get('/returnAllPlaces', [ProfessorController::class,'returnAllPlaces']);
 Route::get('/returnPlaceScheduale/{place}/{Semester}', [ProfessorController::class,'returnPlaceScheduale']);
+Route::get('/returnCourseScheudule/{courseid}/{Semester}', [ProfessorController::class,'returnCourseScheudule']);
 Route::post('/insertOfficeHour/{id}', [ProfessorController::class,'insertOfficeHour']);
 Route::get('/returnProfOfficeHours/{id}', [ProfessorController::class,'returnProfOfficeHours']);
 Route::get('/returnTAOfficeHours/{id}', [ProfessorController::class,'returnTAOfficeHours']);

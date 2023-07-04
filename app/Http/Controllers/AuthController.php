@@ -144,6 +144,12 @@ class AuthController extends Controller
         return $TaInfo;
         
     }
+    public function getAdminInfo($token)
+    {
+        $ProfessorInfo = DB::table('users')->where('loginToken', '=', $token)->get();
+        return $ProfessorInfo;
+     
+    }
 
     public function getUserType($token)
     {
