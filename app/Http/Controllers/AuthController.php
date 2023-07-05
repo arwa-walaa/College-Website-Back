@@ -174,6 +174,7 @@ class AuthController extends Controller
     ->where('users.loginToken', '=', $token)->
     get();
 
+
     $userInformation=$TAs->concat($students)
     ->concat($professors)
     ->sortBy('name')
