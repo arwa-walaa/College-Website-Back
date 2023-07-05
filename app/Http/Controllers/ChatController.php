@@ -47,6 +47,8 @@ class ChatController extends Controller
             $message->attachment_path = $path;
         }
         $message->save();
+
+        return $message;
     }
 
     public function sendNotification($mailMessage)
@@ -56,29 +58,40 @@ class ChatController extends Controller
         return response()->json(['message'=>$mailMessage, 'Email response'=>'Email queued successfully.'], 200);
     }
 
-public function getAllContacts($senderID,$sendertype){
-    $TAs = DB::table('ta')->join('users','ta.userID','=','users.id')
-    ->select('ta.userID','ta.TAName AS name','users.Type')
-    ->where('userID', '!=',$senderID)
-    ->where('Type', '!=',$sendertype)
-    ->where('Type', '!=','Admin')->get();
-   
-    $students = DB::table('student')->join('users','student.userID','=','users.id')
-    ->select('student.userID','student.studentName AS name','users.Type','student.studentId')
-    ->where('userID', '!=',$senderID)
-    ->where('Type', '!=',$sendertype)
-    ->where('Type', '!=','Admin')->get();
+public function getAllContacts($senderID, $sendertype) {
+    $TAs = DB::table('ta')->join('users', 'ta.userID', '=', 'users.id')
+        ->select('ta.userID', 'ta.TAName AS name', 'users.Type')
+        ->where('userID', '!=', $senderID)
+        ->where('Type', '!=', $sendertype)
+        ->where('Type', '!=', 'Admin')
+        ->get();
 
-    $professors = DB::table('professor')->join('users','professor.userID','=','users.id')
-    ->select('professor.userID','professor.professorName AS name','users.Type')
-    ->where('userID', '!=',$senderID)
-    ->where('Type', '!=',$sendertype)
-    ->where('Type', '!=','Admin')->get();
+    $students = DB::table('student')->join('users', 'student.userID', '=', 'users.id')
+        ->select('student.userID', 'student.studentName AS name', 'users.Type', 'student.studentId')
+        ->where('userID', '!=', $senderID)
+        ->where('Type', '!=', $sendertype)
+        ->where('Type', '!=', 'Admin')
+        ->get();
+
+    $professors = DB::table('professor')->join('users', 'professor.userID', '=', 'users.id')
+        ->select('professor.userID', 'professor.professorName AS name', 'users.Type')
+        ->where('userID', '!=', $senderID)
+        ->where('Type', '!=', $sendertype)
+        ->where('Type', '!=', 'Admin')
+        ->get();
 
     $allContacts = $TAs->concat($students)
-    ->concat($professors)
-    ->sortBy('name')
-    ->values();
+        ->concat($professors)
+        ->sortBy('name')
+        ->values();
+
+    foreach ($allContacts as $contact) {
+        $contact->isblocked = false; // add isblocked property and set its default value
+        $blockedUsers = $this->getBlockedUsers($contact->userID, $senderID);
+        if ($blockedUsers->isNotEmpty()) {
+            $contact->isblocked = true;
+        }
+    }
 
     return $allContacts;
 }
@@ -137,7 +150,14 @@ public function getRecentContacts($senderID) {
         $recentContacts = collect($TAlist)->concat($Studentlist)->concat($Professorlist)
         ->sortByDesc('last_contact_time')->values();
     }
-    
+    foreach ($recentContacts as $contact) {
+        $contact->isblocked = false; // add isblocked property and set its default value
+        $blockedUsers = $this->getBlockedUsers($contact->userID, $senderID);
+        if ($blockedUsers->isNotEmpty()) {
+            $contact->isblocked = true;
+        }
+    }
+
     return $recentContacts;
 }
 
