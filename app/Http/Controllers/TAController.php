@@ -13,7 +13,7 @@ class TAController extends Controller
     ->join('ta', 'ta.TAId', '=', 'group.TAId')
     ->join('course', 'course.courseID', '=', 'group.courseId')
     // ->join('course_reigesters', 'course.courseID', '=', 'course_reigesters.courseid')
-    ->join('course_reigesters', 'course_reigesters.TAId', '=', 'group.TAId')
+    // ->join('course_reigesters', 'course_reigesters.TAId', '=', 'group.TAId')
     ->select(
         'course.courseName',
        
@@ -26,7 +26,7 @@ class TAController extends Controller
     )
     ->where('ta.TAId', '=',$TAId )
     ->where('course.Semester', '=', $Semeter)
-    ->where('course_reigesters.Year', '=', date('Y'))->distinct()
+    ->where('group.Year', '=', date('Y'))->distinct()
     ->get();
     
     return $schedule;
