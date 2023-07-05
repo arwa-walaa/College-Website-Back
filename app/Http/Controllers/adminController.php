@@ -259,8 +259,14 @@ public function updateprogramSelectionStatus($status)
     ]);  
 }
 public function AddGroup(Request $request){
-    DB::table('group')
    
+    $startTime = strtotime($request->input('start_time'),);
+    $endTime = strtotime( $request->input('end_time'),);
+
+    if ($startTime >= $endTime || ($endTime - $startTime) == 0) {
+        return response()->json(['error' => 'Invalid time. Start time must be before end time and the duration between them must be greater than zero.'], 400);
+    }
+    DB::table('group')
     ->insert([
         
         'groupNumber' => $request->input('group_name'),
@@ -270,7 +276,9 @@ public function AddGroup(Request $request){
         'startTime' => $request->input('start_time'),
         'slotPlace' => $request->input('slot_place'),
         'groupCount' => 25,
-         'endTime' => $request->input('end_time')
+         'endTime' => $request->input('end_time'),
+         'Year'=>date('Y')
+
     ]);
     }
 }

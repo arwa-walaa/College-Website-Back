@@ -108,11 +108,66 @@ $results = DB::table('course')
     ->get();
    return $results; 
 }
+// public function insertOfficeHour(Request $request, $professorOrTAId)
+// {
+//     $officeHours = $request->all();
+//     // Loop through each office hour and insert it into the database
+//     foreach ($officeHours as $hour) {
+//         $officeHourCount = DB::table('_office_hour_')
+//             ->where('StartTime', '=', $hour['startTime'])
+//             ->where('EndTime', '=', $hour['endTime'])
+//             ->where('Day', '=', $hour['Day'])
+//             ->where('Location', '=', $hour['location'])
+//             ->where('Department', '=', 'is')
+//             ->where(function ($query) use ($professorOrTAId) {
+//                 $query->where('ProfessorId', '=', $professorOrTAId)
+//                       ->orWhere('TAid', '=', $professorOrTAId);
+//             })
+//             ->count();
+
+//         if ($officeHourCount == 0) {
+//             if ($hour['type']=='TA') {
+//                 DB::table('_office_hour_')->insert([
+//                     [
+//                         'TAid' => $professorOrTAId,
+//                         'professorOrTAName' => $hour['name'],
+//                         'Email' => $hour['email'],
+//                         'Location' => $hour['location'],
+//                         'StartTime' => $hour['startTime'],
+//                         'EndTime' => $hour['endTime'],
+//                         'Day' => $hour['Day'],
+//                         'Department' => $hour['department']
+//                     ]
+//                 ]);
+//             } elseif ($hour['type']=='Professor') {
+//                 DB::table('_office_hour_')->insert([
+//                     [
+//                         'ProfessorId' => $professorOrTAId,
+//                         'professorOrTAName' => $hour['name'],
+//                         'Email' => $hour['email'],
+//                         'Location' => $hour['location'],
+//                         'StartTime' => $hour['startTime'],
+//                         'EndTime' => $hour['endTime'],
+//                         'Day' => $hour['Day'],
+//                         'Department' => $hour['department']
+//                     ]
+//                 ]);
+//             }
+//         }
+//     }
+// }
 public function insertOfficeHour(Request $request, $professorOrTAId)
 {
     $officeHours = $request->all();
     // Loop through each office hour and insert it into the database
     foreach ($officeHours as $hour) {
+        $startTime = strtotime($hour['startTime']);
+        $endTime = strtotime($hour['endTime']);
+
+        if ($startTime >= $endTime || ($endTime - $startTime) == 0) {
+            return response()->json(['error' => 'Invalid office hours. Start time must be before end time and the duration between them must be greater than zero.'], 400);
+        }
+
         $officeHourCount = DB::table('_office_hour_')
             ->where('StartTime', '=', $hour['startTime'])
             ->where('EndTime', '=', $hour['endTime'])
@@ -155,8 +210,8 @@ public function insertOfficeHour(Request $request, $professorOrTAId)
             }
         }
     }
+    return response()->json(['message' => 'Office hours added successfully.'], 200);
 }
-
 public function returnProfOfficeHours($professorID)
 {
     $results = DB::table('professor')
@@ -350,9 +405,21 @@ public function returnAllTAs()
 }
 public function AddCourse(Request $request){
     $mailMessage = 'You have been assigned to a new course '.$request->input('course_name');
-    DB::table('course')
+    
+    $startTime2 = strtotime($request->input('start_time2'));
+    $endTime2 = strtotime($request->input('end_time2'));
+    $startTime1 = strtotime($request->input('start_time1'));
+    $endTime1 = strtotime($request->input('end_time1'));
+
+    if ($startTime1 >= $endTime1 || ($endTime1 - $startTime1) == 0) {
+        return response()->json(['error' => 'Invalid time. Start time1 must be before end time1 and the duration between them must be greater than zero.'], 400);
+    }
+     if($startTime2 >= $endTime2 || ($endTime2 - $startTime2) == 0 ) {
+            return response()->json(['error' => 'Invalid time. Start time2 must be before end time2 and the duration between them must be greater than zero.'], 400);
+        }
+
    
-    ->insert([
+        DB::table('course')    ->insert([
         
         'courseID' => $request->input('course_code'),
         'professor2' => $request->input('professor2'),

@@ -26,7 +26,7 @@ public function getTACourses($TAId)
     $courses = DB::table('course_reigesters')
     ->select('course.Course_Code',
     'course.courseName','course.Level'
-    ,'course.Semester')
+    ,'course.Semester','course.courseID','course.departmentCode')
     ->join('course', 'course.courseID', '=', 'course_reigesters.courseid')
     ->join('ta', 'course_reigesters.TAId', '=', 'ta.TAId')
     ->where('ta.TAId', '=', $TAId)->distinct()
