@@ -368,8 +368,8 @@ class ComposerStaticInitd7ce18da6f271e5d1bce5b971e4f18b0
         ),
         'Psr\\Http\\Message\\' => 
         array (
-            0 => __DIR__ . '/..' . '/psr/http-message/src',
-            1 => __DIR__ . '/..' . '/psr/http-factory/src',
+            0 => __DIR__ . '/..' . '/psr/http-factory/src',
+            1 => __DIR__ . '/..' . '/psr/http-message/src',
         ),
         'Psr\\Http\\Client\\' => 
         array (
@@ -546,6 +546,7 @@ class ComposerStaticInitd7ce18da6f271e5d1bce5b971e4f18b0
 
     public static $classMap = array (
         'App\\Console\\Kernel' => __DIR__ . '/../..' . '/app/Console/Kernel.php',
+        'App\\Events\\NewAnnouncement' => __DIR__ . '/../..' . '/app/Events/NewAnnouncement.php',
         'App\\Exceptions\\Handler' => __DIR__ . '/../..' . '/app/Exceptions/Handler.php',
         'App\\Http\\Controllers\\AnnouncemetsController' => __DIR__ . '/../..' . '/app/Http/Controllers/AnnouncemetsController.php',
         'App\\Http\\Controllers\\AuthController' => __DIR__ . '/../..' . '/app/Http/Controllers/AuthController.php',
@@ -558,12 +559,16 @@ class ComposerStaticInitd7ce18da6f271e5d1bce5b971e4f18b0
         'App\\Http\\Controllers\\OfficeHours' => __DIR__ . '/../..' . '/app/Http/Controllers/OfficeHours.php',
         'App\\Http\\Controllers\\PasswordResetRequestController' => __DIR__ . '/../..' . '/app/Http/Controllers/PasswordResetRequestController.php',
         'App\\Http\\Controllers\\PrerequisiteCousreController' => __DIR__ . '/../..' . '/app/Http/Controllers/PrerequisiteCousreController.php',
+        'App\\Http\\Controllers\\ProfessorController' => __DIR__ . '/../..' . '/app/Http/Controllers/ProfessorController.php',
         'App\\Http\\Controllers\\ProfileController' => __DIR__ . '/../..' . '/app/Http/Controllers/ProfileController.php',
         'App\\Http\\Controllers\\ProgramPerferenceController' => __DIR__ . '/../..' . '/app/Http/Controllers/ProgramPerferenceController.php',
         'App\\Http\\Controllers\\ScheudleController' => __DIR__ . '/../..' . '/app/Http/Controllers/ScheudleController.php',
+        'App\\Http\\Controllers\\TAController' => __DIR__ . '/../..' . '/app/Http/Controllers/TAController.php',
         'App\\Http\\Controllers\\Top50Controller' => __DIR__ . '/../..' . '/app/Http/Controllers/Top50Controller.php',
+        'App\\Http\\Controllers\\adminController' => __DIR__ . '/../..' . '/app/Http/Controllers/adminController.php',
         'App\\Http\\Controllers\\courseEvaluation' => __DIR__ . '/../..' . '/app/Http/Controllers/courseEvaluation.php',
         'App\\Http\\Controllers\\gpController' => __DIR__ . '/../..' . '/app/Http/Controllers/gpController.php',
+        'App\\Http\\Controllers\\professorAndTa' => __DIR__ . '/../..' . '/app/Http/Controllers/professorAndTa.php',
         'App\\Http\\Kernel' => __DIR__ . '/../..' . '/app/Http/Kernel.php',
         'App\\Http\\Middleware\\Authenticate' => __DIR__ . '/../..' . '/app/Http/Middleware/Authenticate.php',
         'App\\Http\\Middleware\\CORS' => __DIR__ . '/../..' . '/app/Http/Middleware/CORS.php',
@@ -576,6 +581,7 @@ class ComposerStaticInitd7ce18da6f271e5d1bce5b971e4f18b0
         'App\\Http\\Middleware\\ValidateSignature' => __DIR__ . '/../..' . '/app/Http/Middleware/ValidateSignature.php',
         'App\\Http\\Middleware\\VerifyCsrfToken' => __DIR__ . '/../..' . '/app/Http/Middleware/VerifyCsrfToken.php',
         'App\\Http\\Requests\\UpdatePasswordRequest' => __DIR__ . '/../..' . '/app/Http/Requests/UpdatePasswordRequest.php',
+        'App\\Mail\\NewAnnouncementNotification' => __DIR__ . '/../..' . '/app/Mail/NewAnnouncementNotification.php',
         'App\\Mail\\SendMail' => __DIR__ . '/../..' . '/app/Mail/SendMail.php',
         'App\\Mail\\TestMail' => __DIR__ . '/../..' . '/app/Mail/TestMail.php',
         'App\\Models\\Announcemets' => __DIR__ . '/../..' . '/app/Models/Announcemets.php',

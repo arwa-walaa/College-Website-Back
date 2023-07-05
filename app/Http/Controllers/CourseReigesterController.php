@@ -208,6 +208,7 @@ public function returnScheudule($studentId)
         'group.groupNumber',
     )
     ->where('course_reigesters.studentId', '=', $studentId)
+    ->where('course_reigesters.Year', '=', date('Y'))
     ->get();
     
     return $schedule;
