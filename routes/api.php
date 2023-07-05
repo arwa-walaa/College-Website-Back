@@ -86,6 +86,7 @@ Route::post('/courseEvaluation',[courseEvaluation::class,'insertCourseEvaluation
 
 Route::get('/returnAllLocations',[OfficeHours::class,'returnAllLocations']);
 Route::get('/returnAllDepartments',[OfficeHours::class,'returnAllDepartments']);
+Route::get('/selectTeacherOfficeHour/{teacherName}',[OfficeHours::class,'selectTeacherOfficeHour']);
 // Route::get('/courseEvaluationDetails/{courseID}',[courseEvaluation::class,'getCourseDetails']);
 Route::get('/CourseeForSemester/{level}/{semester}/{id}',[PrerequisiteCousreController::class,'getCourses_Student']);
 // Route::get('/getCourseID/{courseName}',[courseEvaluation::class,'getCourseID']);
@@ -169,6 +170,7 @@ Route::get('/returnTAScheudule/{TAID}/{Semester}', [TAController::class,'returnT
 
 /////////////professor and ta section////////////////
 Route::get('/myCourses/{professorId}', [professorAndTa::class,'getMyCourses']);
+Route::get('/returnTeacherGPs/{teacherId}', [professorAndTa::class,'returnTeacherGPs']);
 
 
 Route::get('/getCourseProfYears/{professorId}/{courseID}', [professorAndTa::class,'getCourseProfYears']);

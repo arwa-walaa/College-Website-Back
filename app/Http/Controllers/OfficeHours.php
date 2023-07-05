@@ -81,4 +81,14 @@ class OfficeHours extends Controller
     
     }
 
+    public function selectTeacherOfficeHour($teacherName){
+        $results = DB::table('_office_hour_')
+                ->select('professorOrTAName','Email','Location','Department','StartTime','EndTime','Day')
+                ->where('professorOrTAName',$teacherName)
+                ->get();
+
+                return $results;
+    
+    }
+
 }

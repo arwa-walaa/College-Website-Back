@@ -118,5 +118,22 @@ public function selectGrade($grade){
     return $students;
 }
 
+public function returnTeacherGPs($teacherId)
+    {           
+                    $result = DB::table('gp')    
+                    ->join('ta', 'ta.TAId', '=','gp.TA' ) 
+                    ->join('professor', 'professor.professorId', '=','gp.professor' ) 
+                    ->select('gp.idea','gp.requirements','gp.member1','gp.member2','gp.member3','gp.member4','gp.member5','gp.professor','gp.TA','ta.TAName','professor.professorName')
+                    ->where('Ta_status','Accepted')             
+                    ->where('Prof_status','Accepted')   
+                    ->where('gp.professor',$teacherId)  
+                    ->orWhere('gp.TA',$teacherId)            
+                    ->get();                
+                    return $result;           
+
+}
+
+
+
 
 }
