@@ -8,7 +8,7 @@ use Illuminate\Http\Request;
 
 class professorAndTa extends Controller
 {
-    public function getMyCourses($professorId)
+    public function getMyCourses($teacherId)
 {
     $courses = DB::table('course_reigesters')
     ->select('course.Course_Code',
@@ -16,7 +16,10 @@ class professorAndTa extends Controller
     'course.Semester','course.courseID','course.departmentCode')
     ->join('professor', 'professor.professorId', '=', 'course_reigesters.professorId1')
     ->join('course', 'course.courseID', '=', 'course_reigesters.courseid')
-    ->where('professor.professorId', '=', $professorId)->distinct()
+    ->where('course_reigesters.professorId1', '=', $teacherId)
+    ->orWhere('course_reigesters.professorId2', '=', $teacherId)
+    ->orWhere('course_reigesters.TAId', '=', $teacherId)
+    ->distinct()
     ->get();
     return $courses;
 }
@@ -79,32 +82,42 @@ public function getCourseYears()
     return $years;
 }
 
-public function getMyStudents($professorId)
+public function getMyStudents($teacherId)
 {
     $students = DB::table('course_reigesters')->select('course.courseName','student.Level'
     ,'course.Semester',
     'student.studentName','student.GPA','course_reigesters.grade')
     ->join('student', 'student.studentId', '=', 'course_reigesters.studentId')
     ->join('course', 'course.courseID', '=', 'course_reigesters.courseid')
-    ->where('course_reigesters.professorId1', '=', $professorId)->get();
+    ->where('course_reigesters.professorId1', '=', $teacherId)
+    ->orWhere('course_reigesters.professorId2', '=', $teacherId)
+    ->orWhere('course_reigesters.TAId', '=', $teacherId)
+    ->get();
     
     return $students;
 }
-public function getGrades($professorId)
+public function getGrades($teacherId)
 {
     $courses = DB::table('course_reigesters')->select('course_reigesters.grade')
     ->join('professor', 'professor.professorId', '=', 'course_reigesters.professorId1')
     // ->join('course', 'course.courseID', '=', 'course_reigesters.courseid')
-    ->where('professor.professorId', '=', $professorId)->get();
-        return $courses;
+    ->where('course_reigesters.professorId1', '=', $teacherId)
+    ->orWhere('course_reigesters.professorId2', '=', $teacherId)
+    ->orWhere('course_reigesters.TAId', '=', $teacherId)
+    ->get();
+
+    return $courses;
 }
 
-public function selectCourse($courseName){ 
+public function selectCourse($courseName,$teacherId){ 
     // $students = DB::table('student')->where('departmentCode', '=', $dept)->orderBy("GPA","DESC")->get()->take(3);
     $students = DB::table('course_reigesters')
     ->join('student', 'student.studentId', '=', 'course_reigesters.studentId')
     ->join('course', 'course.courseID', '=', 'course_reigesters.courseid')
     ->where('course.courseName', '=', $courseName)
+    ->where('course_reigesters.professorId1', '=', $teacherId)
+    ->orWhere('course_reigesters.professorId2', '=', $teacherId)
+    ->orWhere('course_reigesters.TAId', '=', $teacherId)
     ->get();
     return $students;
 }

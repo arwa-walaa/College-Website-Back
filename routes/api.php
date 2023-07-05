@@ -180,7 +180,7 @@ Route::get('/getCourseYears', [professorAndTa::class,'getCourseYears']);
 Route::get('/getTACourses/{TAId}', [professorAndTa::class,'getTACourses']);
 Route::get('/getMyStudents/{professorId}', [professorAndTa::class,'getMyStudents']);
 Route::get('/getGrades/{professorId}', [professorAndTa::class,'getGrades']);
-Route::get('/selectCourse/{courseName}', [professorAndTa::class,'selectCourse']);
+Route::get('/selectCourse/{courseName}/{teacherId}', [professorAndTa::class,'selectCourse']);
 Route::get('/selectGrade/{courseGrade}', [professorAndTa::class,'selectGrade']);
 Route::get('/returnCourseTAS/{courseid}', [ProfessorController::class,'returnCourseTAS']);
 Route::get('/returnCourseStat/{courseid}/{Year}/{Deparment}', [ProfessorController::class,'returnCourseStat']);

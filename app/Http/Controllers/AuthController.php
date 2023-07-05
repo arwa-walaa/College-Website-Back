@@ -160,17 +160,17 @@ class AuthController extends Controller
     public function getUserInfo($token)
     {
         $TAs=DB::table('ta')->join('users','ta.userID','=','users.id')
-        ->select('ta.userID as id','ta.TAName AS name','users.Type')
+        ->select('ta.userID as id','ta.TAName AS name','users.Type','ta.TAId as logginUserID')
         ->where('users.loginToken', '=', $token)->
         get();
        
         $students = DB::table('student')->join('users','student.userID','=','users.id')
-    ->select('student.userID as id','student.studentName AS name','users.Type')
+    ->select('student.userID as id','student.studentName AS name','users.Type','student.studentId as logginUserID')
     ->where('users.loginToken', '=', $token)->
     get();
 
     $professors = DB::table('professor')->join('users','professor.userID','=','users.id')
-    ->select('professor.userID as id','professor.professorName AS name','users.Type')
+    ->select('professor.userID as id','professor.professorName AS name','users.Type','professor.professorId as logginUserID')
     ->where('users.loginToken', '=', $token)->
     get();
 
