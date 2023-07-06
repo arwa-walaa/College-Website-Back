@@ -201,10 +201,7 @@ class adminController extends Controller
 
         $this->calculateGPA($studentId);
         
-        return response()->json([
-            'message' => 'Grade has been added successfully',
-            'result' => $result
-        ], 201);      
+        return response()->json(['success' => true]);      
     }
 
     public function updateRegisterationStatus($status)
