@@ -64,8 +64,7 @@ Route::get('/getTopLevel50/{level}',[Top50Controller::class,'getTopLevel50']);
 Route::get('/getTopLevelAndDept/{level}/{dept}',[Top50Controller::class,'getTopLevelAndDept']);
 Route::get('/getTopDept50/{dept?}',[Top50Controller::class,'getTopDept50']);
 Route::get('/getTopCourse50/{CourseName}',[Top50Controller::class,'getTopCourse50']);
-Route::get('/getAllCourses',[Top50Controller::class,'getAllCourses']);
-Route::get('/getAllDepartmentswithGeneral',[Top50Controller::class,'getAllDepartments']);
+Route::get('/getAllCourses',[Top50Con',[Top50Controller::class,'getAllDepartments']);
 Route::get('/downloadScheudle/{Scheudle_Name}',[ScheudleController::class,'downloadScheudle']);
 Route::get('/getexamHall/{studentID}',[ExamHallController::class,'ExamHalls']);
 
