@@ -9,20 +9,32 @@ use Illuminate\Http\Request;
 class professorAndTa extends Controller
 {
     public function getMyCourses($teacherId)
-{
-    $courses = DB::table('course_reigesters')
-    ->select('course.Course_Code',
-    'course.courseName','course.Level',
-    'course.Semester','course.courseID','course.departmentCode')
-    ->join('professor', 'professor.professorId', '=', 'course_reigesters.professorId1')
-    ->join('course', 'course.courseID', '=', 'course_reigesters.courseid')
-    ->where('course_reigesters.professorId1', '=', $teacherId)
-    ->orWhere('course_reigesters.professorId2', '=', $teacherId)
-    ->orWhere('course_reigesters.TAId', '=', $teacherId)
-    ->distinct()
-    ->get();
-    return $courses;
-}
+    {
+        $courses = DB::table('course')
+            ->select(
+                'course.Course_Code',
+                'course.courseName',
+                'course.Level',
+                'course.Semester',
+                'course.courseID',
+                'course.departmentCode'
+            )
+            ->where('course.professor1', '=', $teacherId)
+            ->orWhere('course.professor2', '=', $teacherId)
+            ->orWhere(function ($query) use ($teacherId) {
+                $query->whereExists(function ($subquery) use ($teacherId) {
+                    $subquery->select('courseId')
+                        ->from('group')
+                        ->whereRaw('group.courseId = course.courseID')
+                        ->where('group.TAId', '=', $teacherId);
+                });
+            })
+            ->distinct()
+            ->get();
+    
+        return $courses;
+    }
+
 
 public function getTACourses($TAId)
 {

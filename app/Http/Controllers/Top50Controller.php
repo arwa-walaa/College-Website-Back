@@ -11,7 +11,10 @@ class Top50Controller extends Controller
         $students = DB::table('student')->where('level', '=', $level)->orderBy("GPA","DESC")->get()->take(50);
         return $students;
     }
-
+    public function getTopLevelAndDept($level,$dept){ 
+        $students = DB::table('student')->where('level', '=', $level)->where('departmentCode', '=', $dept)->orderBy("GPA","DESC")->get()->take(50);
+        return $students;
+    }
     public function getTopDept50($dept){ 
         $students = DB::table('student')->where('departmentCode', '=', $dept)->orderBy("GPA","DESC")->get()->take(50);
         return $students;
