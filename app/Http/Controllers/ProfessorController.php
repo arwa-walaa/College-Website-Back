@@ -173,7 +173,7 @@ public function insertOfficeHour(Request $request, $professorOrTAId)
             ->where('EndTime', '=', $hour['endTime'])
             ->where('Day', '=', $hour['Day'])
             ->where('Location', '=', $hour['location'])
-            ->where('Department', '=', 'is')
+            ->where('Department', '=', $hour['department'])
             ->where(function ($query) use ($professorOrTAId) {
                 $query->where('ProfessorId', '=', $professorOrTAId)
                       ->orWhere('TAid', '=', $professorOrTAId);
@@ -275,7 +275,7 @@ public function updateProfOfficeHour(Request $request, $id)
     
     return response()->json(['success' => true]);
 }
-public function returnCourseTAS($courseID)
+public function returnCourseTAS($courseID) 
 {
     $results = DB::table('course')
             ->join('ta', 'ta.courseID', '=','course.courseID' )
@@ -359,26 +359,26 @@ public function searchByStudent(Request $request) {
     DB::table('gp')
     ->where('id', $GPID)
     ->update(['Prof_status' => 'Accepted']);
-     //notification : notify this student that the request accepted
+    
   }
   public function rejectGP_prof($GPID){
     DB::table('gp')
     ->where('id',$GPID)
     ->update(['Prof_status' => 'Rejected']);
-    //notification : notify this student that the request rejected
+    
   
   }
    public function acceptGP_TA($GPID){
     DB::table('gp')
     ->where('id', $GPID)
     ->update(['Ta_status' => 'Accepted']);
-     //notification : notify this student that the request accepted
+     
   }
   public function rejectGP_TA($GPID){
     DB::table('gp')
     ->where('id',$GPID)
     ->update(['Ta_status' => 'Rejected']);
-    //notification : notify this student that the request rejected
+    
   
   }
   public function getStudentData($StudentID){
@@ -390,17 +390,13 @@ public function searchByStudent(Request $request) {
   public function returnAllProfessor()
 {
    
-    $prf = DB::table('professor')
-                   
-                    ->get();
+    $prf = DB::table('professor') ->get();
     return $prf;
 }
 public function returnAllTAs()
 {
    
-    $prf = DB::table('ta')
-                    
-                    ->get();
+    $prf = DB::table('ta') ->get();
     return $prf;
 }
 public function AddCourse(Request $request){

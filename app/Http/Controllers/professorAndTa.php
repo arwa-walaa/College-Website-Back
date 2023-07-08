@@ -53,9 +53,9 @@ public function getCourseProfYears($professorId,$CourseId)
 {
     $years = DB::table('course_reigesters')
     ->select('course_reigesters.Year')
-    ->join('professor', 'professor.professorId', '=', 'course_reigesters.professorId1')
+    // ->join('professor', 'professor.professorId', '=', 'course_reigesters.professorId1')
     ->join('course', 'course.courseID', '=', 'course_reigesters.courseid')
-    ->where('professor.professorId', '=', $professorId) 
+    ->where('course.professor2', '=', $professorId)->orwhere('course.professor1', '=', $professorId) 
     ->where('course.courseID', '=', $CourseId)->distinct()
     ->get();
     return $years;
@@ -64,9 +64,9 @@ public function getCourseProfYears2($professorId,$courseName)
 {
     $years = DB::table('course_reigesters')
     ->select('course_reigesters.Year')
-    ->join('professor', 'professor.professorId', '=', 'course_reigesters.professorId1')
+    // ->join('professor', 'professor.professorId', '=', 'course_reigesters.professorId1')
     ->join('course', 'course.courseID', '=', 'course_reigesters.courseid')
-    ->where('professor.professorId', '=', $professorId) 
+    ->where('course.professor2', '=', $professorId)->orwhere('course.professor1', '=', $professorId) 
     ->where('course.courseName', '=', $courseName)->distinct()
     ->get();
     return $years;
