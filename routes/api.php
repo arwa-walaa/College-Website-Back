@@ -171,8 +171,10 @@ Route::get('/returnTAScheudule/{TAID}/{Semester}', [TAController::class,'returnT
 
 /////////////professor and ta section////////////////
 Route::get('/myCourses/{professorId}', [professorAndTa::class,'getMyCourses']);
+Route::get('/selectLevel/{level}', [professorAndTa::class,'selectLevel']);
+Route::get('/selectGrade_level_course/{grade}/{level}/{course}', [professorAndTa::class,'selectGrade_level_course']);
 Route::get('/returnTeacherGPs/{teacherId}', [professorAndTa::class,'returnTeacherGPs']);
-
+Route::get('/selectLevel_Course/{level}/{course}', [professorAndTa::class,'selectLevel_Course']);
 
 Route::get('/getCourseProfYears/{professorId}/{courseID}', [professorAndTa::class,'getCourseProfYears']);
 Route::get('/getCourseProfYears2/{professorId}/{courseName}', [professorAndTa::class,'getCourseProfYears2']);

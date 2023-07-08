@@ -124,6 +124,9 @@ public function getGrades($teacherId)
 public function selectCourse($courseName,$teacherId){ 
     // $students = DB::table('student')->where('departmentCode', '=', $dept)->orderBy("GPA","DESC")->get()->take(3);
     $students = DB::table('course_reigesters')
+    ->select('course.courseName','student.Level'
+    ,'course.Semester',
+    'student.studentName','student.GPA','course_reigesters.grade')
     ->join('student', 'student.studentId', '=', 'course_reigesters.studentId')
     ->join('course', 'course.courseID', '=', 'course_reigesters.courseid')
     ->where('course.courseName', '=', $courseName)
@@ -133,9 +136,52 @@ public function selectCourse($courseName,$teacherId){
     ->get();
     return $students;
 }
+public function selectGrade_level_course($grade,$level,$course){ 
+    // $students = DB::table('student')->where('departmentCode', '=', $dept)->orderBy("GPA","DESC")->get()->take(3);
+    $students = DB::table('course_reigesters')
+    ->select('course.courseName','student.Level'
+    ,'course.Semester',
+    'student.studentName','student.GPA','course_reigesters.grade')
+    ->join('student', 'student.studentId', '=', 'course_reigesters.studentId')
+    ->join('course', 'course.courseID', '=', 'course_reigesters.courseid')
+    ->where('course_reigesters.grade', '=', $grade)
+    ->where('student.Level', '=', $level)
+    ->where('course.courseName', '=', $course)
+    ->get();
+    return $students;
+}
+public function selectLevel_Course($level,$course){ 
+    // $students = DB::table('student')->where('departmentCode', '=', $dept)->orderBy("GPA","DESC")->get()->take(3);
+    $students = DB::table('course_reigesters')
+    ->select('course.courseName','student.Level'
+    ,'course.Semester',
+    'student.studentName','student.GPA','course_reigesters.grade')
+    ->join('student', 'student.studentId', '=', 'course_reigesters.studentId')
+    ->join('course', 'course.courseID', '=', 'course_reigesters.courseid')
+    ->where('student.Level', '=', $level)
+    ->where('course.courseName', '=', $course)
+    ->get();
+    return $students;
+}
+public function selectLevel($level){ 
+    // $students = DB::table('student')->where('departmentCode', '=', $dept)->orderBy("GPA","DESC")->get()->take(3);
+    $students = DB::table('course_reigesters')
+    ->select('course.courseName','student.Level'
+    ,'course.Semester',
+    'student.studentName','student.GPA','course_reigesters.grade')
+    ->join('student', 'student.studentId', '=', 'course_reigesters.studentId')
+    ->join('course', 'course.courseID', '=', 'course_reigesters.courseid')
+   
+    ->where('student.Level', '=', $level)
+    ->get();
+    return $students;
+}
 public function selectGrade($grade){ 
     // $students = DB::table('student')->where('departmentCode', '=', $dept)->orderBy("GPA","DESC")->get()->take(3);
     $students = DB::table('course_reigesters')
+    ->select('course.courseName','student.Level'
+    ,'course.Semester',
+    'student.studentName','student.GPA','course_reigesters.grade')
     ->join('student', 'student.studentId', '=', 'course_reigesters.studentId')
     ->join('course', 'course.courseID', '=', 'course_reigesters.courseid')
     ->where('course_reigesters.grade', '=', $grade)
